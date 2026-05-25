@@ -948,14 +948,24 @@ body.night .btn-night svg path:first-child { display: none; }
               </div>
               <span class="tab-date" id="todayDate"></span>
             </div>
-            <div class="tab-content-zone" id="content-foot">
-              <!-- Loading state shown initially -->
-              <div class="loading-state" id="loading-foot">
-                <div class="loader-ring"></div>
-                <p>Loading football matches…</p>
-              </div>
-            </div>
           </div>
+
+
+           <!-- CONTENT START -->
+<div id="content">Loading...</div>
+
+  <script>
+    fetch("/footmatch")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("content").innerHTML = data;
+      })
+      .catch(err => {
+        document.getElementById("content").innerText = "Failed to load content.";
+        console.error(err);
+      });
+  </script>
+  <!-- CONTENT END -- >
 
           <!-- ── CRICKET PANEL ── -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
