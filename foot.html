@@ -1,1189 +1,1302 @@
 <!DOCTYPE html>
-<html dir='ltr' lang='en'>
+<html lang="en" dir="ltr">
 <head>
-<meta charset='UTF-8'/>
-<meta content='width=device-width,minimum-scale=1,initial-scale=1' name='viewport'/>
-<link href='https://i.ibb.co/x239ctn/Sports-Snap-favicon.png' rel='icon' type='image/x-icon'/>
-<title>Sports Snap: Football | Cricket | Free Live Stream</title>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-<script type='application/ld+json'>
-{
-  "@context": "http://schema.org/",
-  "@type": "WebSite",
-  "name": "Sports Snap",
-  "alternateName": "Sports Snap",
-  "url": "https://www.sportssnap.net/"
-}
-</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/>
+<meta name="description" content="LiveKick - Free Football, Cricket & Highlights Live Stream"/>
+<title>LiveKick | Football · Cricket · Highlights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
-/* ===================== FONT ===================== */
-@font-face {
-  font-family: 'Neo Sans Arabic';
-  font-style: normal;
-  font-weight: normal;
-  font-display: swap;
-  src: local('Neo Sans Arabic'),
-       url('https://fonts.gstatic.com/s/opensans/v36/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIUwaEQbjB_mQ.woff2') format('woff2');
-}
-
-/* ===================== CSS VARIABLES ===================== */
+/* ═══════════════════════════════════════════════
+   ROOT / TOKENS
+═══════════════════════════════════════════════ */
 :root {
-  --bg-color: #eceef2;
-  --header-color: #ffffff;
-  --logo-background: #ffffff;
-  --widget-title-bg: #3749b4;
-  --theme-color-style: #3749b4;
-  --btnplayer: #bf0d00;
-  --todaybg: #3749b4;
-  --tomorobg: #3749b4;
-  --yrsdaybg: #3749b4;
-  --live-start: #e0190b;
-  --live-soon: #13b619;
-  --live-end: #545454;
-  --bar-background: #eceef2;
-  --post-header-backgroundr: #eceef2;
-  --card-background: #eceef2;
-  --border-radius: 5px;
-  --font-name: 'Neo Sans Arabic', Changa, 'Segoe UI', sans-serif;
-  --showimage: none;
-  --copyrightlive: "www.sportssnap.net";
+  --c-bg:        #f5f6f8;
+  --c-surface:   #ffffff;
+  --c-border:    #e4e6eb;
+  --c-text:      #111827;
+  --c-muted:     #6b7280;
+  --c-accent:    #0f4cdb;
+  --c-accent2:   #e63946;
+  --c-live:      #e63946;
+  --c-soon:      #16a34a;
+  --c-ended:     #9ca3af;
+  --c-highlight: #f59e0b;
+  --c-tab-foot:  #0f4cdb;
+  --c-tab-cric:  #16a34a;
+  --c-tab-high:  #f59e0b;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --shadow-sm:   0 1px 4px rgba(0,0,0,.06);
+  --shadow-md:   0 4px 16px rgba(0,0,0,.09);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,.12);
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+
+  --header-h: 64px;
+  --tab-bar-h: 52px;
 }
 
-/* ===================== RESET & BASE ===================== */
-* { margin: 0; padding: 0; outline: 0; list-style: none; box-sizing: border-box; }
-a { color: #222; text-decoration: none; }
-a:focus, a:hover { color: var(--theme-color-style); transition: .5s ease; }
-img { font-size: 0; pointer-events: all; }
-strong { font-weight: 500; }
-
+/* ═══════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-  font-family: var(--font-name);
-  line-height: 35px;
-  width: 100%;
-  margin: 0;
-  background: var(--bg-color);
-  color: #000;
-  font-size: 16px;
-}
-
-/* ===================== LAYOUT ===================== */
-.container { max-width: 1000px; margin: auto; padding: 0 12px; }
-.p-0 { padding: 0 !important; }
-.p-1 { padding: 5px !important; }
-.m-0 { margin: 0 !important; }
-.hide { display: none !important; }
-.adspos { text-align: center; width: 100%; display: block; font-weight: bold; }
-
-/* ===================== ALERTS ===================== */
-.alert { position: relative; padding: 5px 10px; margin: 10px 0; border: 1px solid transparent; border-radius: .25rem; }
-.alert-primary { color: #084298; background-color: #cfe2ff; border-color: #b6d4fe; }
-.alert-secondary { color: #41464b; background-color: #e2e3e5; border-color: #d3d6d8; }
-.alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
-.alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
-.alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
-.alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
-.alert-light { color: #636464; background-color: #fefefe; border-color: #fdfdfe; }
-.alert-dark { color: #141619; background-color: #d3d3d4; border-color: #bcbebf; }
-
-/* ===================== MENU / HEADER ===================== */
-.menu-section {
-  position: relative;
-  margin-bottom: 5px;
-  overflow: hidden;
-  width: 100%;
-  background: var(--header-color);
-  box-shadow: 0 0 4px rgba(0,0,0,.3);
-}
-
-.menu-section .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 8px 12px;
-}
-
-.navbar-brand {
-  max-height: 74px;
-  background: var(--logo-background);
-  width: 200px;
-  border-radius: var(--border-radius);
-  padding: 4px 0;
-  overflow: hidden;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  position: relative;
-}
-
-.navbar-brand::before {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 20%;
-  background-color: hsla(0,0%,100%,.2);
-  left: -25%;
-  transform: skewX(-20deg);
-  animation: flare 4s ease-in-out infinite;
-}
-
-@keyframes flare {
-  0%   { transform: skewX(-30deg) translateX(-300px); }
-  20%  { transform: skewX(-30deg) translateX(300px); }
-  100% { transform: skewX(-30deg) translateX(300px); }
-}
-
-.navbar-brand h1 { display: none; }
-.navbar-brand a { display: block; }
-.navbar-brand img { max-height: 65px; width: 100%; display: block; }
-
-/* ===================== NAV MENU ===================== */
-.navmenu { display: flex; align-items: center; gap: 8px; }
-
-.navsites { display: flex; align-items: center; gap: 5px; }
-
-.navsites li { list-style: none; }
-
-.navsites li a {
-  height: 35px;
-  width: 35px;
-  padding: 0;
-  display: grid;
-  place-items: center;
-  background: var(--theme-color-style);
-  margin-right: 5px;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-}
-
-.navsites .facebook a { background: #4267b2; }
-.navsites .twitter a  { background: #55acee; }
-.navsites .telegram a { background: #389ce9; }
-.navsites .youtube a  { background: #f61c0d; }
-
-.icon { width: 20px; height: 20px; display: block; background-size: 100% 100%; background-repeat: no-repeat; background-position: center; }
-
-.icon.telegram { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z'/%3E%3C/svg%3E"); }
-
-.icon.twitter { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23fff' d='M512,97.248c-19.04,8.352-39.328,13.888-60.48,16.576c21.76-12.992,38.368-33.408,46.176-58.016c-20.288,12.096-42.688,20.64-66.56,25.408C411.872,60.704,384.416,48,354.464,48c-58.112,0-104.896,47.168-104.896,104.992c0,8.32,0.704,16.32,2.432,23.936c-87.264-4.256-164.48-46.08-216.352-109.792c-9.056,15.712-14.368,33.696-14.368,53.056c0,36.352,18.72,68.576,46.624,87.232c-16.864-0.32-33.408-5.216-47.424-12.928c0,0.32,0,0.736,0,1.152c0,51.008,36.384,93.376,84.096,103.136c-8.544,2.336-17.856,3.456-27.52,3.456c-6.72,0-13.504-0.384-19.872-1.792c13.6,41.568,52.192,72.128,98.08,73.12c-35.712,27.936-81.056,44.768-130.144,44.768c-8.608,0-16.864-0.384-25.12-1.44C46.496,446.88,101.6,464,161.024,464c193.152,0,298.752-160,298.752-298.688c0-4.64-0.16-9.12-0.384-13.568C480.224,136.96,497.728,118.496,512,97.248z'/%3E%3C/svg%3E"); }
-
-.icon.facebook { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23fff' d='M288,176v-64c0-17.664,14.336-32,32-32h32V0h-64c-53.024,0-96,42.976-96,96v80h-64v80h64v256h96V256h64l32-80H288z'/%3E%3C/svg%3E"); }
-
-.icon.youtube { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23fff' d='M365.257,67.393H95.744C42.866,67.393,0,110.259,0,163.137v134.728c0,52.878,42.866,95.744,95.744,95.744h269.513c52.878,0,95.744-42.866,95.744-95.744V163.137C461.001,110.259,418.135,67.393,365.257,67.393z M300.506,237.056l-126.06,60.123c-3.359,1.602-7.239-0.847-7.239-4.568V168.607c0-3.774,3.982-6.22,7.348-4.514l126.06,63.881C304.363,229.873,304.298,235.248,300.506,237.056z'/%3E%3C/svg%3E"); }
-
-.icon.dnmoi { background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 241.072 241.072'%3E%3Cpath fill='%23fff' d='M202.167,156.857c-44.236,0-80.085-35.842-80.085-80.078c0-29.923,16.43-55.951,40.733-69.707C150.088,2.498,136.373,0,122.082,0C55.506,0,1.535,53.971,1.535,120.528c0,66.584,53.971,120.544,120.547,120.544c57.269,0,105.18-39.937,117.454-93.485C228.374,153.484,215.665,156.857,202.167,156.857z'/%3E%3C/svg%3E"); }
-
-.dnmo {
-  height: 35px;
-  width: 35px;
-  display: grid;
-  place-items: center;
-  background: var(--theme-color-style);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-}
-
-/* Mobile menu toggle */
-#menubtn { position: absolute; visibility: hidden; }
-.menublabel.op { display: none; }
-.menublabel.clo { display: none; }
-
-/* ===================== NAV TABS ===================== */
-.navtabs { display: flex; gap: 4px; flex-wrap: wrap; float: left; }
-.navtabs li a {
+  font-family: var(--font-body);
+  background: var(--c-bg);
+  color: var(--c-text);
   font-size: 15px;
-  background: var(--widget-title-bg);
-  color: #fff;
-  padding: 0 10px;
-  border-radius: var(--border-radius);
-  font-weight: 400;
-  display: block;
+  line-height: 1.5;
+  min-height: 100vh;
 }
-.navtabs li.active a { background: #333 !important; }
-.navtabs .yema a { background: var(--yrsdaybg); }
-.navtabs .toda a { background: var(--todaybg); }
-.navtabs .tomo a { background: var(--tomorobg); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+ul, ol { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-/* ===================== BOX TITLE ===================== */
-.box-title {
-  padding: 12px;
+/* ═══════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.4); opacity: .7; }
+}
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════════════ */
+.container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   TOP ANNOUNCEMENT TICKER
+═══════════════════════════════════════════════ */
+.ticker-bar {
+  background: var(--c-accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  padding: 6px 0;
   overflow: hidden;
-  border-bottom: 1px solid #ddd;
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
-  background: var(--bar-background);
+}
+.ticker-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+}
+.ticker-label {
+  background: var(--c-accent2);
+  padding: 2px 12px;
+  border-radius: 0 4px 4px 0;
+  margin-right: 20px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.ticker-scroll {
+  display: inline-flex;
+  gap: 60px;
+  animation: ticker-move 30s linear infinite;
+}
+@keyframes ticker-move {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-scroll span { opacity: .9; }
+.ticker-scroll b    { color: #ffd166; font-weight: 700; }
+
+/* ═══════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  box-shadow: var(--shadow-sm);
+  height: var(--header-h);
+}
+.header-inner {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--c-accent);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.25) 0%, transparent 60%);
+}
+.logo-icon svg { width: 22px; height: 22px; }
+.logo-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  line-height: 1;
+}
+.logo-name span { color: var(--c-accent2); }
+
+/* Header Nav */
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.header-nav a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-muted);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: color .2s, background .2s;
+}
+.header-nav a:hover {
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+/* Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.btn-social {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .2s, transform .15s;
+}
+.btn-social:hover { opacity: .85; transform: translateY(-1px); }
+.btn-social.telegram { background: #29b6f6; }
+.btn-social.youtube  { background: #ff0000; }
+.btn-social svg { width: 16px; height: 16px; fill: #fff; }
+
+.btn-night {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.btn-night:hover { background: var(--c-border); }
+.btn-night svg { width: 16px; height: 16px; }
+
+/* Hamburger */
+.btn-menu {
+  display: none;
+  width: 34px;
+  height: 34px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: var(--radius-sm);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+}
+.btn-menu span {
+  width: 18px;
+  height: 2px;
+  background: var(--c-text);
+  border-radius: 2px;
+  transition: all .3s;
+}
+.btn-menu.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.btn-menu.open span:nth-child(2) { opacity: 0; }
+.btn-menu.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* Mobile drawer */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  background: rgba(0,0,0,.4);
+  z-index: 190;
+  backdrop-filter: blur(2px);
+}
+.mobile-nav.open { display: block; }
+.mobile-nav-inner {
+  background: var(--c-surface);
+  width: 260px;
+  height: 100%;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: slideIn .25s ease;
+  box-shadow: var(--shadow-lg);
+}
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+.mobile-nav-inner a {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--c-text);
+  transition: background .2s;
+}
+.mobile-nav-inner a:hover { background: var(--c-bg); }
+.mobile-social {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-border);
+}
+
+/* ═══════════════════════════════════════════════
+   JOIN BANNER
+═══════════════════════════════════════════════ */
+.join-banner {
+  padding: 12px 0;
+  animation: fadeUp .5s ease both;
+}
+.join-banner-inner {
+  display: flex;
+  gap: 10px;
   flex-wrap: wrap;
+}
+.join-btn {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: #fff;
+  transition: transform .15s, box-shadow .15s;
+}
+.join-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.join-btn.tg  { background: linear-gradient(135deg, #2ca5e0, #1d7bb5); }
+.join-btn.yt  { background: linear-gradient(135deg, #ff4444, #c50000); }
+.join-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════
+   MAIN CONTENT AREA
+═══════════════════════════════════════════════ */
+.main-wrap {
+  padding-bottom: 60px;
+  animation: fadeUp .55s .1s ease both;
+}
+
+/* ═══════════════════════════════════════════════
+   SPORT CARD (the big tabbed panel)
+═══════════════════════════════════════════════ */
+.sport-card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* Tab Bar */
+.tab-bar {
+  display: flex;
+  background: #f8f9fb;
+  border-bottom: 1px solid var(--c-border);
+  position: relative;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: var(--tab-bar-h);
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  color: var(--c-muted);
+  border-bottom: 3px solid transparent;
+  transition: color .2s, border-color .2s, background .2s;
+  position: relative;
+  text-transform: uppercase;
+}
+.tab-btn:hover { color: var(--c-text); background: rgba(0,0,0,.03); }
+
+.tab-btn.active-foot { color: var(--c-tab-foot); border-color: var(--c-tab-foot); }
+.tab-btn.active-cric { color: var(--c-tab-cric); border-color: var(--c-tab-cric); }
+.tab-btn.active-high { color: var(--c-tab-high); border-color: var(--c-tab-high); }
+
+.tab-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.tab-live-badge {
+  background: var(--c-live);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: .06em;
+  animation: blink 1.4s ease infinite;
+  line-height: 16px;
+}
+
+/* Tab Panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Tab Header Strip */
+.tab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--c-border);
+  gap: 10px;
+}
+.tab-heading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
+.tab-heading .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  animation: pulse-dot 1.6s ease infinite;
+}
+.dot-foot { background: var(--c-tab-foot); }
+.dot-cric { background: var(--c-tab-cric); }
+.dot-high { background: var(--c-tab-high); }
 
-.box-title h2 {
-  font-size: 15px;
-  background: var(--widget-title-bg);
-  color: #fff;
-  padding: 0 10px;
-  border-radius: var(--border-radius);
+.tab-date {
+  font-size: 13px;
+  color: var(--c-muted);
   font-weight: 400;
 }
 
-h2.boxstitle { background: var(--widget-title-bg); }
-
-/* ===================== PANEL ===================== */
-.panel.panel-default {
-  box-shadow: 0 0 4px rgba(0,0,0,.3);
-  background: #fff;
-  position: relative;
-  margin-bottom: 15px;
-  overflow: hidden;
-  border-radius: var(--border-radius);
+/* Content zone */
+.tab-content-zone {
+  min-height: 260px;
+  padding: 16px 18px;
 }
 
-.tabsbox {
-  margin-top: 15px;
-  box-shadow: 0 0 4px rgba(0,0,0,.3);
-  background: #fff;
-  position: relative;
-  border-radius: var(--border-radius);
-}
-
-.wdthbox {
-  padding: 12px;
-  text-align: justify;
-  overflow: hidden;
-  position: relative;
-  font-weight: 400;
-  line-height: 25px;
-}
-.wdthbox p { margin-bottom: 15px; }
-.wdthbox h2 { margin: 10px 0 6px; font-size: 16px; }
-.wdthbox ul { padding-left: 10px; margin-bottom: 10px; }
-.wdthbox ul li { list-style: none; margin-bottom: 4px; }
-
-/* ===================== MATCH EVENTS ===================== */
-.match-event {
-  border: 1px solid #ddd;
-  overflow: hidden;
-  text-align: center;
-  background: #eceef2;
-  margin-bottom: 12px;
-  position: relative;
-  border-radius: var(--border-radius);
+/* ═══════════════════════════════════════════════
+   LOADING STATE
+═══════════════════════════════════════════════ */
+.loading-state {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 20px;
+  color: var(--c-muted);
+}
+.loader-ring {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--c-border);
+  border-top-color: var(--c-accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.loading-state p {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #f0f2f5 25%, #e8eaed 50%, #f0f2f5 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Error state */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 50px 20px;
+  color: var(--c-muted);
+  text-align: center;
+}
+.error-state .err-icon { font-size: 40px; }
+.error-state h3 { font-size: 16px; color: var(--c-text); font-weight: 600; }
+.error-state p  { font-size: 13px; max-width: 280px; }
+.btn-retry {
+  margin-top: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--c-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity .2s;
+}
+.btn-retry:hover { opacity: .85; }
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════ */
+.page-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+.sidebar-card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+}
+
+.sidebar-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--c-border);
+  background: #fafbfc;
+}
+
+/* Quick links */
+.quick-links { padding: 10px 0; }
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-text);
+  transition: background .15s;
+}
+.quick-link:hover { background: var(--c-bg); }
+.ql-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.ql-foot { background: #eff4ff; }
+.ql-cric { background: #f0fdf4; }
+.ql-high { background: #fffbeb; }
+.ql-arrow {
+  margin-left: auto;
+  color: var(--c-muted);
+  font-size: 11px;
+}
+
+/* Info card */
+.info-card-body { padding: 14px 16px; }
+.info-card-body p {
+  font-size: 13px;
+  color: var(--c-muted);
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.info-card-body p:last-child { margin-bottom: 0; }
+
+/* ═══════════════════════════════════════════════
+   AD SLOTS  
+═══════════════════════════════════════════════ */
+.ad-slot {
+  text-align: center;
+  padding: 6px 0;
+}
+.ad-slot-label {
+  font-size: 10px;
+  color: #bbb;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+.site-footer {
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-border);
+  padding: 28px 0 20px;
+  margin-top: 40px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.footer-col-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  margin-bottom: 10px;
+}
+.footer-links { display: flex; flex-direction: column; gap: 6px; }
+.footer-links a {
+  font-size: 13px;
+  color: var(--c-muted);
+  transition: color .15s;
+}
+.footer-links a:hover { color: var(--c-accent); }
+.footer-desc {
+  font-size: 13px;
+  color: var(--c-muted);
+  line-height: 1.65;
+  margin-top: 6px;
+}
+.footer-bottom {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.match-event:last-child { margin-bottom: 0; }
-.match-event a { color: #222; }
-.match-event h4 { margin: 30px 0; }
-
-.first-team, .left-team, .match-time { width: 33.33333%; }
-.team-logo { float: right; width: 50%; }
-.left-team .team-logo { float: left; }
-.team-logo img { margin: 10px auto; display: flex; }
-.team-name { margin: 28px auto; display: table; }
-
-.match-timing { margin: 12px auto; }
-#result-now { font-size: 21px; letter-spacing: 0; margin-right: -5px; }
-#result-noww { font-size: 21px; margin-right: -5px; direction: ltr; }
-
-.match-timing .match-date,
-.match-timing .live:before {
-  color: #fff;
-  background: #263545;
-  border-radius: var(--border-radius);
-  font-size: 14px;
-  width: 90px;
-  line-height: 1.9;
-  display: table;
-  margin: auto;
-  margin-top: 6px;
-  position: relative;
-}
-
-.match-timing .live:before {
-  content: "Live Now";
-  position: absolute;
-  animation: blinker 940ms ease-in-out infinite;
-  margin: 0;
-}
-.match-timing .live { background: var(--live-start); }
-.match-timing .end { background: var(--live-end); }
-.match-timing .soon { background: var(--live-soon); }
-
-.match-info { border-top: 1px solid #ddd; display: table; overflow: hidden; width: 100%; }
-.match-info li { width: 33.33333%; float: right; font-size: 14px; font-weight: bold; }
-.match-info li:before { margin-left: 5px; height: 26px; }
-.match-info li:nth-child(1):before { content: "🎤"; }
-.match-info li:nth-child(2):before { content: "📺"; }
-.match-info li:nth-child(3):before { content: "🏆"; }
-
-#overlay-match {
-  position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-  height: 100%; width: 100%; opacity: 0; cursor: pointer;
-  background: rgb(0 0 0 / 60%); z-index: 9;
-}
-.match-event:hover #overlay-match { opacity: 1; }
-
-#watch-match {
-  position: absolute; bottom: 0; right: 0; height: 45px;
-  margin: auto; left: 0; top: 0; width: 45px;
-  background: no-repeat center url("data:image/svg+xml;charset=utf8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23fff' d='M256,0C114.617,0,0,114.615,0,256s114.617,256,256,256s256-114.615,256-256S397.383,0,256,0z M344.48,269.57l-128,80c-2.59,1.617-5.535,2.43-8.48,2.43c-2.668,0-5.34-0.664-7.758-2.008C195.156,347.172,192,341.82,192,336V176c0-5.82,3.156-11.172,8.242-13.992c5.086-2.836,11.305-2.664,16.238,0.422l128,80c4.676,2.93,7.52,8.055,7.52,13.57S349.156,266.641,344.48,269.57z'/%3E%3C/svg%3E");
-}
-
-/* ===================== BLOG POSTS ===================== */
-.blogpost, #box-posts {
-  box-shadow: 0 0 4px rgba(0,0,0,.3);
-  background: #fff;
-  border-radius: 8px;
-  margin-top: 15px;
-}
-
-.grid-post, #feeds-posts { padding: 12px 12px 0; overflow: hidden; }
-.grid-posts, #box-posts ul { margin: 0 -6px; }
-
-.blog-post.sections.index-post, #box-posts ul li a {
-  background: var(--card-background);
-  margin: 0 6px 12px 6px;
-  overflow: hidden;
-  position: relative;
-  border-radius: var(--border-radius);
-  display: block;
-}
-
-.post-image-wrap img, #box-posts ul li .rnav-img img { height: 160px; width: 100%; display: grid; }
-.post-info { padding: 10px 10px 20px; }
-.post-info h3, #box-posts ul li h3 { margin: 0; line-height: 1.5; font-size: 15px; height: 43px; overflow: hidden; font-weight: 500; }
-
-#blog-pager { margin: auto; display: table; }
-#blog-pager a { font-size: 15px; float: right; padding: 0 10px; margin: 0 0 12px 12px; background: #eceef2; border-radius: var(--border-radius); }
-
-.blog-posts-sections, #box-posts ul li { float: left; width: 25%; }
-
-@media screen and (max-width: 500px) {
-  .blog-posts-sections, #box-posts ul li { width: 100%; }
-  #box-posts ul li { width: 50%; }
-}
-
-/* ===================== FOOTER ===================== */
-footer {
-  position: relative;
-  background: #fff;
-  padding: 0;
-  overflow: hidden;
-  box-shadow: 0 0 4px rgba(0,0,0,.3);
-  margin-top: 15px;
-}
-
-footer > .container {
-  display: flex;
-  clear: both;
-  padding: 15px 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--c-border);
+  gap: 12px;
   flex-wrap: wrap;
 }
-
-.footermb { overflow: hidden; padding: 12px 0; }
-.footermb li { float: left; }
-.footermb .weba { float: right; }
-.footermb a { background: #eceef2; margin-right: 10px; font-size: 13px; padding: 0 7px; display: block; border-radius: var(--border-radius); }
-
-.bar-section { text-align: center; width: 25%; padding: 0 12px; box-sizing: border-box; }
-.bar-title { border-bottom: #ddd solid 1px; padding: 5px 0; margin-bottom: 7px; font-weight: 700; font-size: 17px; float: right; width: 100%; text-align: center; }
-.bar-section li { padding-right: 5px; margin-bottom: 5px; font-size: 14px; }
-
-@media screen and (max-width: 900px) { .bar-section { width: 50%; } }
-@media screen and (max-width: 480px) { .bar-section { width: 100%; } }
-
-/* ===================== STANDINGS ===================== */
-.standings_matchlive6 { overflow: hidden; border-radius: 8px; border: 1px solid #ddd; background: #eceef2; margin-bottom: 15px; }
-.group_header { text-align: center; border-radius: 8px; margin: 15px 0; }
-table tbody .odd { background: #3f51b57a; }
-.club-logo { display: flex; margin: auto; }
-tbody td { padding: 10px 4px; }
-thead th { padding: 10px 4px; }
-table thead tr { background: #eceef2; padding: 12px 4px 16px; }
-table { width: 100%; text-align: center; border-collapse: collapse; }
-.d-md-none, .peak_score { display: none; }
-.d-md-block { display: block; }
-.standings_jdwel td.team { text-align: right; }
-
-@media screen and (max-width: 550px) {
-  .d-md-block { display: none; }
-  .d-md-none { display: block; }
-  .standings_jdwel thead th { font-size: 12px; }
-  .standings_jdwel tbody td { font-size: 12px; }
-  .goal-plus-minus { display: none; }
-  ul.footermb .container { text-align: center; flex: 3; }
-  ul.footermb .container li { display: inline-block; margin-bottom: 10px; float: inherit; }
-  li.weba { width: 100%; }
-}
-
-/* ===================== MATCH BANNER ===================== */
-.coMatch { position: relative; margin-bottom: 15px; border-radius: 8px; padding: 12px; background: #fff; box-shadow: 0 0 4px rgba(0,0,0,.3); }
-.backMatch { overflow: hidden; position: relative; display: block; border-radius: 8px; background: url(https://lh3.googleusercontent.com/-8XhXQW8xE9o/YRMEqzZVbXI/AAAAAAAAC60/lROwUhvhzYgAcF330Ns2aLBeIYYBj5jAwCLcBGAsYHQ/matchstade.jpg); background-size: 100% 100%; }
-.baMatch { overflow: hidden; display: block; background: rgb(0 0 0 / 59%); }
-.colmd { width: 40%; float: right; text-align: center; padding: 35px 0; color: #fff; }
-
-/* ===================== LIVE NOTICE ===================== */
-.notice {
-  align-items: center;
-  background: white;
-  border-radius: 10px;
-  border: 2px solid;
-  box-sizing: border-box;
-  color: black;
-  display: flex;
-  height: 50px;
-  justify-content: left;
-  list-style: none;
-  margin: 10px;
-  overflow: hidden;
-  padding: 0 10px;
-  text-align: left;
-  transition: background-color 0.3s ease;
+.footer-copy {
   font-size: 12px;
+  color: var(--c-muted);
 }
-.notice b { display: flex; align-items: center; height: 100%; }
-.notice img { height: 30px; margin: 0 5px; width: 30px; }
-.notice:hover { background-color: lightgray; }
+.footer-social { display: flex; gap: 8px; }
 
-.timer {
-  margin-left: auto;
-  padding-left: 10px;
-  padding-right: 5px;
-  font-weight: bold;
-  color: black;
-  font-size: 12px;
-}
-
-.blinking { animation: blinkingText 1s infinite; color: red; }
-@keyframes blinkingText { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-
-/* ===================== SCROLL NOTICE ===================== */
-.scroll-notice {
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 8px;
-  background-color: #FF0000;
-  color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,.2);
-  opacity: 0.9;
-  margin-bottom: 15px;
-  animation: fadeInUp 0.5s ease-out forwards, bounce 1s infinite alternate;
-  position: relative;
-}
-@keyframes fadeInUp { from { opacity:0; transform:translateY(15px); } to { opacity:0.9; transform:translateY(0); } }
-@keyframes bounce { from { transform:translateY(0); } to { transform:translateY(8px); } }
-.hand-icon { font-size: 18px; margin-top: 2px; }
-
-/* ===================== LEAGUE BOX ===================== */
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid red;
-  padding: 1px 10px;
-  width: 100%;
-  box-sizing: border-box;
-  border-radius: 8px;
-  font-family: Arial, sans-serif;
-  font-size: 10px;
-  font-weight: bold;
-  background-color: #f9f9f9;
-}
-.box img { width: 40px; height: 40px; margin-right: 10px; }
-.box span { color: #000; }
-
-/* ===================== CONTENT CONTAINER ===================== */
-#content-container {
-  width: 100%;
-  overflow: auto;
-  border: none;
-  padding: 10px;
-  box-sizing: border-box;
-  background-color: #f4f7fc;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
-}
-
-.notice-message {
-  font-size: 1.5em;
-  color: #ff6f61;
-  font-weight: bold;
-  background-color: #ffe1e1;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,.1);
-  width: 70%;
-  max-width: 600px;
-}
-
-/* ===================== LIVE LINK STYLE ===================== */
-.center-content {
-  display: inline-flex;
-  align-items: center;
-  color: inherit;
-  background-color: #02ccfe;
-  border-radius: 5px;
-  padding: 10px;
-  transition: background-color 0.3s;
-}
-.center-content.active { background-color: #FF6961; }
-.live-logo { height: 25px; width: 25px; margin-right: 5px; vertical-align: middle; }
-.live-icon { margin-left: 5px; vertical-align: middle; }
-.live-link { color: white; text-decoration: none; font-weight: bold; }
-
-/* ===================== NOTE SECTION ===================== */
-.note-section {
-  font-family: 'Poppins', Arial, sans-serif;
-  background-color: #ffffff;
-  padding: 5px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
-  width: 100%;
-  max-width: 800px;
-  margin: 10px auto;
-  border-left: 5px solid #ffa07a;
-}
-.note-section h3 { font-size: 20px; color: #ff6347; text-align: center; font-weight: bold; letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
-.note-section ul { list-style-type: none; padding: 0; }
-.note-section ul li { font-size: 14px; color: #333; margin-bottom: 10px; line-height: 1.6; position: relative; padding-left: 30px; font-weight: 500; }
-.note-section ul li::before { content: '\27A4'; position: absolute; left: 0; color: #ffa07a; font-size: 18px; font-weight: bold; }
-.note-section ul li b { color: #2e8b57; }
-.note-section ul li i { color: #555; }
-
-/* ===================== AD BANNER ===================== */
-.ad-banner { display: block; max-width: 100%; height: auto; text-align: center; margin: 0 auto; }
-.ad-container { width: 100%; max-width: 728px; margin: 10px auto; }
-.ad-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 auto; }
-@media (min-width: 768px) { .ad-wrapper .ad-container { width: 48%; } }
-
-/* ===================== FLOATING FOOTER AD ===================== */
+/* ═══════════════════════════════════════════════
+   FLOATING ADS BOTTOM
+═══════════════════════════════════════════════ */
 #fixedban {
-  width: 100%;
-  margin: auto;
-  text-align: center;
-  float: none;
-  overflow: hidden;
   position: fixed;
   bottom: 0;
-  z-index: 999;
-  -webkit-transform: translateZ(0);
-}
-
-/* ===================== SIDEBAR ADS ===================== */
-.left-ad, .right-ad {
-  position: fixed;
-  top: 20%;
-  width: 160px;
-  height: 600px;
-  z-index: 1000;
-  background: #f4f4f4;
-  box-shadow: 0 0 5px rgba(0,0,0,.3);
-}
-.left-ad { left: 20px; }
-.right-ad { right: 20px; }
-.close-btn {
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-.close-btn img { width: 40px; height: 40px; }
-
-@media (max-width: 1024px) { .left-ad, .right-ad { display: none; } }
-
-/* ===================== DARK MODE (Night) ===================== */
-body.Night { background: #1c2733; color: #fff; }
-body.Night a { color: #fff !important; }
-body.Night a:hover { color: #f80 !important; }
-body.Night .match-event a { color: #fff !important; }
-body.Night .navmenu .nav .navsiteta a:hover { border-bottom: 2px solid #f80; }
-body.Night .menu-section::before { background: rgb(41 41 41 / 78%); }
-body.Night .navbar-brand,
-body.Night .dnmo,
-body.Night .menublabel.op { background-color: #1c2733; }
-body.Night .icon.dnmoi {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%23fff' d='M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z'/%3E%3C/svg%3E");
-}
-body.Night .menu-section,
-body.Night .panel-default,
-body.Night .blogpost,
-body.Night .tabsbox,
-body.Night footer,
-body.Night .box-title h2,
-body.Night .navtabs li a,
-body.Night .coMatch,
-body.Night .match-timing .end,
-body.Night #box-posts { background: #263545; }
-body.Night .box-title { background: #121a23; border: 0; }
-body.Night .Night .footermb a { background: #1c2733; }
-body.Night .blog-post.sections.index-post,
-body.Night .match-event,
-body.Night #box-posts ul li a { background: #1c2733 !important; border: 1px solid #121a23 !important; }
-body.Night .match-info { border-top: 1px solid #263545; }
-body.Night table tbody tr.even, body.Night table thead tr { background-color: #1c2733; }
-
-/* ===================== ANIMATIONS ===================== */
-@keyframes blinker { 50% { opacity: 0; } }
-
-/* ===================== MAIN MATCH BANNER (item view) ===================== */
-.item div#matchbanner {
-  overflow: hidden !important;
-  position: relative !important;
-  background: url(https://lh3.googleusercontent.com/-8XhXQW8xE9o/YRMEqzZVbXI/AAAAAAAAC60/lROwUhvhzYgAcF330Ns2aLBeIYYBj5jAwCLcBGAsYHQ/rw/matchstade.jpg);
-  background-size: 100% 100% !important;
-  padding: 22px !important;
-  height: 200px !important;
-  border-radius: 10px 10px 0 0 !important;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.item div#matchbanner::before {
-  content: '';
-  background: var(--theme-color-style);
-  width: 100%;
-  height: 100%;
-  position: absolute;
   left: 0;
-  top: 0;
-  opacity: 0.8;
+  width: 100%;
+  text-align: center;
+  z-index: 999;
+  transform: translateZ(0);
+}
+.fixedban-inner {
+  display: inline-block;
+  position: relative;
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  padding: 6px 40px 6px 6px;
+}
+.fixedban-close {
+  position: absolute;
+  top: -14px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  background: var(--c-accent2);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
 }
 
-.item div#matchbanner .match-info { display: none !important; }
-.item div#matchbanner .match-event { background: unset !important; border: unset !important; width: 100%; }
-.item div#matchbanner .team-name { background: #eee !important; padding: 0 !important; min-width: 81px !important; border-radius: 5px !important; height: 30px !important; line-height: 26px !important; }
-.item div#matchbanner div#match-hour { color: #fff !important; }
-.item div#matchbanner .team-logo { margin-bottom: 12px !important; }
-.match-timing { position: relative; }
-div#match-hour { z-index: 5; }
-.item div#result-now { z-index: 1111; color: #fff; }
-
-/* ===================== MOBILE RESPONSIVE ===================== */
-@media screen and (max-width: 1000px) {
-  .navbar-brand { margin: 8px auto; display: table; float: none !important; width: initial; padding: 0; }
-  .menublabel.clo { display: block; margin: 0 0 15px; cursor: pointer; }
-  .menublabel.op { cursor: pointer; border-radius: var(--border-radius); height: 40px; width: 37px; background: var(--theme-color-style); position: absolute; right: 12px; top: 25px; display: block; }
-  .menublabel.op .liwte { margin: auto; display: table; margin-top: 11px; }
-  .menublabel.clo .liwte { position: absolute; left: 25px; top: 20px; }
-  .liwte .line { display: block; width: 22px; height: 3px; background: #fff; border-radius: 1px; margin: auto; margin-bottom: 5px; }
-  .menublabel.clo .line.line-1 { transform: rotate(45deg); position: absolute; top: 10px; left: 0; }
-  .menublabel.clo .line.line-2 { transform: rotate(-45deg); position: absolute; top: 10px; left: 0; }
-  .dnmo.mo { display: block; position: absolute; left: 12px; top: 25px; height: 40px; }
-  .navmenu .linkm {
-    float: none; z-index: 99; height: 100vh; width: 250px;
-    position: fixed; top: 0; right: -300px; margin: auto;
-    background: #fff; transition: all 0.7s ease 0s;
-    padding: 15px; overflow-x: hidden;
-    box-shadow: 0 1px 6px rgba(32,33,36,0.4);
-  }
-  #menubtn:checked ~ .linkm { right: 0; }
-  .navmenu .linkm li { float: none; margin-bottom: 15px; }
-  #box-posts ul li { width: 33.333%; }
+/* ═══════════════════════════════════════════════
+   SIDEBAR ADS
+═══════════════════════════════════════════════ */
+.side-ad {
+  position: fixed;
+  top: 22%;
+  width: 160px;
+  z-index: 100;
+  background: var(--c-surface);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
-
-@media screen and (max-width: 500px) {
-  .menu-section .container { padding: 0 12px; }
-  .panel-default .box-title { padding: 5px; }
-  .panel-default .navtabs { float: none; margin: 0; display: inline-block; width: 100%; }
-  .panel-default .navtabs li { width: calc(100% / 3 - 6px); margin: 3px; }
-  .panel-default .navtabs li a { text-align: center; padding: 0; float: none; display: block; }
-  .team-logo img { margin: 7px auto; margin-bottom: 0; width: 50px; height: 50px; }
-  .team-name { margin: 7px auto; margin-top: 0; }
-  .match-timing { margin: 13px auto; }
-  .team-logo { width: 100%; }
-  #box-posts ul li { width: 50%; }
-  .blog-posts-sections { width: 100% !important; }
-  .whatsapp.whatsapp-mobile { display: block; }
-  .whatsapp.whatsapp-desktop { display: none; }
+.side-ad-left  { left: 12px; }
+.side-ad-right { right: 12px; }
+.side-ad-close {
+  display: block;
+  width: 100%;
+  text-align: right;
+  padding: 4px 8px;
+  background: #f8f9fb;
+  border-bottom: 1px solid var(--c-border);
+  font-size: 18px;
+  color: var(--c-muted);
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
 }
+.side-ad-close:hover { color: var(--c-accent2); }
+@media (max-width: 1400px) { .side-ad { display: none; } }
 
-/* ===================== SOCIAL COUNTER ===================== */
-.s-text strong, .social-counter { font-weight: 900; }
-.techornate-socials a { display: block; color: #fff; padding: 9px; border-radius: 6px; position: relative; margin-bottom: 5px; text-decoration: none; }
-.techornate-socials a span, .techornate-socials a::before { z-index: 2; position: relative; }
-.social-counter { position: absolute; font-size: 17px; line-height: 1; padding-top: 4px; }
-.s-text { float: right; }
-.techornate-socials a::after { content: " "; height: 100%; width: 0; top: 0; left: 0; position: absolute; background: #0a0647; z-index: 1; }
-.fa-play { background: #d2002c; }
-.fa-whatsapp { background: #09b320; }
+/* ═══════════════════════════════════════════════
+   DARK / NIGHT MODE
+═══════════════════════════════════════════════ */
+body.night {
+  --c-bg:      #0f1117;
+  --c-surface: #1a1d27;
+  --c-border:  #2a2d3a;
+  --c-text:    #e8eaf0;
+  --c-muted:   #7c8098;
+}
+body.night .tab-bar         { background: #141620; }
+body.night .tab-header      { background: #141620; }
+body.night .sidebar-title   { background: #141620; }
+body.night .skeleton        { background: linear-gradient(90deg, #1e2130 25%, #252836 50%, #1e2130 75%); background-size: 600px 100%; animation: shimmer 1.4s infinite; }
+body.night .btn-night svg path:first-child { display: none; }
 
-/* ===================== TEAMNAME ===================== */
-.teamname { background: #fff; padding: 5px; display: inline-block; border-radius: 5px; line-height: 16px; min-width: 100px; color: #333; font-weight: bold; }
-
-/* ===================== SITETA ===================== */
-li.siteta a strong { background: var(--theme-color-style); border-radius: var(--border-radius); padding: 0 10px; color: #fff; }
-li.siteta.selected a { color: #e91e63; }
-.siteta[data-cat="شراء نسخة"] a strong { animation: blinker 500ms ease-in-out infinite; background: #333 !important; }
-
-/* ===================== MAIN POST META ===================== */
-.main-post-meta { text-align: center; }
-.main-post-meta span { background: #fff; border-radius: 10px; font-size: 12px; padding: 5px 10px; text-align: center; margin: 0 5px; }
-
-/* ===================== MATCH EVENT ORDER ===================== */
-.match-event.ch-live { order: 1; }
-.match-event.ch-soon { order: 2; }
-.match-event.l { order: 0; }
-.match-event.l1 { order: -2; }
-.match-event.l2 { order: -1; }
-.match-event.ch-end { order: 5; }
-.match-event.h { display: none; }
-.match-name,
-.match-event.ch-end #match-hour,
-.match-event.ch-live #match-hour,
-.match-event.ch-soon #result-now,
-.match-event.notstart #result-now { display: none !important; }
-
-/* ===================== DISCLAIMER ===================== */
-.disclaimerr { background: #FFD966; }
-
-/* ===================== POSTS THUMB ===================== */
-.posts-thumb a { width: 100%; }
-.posts-title { text-align: center; }
-
-/* ===================== STYLE2 ===================== */
-.style2 .post-image-wrap { width: 123px; height: 80px; float: left; }
-@media only screen and (max-width: 600px) {
-  .style2 .post-image-wrap img { height: 80px; width: 100%; }
-  .style2 .post-info { width: calc(100% - 145px); float: left; padding: 8px !important; text-align: justify; }
-  .style2 h3.post-title { line-height: 25px; height: 52px; }
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .page-grid { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .header-nav { display: none; }
+  .btn-menu { display: flex; }
+  .join-banner-inner { flex-direction: column; }
+  .join-btn { min-width: 0; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .tab-btn { font-size: 14px; }
+}
+@media (max-width: 420px) {
+  :root { --header-h: 56px; }
+  .logo-name { font-size: 22px; }
+  .tab-btn { padding: 0 6px; gap: 5px; }
 }
 </style>
 </head>
 
-<body class='index theme2'>
+<body>
 
-<!-- ========== DARK MODE INIT ========== -->
-<script>
-  if (localStorage.getItem('mode') === 'rdmode') {
-    document.body.classList.add('Night');
-  } else {
-    document.body.classList.remove('Night');
-  }
-</script>
+<!-- ══════════════════════════════════
+     TICKER
+══════════════════════════════════ -->
+<div class="ticker-bar" role="marquee" aria-label="Live updates">
+  <div class="container">
+    <div class="ticker-inner">
+      <span class="ticker-label">🔴 Live</span>
+      <div class="ticker-scroll" id="tickerScroll">
+        <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
+        <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
+        <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting in 45 min</span>
+        <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
+        <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
+        <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
+        <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
+        <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting in 45 min</span>
+        <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
+        <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!-- ========== HEADER / MENU ========== -->
-<div class='menu-section'>
-  <div class='container' style='display:flex;align-items:center;justify-content:space-between;padding:8px 12px;'>
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<header class="site-header" role="banner">
+  <div class="container header-inner">
 
-    <!-- LOGO -->
-    <div class='navbar-brand'>
-      <a href='https://www.sportssnap.net/' title='Sports Snap'>
-        <img alt='Sports Snap' src='https://i.ibb.co/BTM5dLF/sportssnap-logo.png' title='Sports Snap' width='200'/>
+    <!-- Logo -->
+    <a href="/" class="logo" aria-label="LiveKick Home">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
+          <path d="M12 2 L12 6 M12 18 L12 22 M2 12 L6 12 M18 12 L22 12" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="12" cy="12" r="3" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="logo-name">Live<span>Kick</span></div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="/foot.html">Football</a>
+      <a href="/crict.html">Cricket</a>
+      <a href="/ads.html">Highlights</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" title="Join Telegram" aria-label="Telegram">
+        <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" title="YouTube Channel" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+      <button class="btn-night" id="nightToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg id="nightIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="btn-menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="mobile-nav-inner">
+    <a href="/foot.html">⚽ Football Live</a>
+    <a href="/crict.html">🏏 Cricket Live</a>
+    <a href="/ads.html">🎬 Highlights</a>
+    <a href="#about">ℹ️ About</a>
+    <div class="mobile-social">
+      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" style="width:38px;height:38px;">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" style="width:38px;height:38px;">
+        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </a>
     </div>
+  </div>
+</div>
 
-    <!-- NAV MENU -->
-    <div class='navmenu'>
-      <!-- Mobile hamburger -->
-      <input id='menubtn' type='checkbox'/>
-      <label class='menublabel op' for='menubtn'>
-        <span class='liwte'>
-          <span class='line line-1'></span>
-          <span class='line line-2'></span>
-          <span class='line line-3'></span>
-        </span>
-      </label>
+<!-- ══════════════════════════════════
+     PAGE BODY
+══════════════════════════════════ -->
+<main>
+  <div class="container">
 
-      <ul class='nav linkm' style='display:flex;align-items:center;gap:6px;'>
-        <label class='menublabel clo' for='menubtn'>
-          <div class='menulabc'>Sports Snap</div>
-          <span class='liwte'>
-            <span class='line line-1'></span>
-            <span class='line line-2'></span>
-          </span>
-        </label>
+    <!-- Join Banner -->
+    <div class="join-banner">
+      <div class="join-banner-inner">
+        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg">
+          <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+          Join Us on Telegram
+        </a>
+        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Subscribe on YouTube
+        </a>
+      </div>
+    </div>
 
-        <!-- Social Icons -->
-        <div class='navsites' style='display:flex;gap:4px;'>
-          <!-- Dark mode toggle -->
-          <div class='dnmo' onclick='rdmode()'>
-            <span class='icon dnmoi'></span>
+    <!-- Top Ad Slot -->
+    <div class="ad-slot" style="margin-bottom:16px;">
+      <div class="ad-slot-label">Advertisement</div>
+      <!-- INSERT TOP BANNER AD HERE -->
+      <!-- <script>atOptions={...};</script><script src="..."></script> -->
+    </div>
+
+    <!-- Main Grid: Sport Card + Sidebar -->
+    <div class="page-grid main-wrap">
+
+      <!-- ── SPORT CARD ── -->
+      <div>
+        <div class="sport-card">
+
+          <!-- TAB BAR -->
+          <div class="tab-bar" role="tablist" aria-label="Sports sections">
+
+            <button class="tab-btn active-foot"
+                    id="tab-foot"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="panel-foot"
+                    onclick="switchTab('foot')">
+              <!-- Football Icon -->
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9.5"/>
+                <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/>
+                <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
+              </svg>
+              Football
+              <span class="tab-live-badge">LIVE</span>
+            </button>
+
+            <button class="tab-btn"
+                    id="tab-cric"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-cric"
+                    onclick="switchTab('cric')">
+              <!-- Cricket Icon -->
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 20 L20 4" stroke-linecap="round"/>
+                <path d="M8 20 L20 8" stroke-linecap="round"/>
+                <circle cx="5" cy="19" r="2.5" fill="currentColor" stroke="none"/>
+              </svg>
+              Cricket
+              <span class="tab-live-badge" style="background:var(--c-soon);">LIVE</span>
+            </button>
+
+            <button class="tab-btn"
+                    id="tab-high"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-high"
+                    onclick="switchTab('high')">
+              <!-- Highlights Icon -->
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <polygon points="5,3 19,12 5,21" fill="currentColor" stroke="none"/>
+              </svg>
+              Highlights
+            </button>
+
           </div>
 
-          <li class='sites facebook'>
-            <a aria-label='facebook' href='#'>
-              <span class='icon facebook'></span>
-            </a>
-          </li>
-          <li class='sites twitter'>
-            <a aria-label='twitter' href='#'>
-              <span class='icon twitter'></span>
-            </a>
-          </li>
-          <li class='sites telegram'>
-            <a aria-label='telegram' href='https://t.me/sportssnapofficial' target='_blank' rel='noopener'>
-              <span class='icon telegram'></span>
-            </a>
-          </li>
-          <li class='sites youtube'>
-            <a aria-label='youtube' href='https://www.youtube.com/channel/sportssnap2023' target='_blank' rel='noopener'>
-              <span class='icon youtube'></span>
-            </a>
-          </li>
-        </div>
-      </ul>
+          <!-- ── FOOTBALL PANEL ── -->
+          <div class="tab-panel active" id="panel-foot" role="tabpanel" aria-labelledby="tab-foot">
+            <div class="tab-header">
+              <div class="tab-heading">
+                <span class="dot dot-foot"></span>
+                Football Live
+              </div>
+              <span class="tab-date" id="todayDate"></span>
+            </div>
+            <div class="tab-content-zone" id="content-foot">
+              <!-- Loading state shown initially -->
+              <div class="loading-state" id="loading-foot">
+                <div class="loader-ring"></div>
+                <p>Loading football matches…</p>
+              </div>
+            </div>
+          </div>
 
-      <!-- Mobile dark mode toggle -->
-      <div class='dnmo mo' onclick='rdmode()'>
-        <span class='icon dnmoi'></span>
-      </div>
-    </div>
+          <!-- ── CRICKET PANEL ── -->
+          <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
+            <div class="tab-header">
+              <div class="tab-heading">
+                <span class="dot dot-cric"></span>
+                Cricket Live
+              </div>
+              <span class="tab-date" id="todayDate2"></span>
+            </div>
+            <div class="tab-content-zone" id="content-cric">
+              <div class="loading-state" id="loading-cric" style="display:none;">
+                <div class="loader-ring" style="border-top-color:var(--c-soon);"></div>
+                <p>Loading cricket matches…</p>
+              </div>
+            </div>
+          </div>
 
-  </div>
-</div>
+          <!-- ── HIGHLIGHTS PANEL ── -->
+          <div class="tab-panel" id="panel-high" role="tabpanel" aria-labelledby="tab-high">
+            <div class="tab-header">
+              <div class="tab-heading">
+                <span class="dot dot-high"></span>
+                Latest Highlights
+              </div>
+            </div>
+            <div class="tab-content-zone" id="content-high">
+              <div class="loading-state" id="loading-high" style="display:none;">
+                <div class="loader-ring" style="border-top-color:var(--c-highlight);"></div>
+                <p>Loading highlights…</p>
+              </div>
+            </div>
+          </div>
 
-<!-- ========== NOTIFICATION / JOIN BUTTONS ========== -->
-<div class='container p-1' style='margin-top:8px;'>
-  <div class='alert' role='alert'>
-    <a style="display:block;font-size:18px;font-weight:500;text-align:center;border-radius:2px;padding:5px;background:#389ce9;text-decoration:none;color:#fff;margin-bottom:5px;"
-       href="https://t.me/sportssnapofficial" target="_blank" rel="noopener">
-      <svg style="width:30px;height:30px;vertical-align:middle;margin:0 5px;" viewBox="0 0 21 18">
-        <g fill="none">
-          <path fill="#ffffff" d="M0.554,7.092 L19.117,0.078 C19.737,-0.156 20.429,0.156 20.663,0.776 C20.745,0.994 20.763,1.23 20.713,1.457 L17.513,16.059 C17.351,16.799 16.62,17.268 15.88,17.105 C15.696,17.065 15.523,16.987 15.37,16.877 L8.997,12.271 C8.614,11.994 8.527,11.458 8.805,11.074 C8.835,11.033 8.869,10.994 8.905,10.958 L15.458,4.661 C15.594,4.53 15.598,4.313 15.467,4.176 C15.354,4.059 15.174,4.037 15.036,4.125 L6.104,9.795 C5.575,10.131 4.922,10.207 4.329,10.002 L0.577,8.704 C0.13,8.55 -0.107,8.061 0.047,7.614 C0.131,7.374 0.316,7.182 0.554,7.092 Z"></path>
-        </g>
-      </svg>
-      Join Us On Telegram
-    </a>
+        </div><!-- /sport-card -->
 
-    <a style="display:block;font-size:18px;font-weight:500;text-align:center;border-radius:2px;padding:5px;background:#ff0000;text-decoration:none;color:#fff;margin-bottom:5px;"
-       href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener">
-      <svg style="width:30px;height:30px;vertical-align:middle;margin:0 5px;" viewBox="0 0 24 24">
-        <g fill="none">
-          <path fill="#ffffff" d="M23.498,6.201c-0.206-0.781-0.824-1.423-1.575-1.613C20.141,4.75,12,4.75,12,4.75s-8.141,0-9.923,0.838C1.326,4.778,0.707,5.42,0.501,6.201C0.001,8.196,0.001,12,0.001,12s0,3.804,0.5,5.799c0.206,0.781,0.824,1.423,1.575,1.613C3.859,19.25,12,19.25,12,19.25s8.141,0,9.923-0.838c0.751-0.19,1.369-0.832,1.575-1.613C23.999,15.804,23.999,12,23.999,12S23.999,8.196,23.498,6.201z M9.545,15.797V8.203l6.545,3.797L9.545,15.797z"></path>
-        </g>
-      </svg>
-      Subscribe to Our YouTube Channel
-    </a>
-  </div>
-</div>
-
-<!-- ========== MAIN MATCHES PANEL ========== -->
-<div class='container p-1'>
-  <div class='panel panel-default'>
-    <div class='box-title'>
-      <ul class='navtabs'>
-        <li class='toda'>
-          <a href='/crict.html'><strong>Cricket Live</strong></a>
-        </li>
-        <li class='active'>
-          <a href='/foot.html'><strong>Football Live</strong></a>
-        </li>
-        <li class='tomo'>
-          <a href='/ads.html'><strong>Highlights</strong></a>
-        </li>
-      </ul>
-      <h2 class='boxstitle'><strong>Today</strong></h2>
-    </div>
-
-    <!-- MATCHES CONTENT -->
-    <div class='recent-wid' id='match-cricket'>
-      <div class='widget-content'>
-
-        <!-- Top Ad -->
-        <div style="text-align:center;margin:10px 0;">
-          <script type="text/javascript">
-            atOptions = {
-              'key': '690164227ec77cdabc58636a3a3a7d1e',
-              'format': 'iframe',
-              'height': 50,
-              'width': 320,
-              'params': {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/690164227ec77cdabc58636a3a3a7d1e/invoke.js"></script>
-        </div>
-
-        <!-- Dynamic Content -->
-        <div id="content">Loading...</div>
-        <script>
-          fetch("/footmatch")
-            .then(res => res.text())
-            .then(data => {
-              document.getElementById("content").innerHTML = data;
-            })
-            .catch(err => {
-              document.getElementById("content").innerText = "No matches available at the moment.";
-              console.error(err);
-            });
-        </script>
-
-        <!-- Bottom Ad -->
-        <div style="text-align:center;margin:10px 0;">
-          <script type="text/javascript">
-            atOptions = {
-              'key': '06d2afc638892663c9a5e3c5e038d40b',
-              'format': 'iframe',
-              'height': 250,
-              'width': 300,
-              'params': {}
-            };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/06d2afc638892663c9a5e3c5e038d40b/invoke.js"></script>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ========== DISCLAIMER / DMCA ========== -->
-<div class='container'>
-  <div class='tabsbox'>
-    <div class='box-title'>
-      <h2><strong>Sports Snap - DMCA</strong></h2>
-    </div>
-    <div class='wdthbox'>
-      <h2>1. General Information</h2>
-      <ul>
-        <li>&#8226; Sports Snap is an independent sports website providing news, updates, and links to external sources for cricket, football, and other major tournaments.</li>
-        <li>&#8226; We do not host, store, or stream any media content on our own servers.</li>
-        <li>&#8226; Our role is as an aggregator, directing users to third-party platforms where sports events may be available.</li>
-        <li>&#8226; These third-party services operate independently, and Sports Snap has no control over their content or availability.</li>
-      </ul>
-
-      <h2>2. No Hosting of Media Content</h2>
-      <ul>
-        <li>&#10007; Sports Snap does not host, upload, or store any copyrighted media (including live matches, highlights, or video clips).</li>
-        <li>&#10007; All streams, videos, or media links are sourced from publicly available platforms such as Bet365, Dailymotion, Streamable, and other providers.</li>
-        <li>&#10007; We do not modify, alter, or claim ownership of external content; we only share links to existing sources.</li>
-      </ul>
-
-      <h2>3. Third-Party Content &amp; Responsibility</h2>
-      <ul>
-        <li>&#8226; Sports Snap is not responsible for the content, legality, or quality of third-party streams.</li>
-        <li>&#8226; We cannot guarantee the legality, availability, or accessibility of any third-party service in your region.</li>
-        <li>&#8226; Issues regarding content removal, copyright, or service disruptions must be addressed directly with the third-party host.</li>
-        <li>&#8226; If you are a copyright owner and believe a link infringes your rights, please contact the original host (e.g., Bet365, Dailymotion, Streamable).</li>
-        <li>&#8226; Sports Snap has no control over external hosting sites and cannot remove content hosted elsewhere.</li>
-      </ul>
-
-      <h2>4. User Responsibility &amp; Compliance</h2>
-      <ul>
-        <li>&#10003; Users are solely responsible for complying with their local laws regarding streaming and accessing sports content.</li>
-        <li>&#10003; Sports Snap does not provide live streaming directly; we only share publicly available links.</li>
-        <li>&#10003; By using this site, you agree not to hold Sports Snap liable for any legal issues, copyright claims, or access restrictions.</li>
-      </ul>
-      <p><strong>Warning:</strong> Unauthorized access or distribution of copyrighted content may be illegal in some jurisdictions. Please check the legality of streaming in your country before using third-party links.</p>
-
-      <h2>5. No Endorsement or Affiliation</h2>
-      <ul>
-        <li>&#10007; Sports Snap is not affiliated with, sponsored by, or endorsed by any sports leagues, teams, streaming services, or media organizations.</li>
-        <li>&#10007; References to teams, leagues, or events are purely informational and do not imply partnership.</li>
-        <li>&#10007; All logos, trademarks, and brand names belong to their respective owners.</li>
-      </ul>
-
-      <h2>6. External Links</h2>
-      <ul>
-        <li>&#8226; Our site may include advertisements, affiliate links, or third-party promotions.</li>
-        <li>&#8226; Clicking these links will redirect you to external websites outside our control.</li>
-        <li>&#8226; We do not guarantee the safety, security, or reliability of third-party websites. Users should exercise caution.</li>
-      </ul>
-
-      <h2>7. Limitation of Liability</h2>
-      <ul>
-        <li>&#10007; Sports Snap is not liable for:
-          <ul style="margin-top:4px;">
-            <li>&#8594; Disruptions, errors, or inaccuracies in third-party streams.</li>
-            <li>&#8594; Copyright claims against content hosted by external providers.</li>
-            <li>&#8594; Any damages, losses, or legal consequences resulting from third-party links.</li>
-            <li>&#8594; Service interruptions due to maintenance, technical issues, or legal actions.</li>
-          </ul>
-        </li>
-      </ul>
-      <p>&#10003; By using Sports Snap, you accept that the website is provided "as is" without warranties of any kind, and usage is at your own risk.</p>
-
-      <h2>8. Changes to This Disclaimer</h2>
-      <ul>
-        <li>&#8226; Sports Snap may update, modify, or remove this disclaimer at any time without notice.</li>
-        <li>&#8226; Users are encouraged to review this page regularly for updates.</li>
-        <li>&#8226; Last Updated: 01-02-2025</li>
-      </ul>
-
-      <h2>Contact Information</h2>
-      <ul>
-        <li>Email: info@sportssnap.net</li>
-        <li>Website: sportssnap.net</li>
-      </ul>
-
-      <p>&#10003; By continuing to use Sports Snap, you acknowledge that you have read, understood, and agreed to this disclaimer.</p>
-
-      <!-- Bottom Ads -->
-      <div class="ad-wrapper" style="margin-top:15px;">
-        <div class="ad-container" style="text-align:center;">
-          <script type="text/javascript">
-            atOptions = { 'key': '06d2afc638892663c9a5e3c5e038d40b', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/06d2afc638892663c9a5e3c5e038d40b/invoke.js"></script>
-        </div>
-        <div class="ad-container" style="text-align:center;">
-          <script type="text/javascript">
-            atOptions = { 'key': '06d2afc638892663c9a5e3c5e038d40b', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
-          </script>
-          <script type="text/javascript" src="//www.highperformanceformat.com/06d2afc638892663c9a5e3c5e038d40b/invoke.js"></script>
+        <!-- Mid Ad -->
+        <div class="ad-slot" style="margin-top:18px;">
+          <div class="ad-slot-label">Advertisement</div>
+          <!-- INSERT MID AD HERE -->
         </div>
       </div>
 
-      <!-- Online Counter -->
-      <center style="margin-top:10px;">
-        <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
-        <script type="text/javascript">sc_online_i(1696033,"ffffff","ffffff");</script>
-        <noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
-      </center>
-    </div>
-  </div>
-</div>
+      <!-- ── SIDEBAR ── -->
+      <aside class="sidebar" aria-label="Sidebar">
 
-<!-- ========== FOOTER ========== -->
-<footer>
-  <div class='container' style='padding:15px 0;'>
-    <div class='bar-section'></div>
-    <div class='bar-section'></div>
-    <div class='bar-section'></div>
-    <div class='bar-section'></div>
-  </div>
-  <ul class='footermb'>
-    <div class='container'>
-      <li class='weba'>
-        <a href='/'>Sports Snap</a>
-      </li>
+        <!-- Quick Links -->
+        <div class="sidebar-card">
+          <div class="sidebar-title">Quick Links</div>
+          <nav class="quick-links">
+            <a href="/foot.html" class="quick-link">
+              <span class="ql-icon ql-foot">⚽</span>
+              Football Live
+              <span class="ql-arrow">›</span>
+            </a>
+            <a href="/crict.html" class="quick-link">
+              <span class="ql-icon ql-cric">🏏</span>
+              Cricket Live
+              <span class="ql-arrow">›</span>
+            </a>
+            <a href="/ads.html" class="quick-link">
+              <span class="ql-icon ql-high">🎬</span>
+              Highlights
+              <span class="ql-arrow">›</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Sidebar Ad -->
+        <div class="sidebar-card" style="overflow:visible;">
+          <div class="sidebar-title">Advertisement</div>
+          <div class="ad-slot" style="padding:10px;">
+            <!-- INSERT SIDEBAR AD HERE (300x250) -->
+            <div style="width:300px;height:250px;background:var(--c-bg);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--c-muted);">Ad Space 300×250</div>
+          </div>
+        </div>
+
+        <!-- About Info -->
+        <div class="sidebar-card" id="about">
+          <div class="sidebar-title">About LiveKick</div>
+          <div class="info-card-body">
+            <p>LiveKick is a free sports aggregator providing links to live football, cricket and match highlights from around the web.</p>
+            <p>We do not host or store any media. All streams are sourced from publicly available third-party platforms.</p>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="sidebar-card">
+          <div class="sidebar-title">Follow Us</div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+            <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg" style="font-size:14px;padding:9px 14px;">
+              <svg style="width:18px;height:18px;fill:#fff;" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+              Telegram Channel
+            </a>
+            <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt" style="font-size:14px;padding:9px 14px;">
+              <svg style="width:18px;height:18px;fill:#fff;" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              YouTube Channel
+            </a>
+          </div>
+        </div>
+
+      </aside>
+
+    </div><!-- /page-grid -->
+  </div><!-- /container -->
+</main>
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div>
+        <a href="/" class="logo" style="margin-bottom:10px;" aria-label="LiveKick">
+          <div class="logo-icon" style="width:30px;height:30px;">
+            <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px;">
+              <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="3" fill="#fff"/>
+            </svg>
+          </div>
+          <div class="logo-name" style="font-size:20px;">Live<span>Kick</span></div>
+        </a>
+        <p class="footer-desc">Free sports streaming aggregator. We link to publicly available streams for football, cricket and highlights worldwide.</p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Pages</div>
+        <nav class="footer-links">
+          <a href="/foot.html">Football Live</a>
+          <a href="/crict.html">Cricket Live</a>
+          <a href="/ads.html">Highlights</a>
+        </nav>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <nav class="footer-links">
+          <a href="#">DMCA / Disclaimer</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Contact Us</a>
+        </nav>
+      </div>
+
     </div>
-  </ul>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© <span id="footYear"></span> LiveKick. All streams are sourced from third-party platforms.</p>
+      <div class="footer-social">
+        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
 </footer>
 
-<!-- ========== FLOATING BOTTOM AD ========== -->
-<div id='fixedban'>
-  <div>
-    <a id='close-fixedban' onclick='document.getElementById("fixedban").style.display="none";' style='cursor:pointer;'>
-      <img alt='close' src='https://img.icons8.com/?size=100&id=LRNHSg8YnQRx&format=png&color=000000' style='vertical-align:middle;width:25px;height:25px;' title='close button'/>
-    </a>
-  </div>
-  <div style='text-align:center;display:block;max-width:300px;height:auto;overflow:hidden;margin:auto;'>
-    <div style="text-align:center;margin:10px 0;">
-      <script type="text/javascript">
-        atOptions = { 'key': '06d2afc638892663c9a5e3c5e038d40b', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/06d2afc638892663c9a5e3c5e038d40b/invoke.js"></script>
-    </div>
+<!-- ══════════════════════════════════
+     FLOATING BOTTOM AD
+══════════════════════════════════ -->
+<div id="fixedban">
+  <div class="fixedban-inner">
+    <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none';" aria-label="Close ad">×</button>
+    <!-- INSERT BOTTOM STICKY AD (300x50 or 320x50) HERE -->
+    <!-- <script>atOptions={...};</script><script src="..."></script> -->
+    <div style="width:300px;height:50px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;border-radius:4px;">Bottom Ad 300×50</div>
   </div>
 </div>
 
-<!-- ========== SIDEBAR ADS ========== -->
-<div class="left-ad">
-  <button class="close-btn" onclick="closeAd('left-ad')">
-    <img src="https://img.icons8.com/?size=100&id=LRNHSg8YnQRx&format=png&color=000000" alt="Close"/>
-  </button>
-  <script type="text/javascript">
-    atOptions = { 'key': '30d726385c1c61bfe03c43c05852c79f', 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
-  </script>
-  <script type="text/javascript" src="//www.highperformanceformat.com/30d726385c1c61bfe03c43c05852c79f/invoke.js"></script>
+<!-- ══════════════════════════════════
+     SIDEBAR ADS (desktop wide only)
+══════════════════════════════════ -->
+<div class="side-ad side-ad-left" id="leftAd">
+  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none';" aria-label="Close">×</button>
+  <!-- INSERT LEFT AD (160x600) -->
+  <div style="width:160px;height:600px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;writing-mode:vertical-rl;">Left Ad 160×600</div>
 </div>
 
-<div class="right-ad">
-  <button class="close-btn" onclick="closeAd('right-ad')">
-    <img src="https://img.icons8.com/?size=100&id=LRNHSg8YnQRx&format=png&color=000000" alt="Close"/>
-  </button>
-  <script type="text/javascript">
-    atOptions = { 'key': '30d726385c1c61bfe03c43c05852c79f', 'format': 'iframe', 'height': 600, 'width': 160, 'params': {} };
-  </script>
-  <script type="text/javascript" src="//www.highperformanceformat.com/30d726385c1c61bfe03c43c05852c79f/invoke.js"></script>
+<div class="side-ad side-ad-right" id="rightAd">
+  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none';" aria-label="Close">×</button>
+  <!-- INSERT RIGHT AD (160x600) -->
+  <div style="width:160px;height:600px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;writing-mode:vertical-rl;">Right Ad 160×600</div>
 </div>
 
-<!-- ========== MATCH STATUS TIMER SCRIPT ========== -->
+<!-- ══════════════════════════════════
+     SCRIPTS
+══════════════════════════════════ -->
 <script>
-  function updateMatchStatus() {
-    const notices = document.querySelectorAll('.notice');
-    notices.forEach(notice => {
-      const startTime = new Date(notice.getAttribute('data-start'));
-      const endTime   = new Date(notice.getAttribute('data-end'));
-      const now       = new Date();
-      const timerElem = notice.querySelector('.timer');
-      if (timerElem) {
-        if (now < startTime) {
-          timerElem.innerText = formatTimeDifference(startTime - now);
-          timerElem.classList.remove('blinking');
-        } else if (now >= startTime && now <= endTime) {
-          timerElem.innerText = 'Live Now';
-          timerElem.classList.add('blinking');
-        } else {
-          timerElem.innerText = 'Match Ended';
-          timerElem.classList.remove('blinking');
-        }
-      }
-    });
-    setTimeout(updateMatchStatus, 1000);
-  }
+/* ─── Utility ─── */
+const $ = id => document.getElementById(id);
 
-  function formatTimeDifference(ms) {
-    const seconds = Math.floor(ms / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours   = Math.floor(minutes / 60);
-    return `${hours} hr ${minutes % 60} min ${seconds % 60} sec`;
-  }
+/* ─── Date ─── */
+const dateStr = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+$('todayDate').textContent  = dateStr;
+$('todayDate2').textContent = dateStr;
+$('footYear').textContent   = new Date().getFullYear();
 
-  document.addEventListener('DOMContentLoaded', () => {
-    updateMatchStatus();
+/* ─── Night Mode ─── */
+(function initNight() {
+  if (localStorage.getItem('night') === '1') document.body.classList.add('night');
+})();
+
+$('nightToggle').addEventListener('click', () => {
+  const on = document.body.classList.toggle('night');
+  localStorage.setItem('night', on ? '1' : '0');
+});
+
+/* ─── Mobile Menu ─── */
+const menuBtn   = $('menuBtn');
+const mobileNav = $('mobileNav');
+
+menuBtn.addEventListener('click', () => {
+  const open = menuBtn.classList.toggle('open');
+  mobileNav.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', open);
+  mobileNav.setAttribute('aria-hidden', !open);
+});
+
+mobileNav.addEventListener('click', e => {
+  if (e.target === mobileNav) {
+    menuBtn.classList.remove('open');
+    mobileNav.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', false);
+    mobileNav.setAttribute('aria-hidden', true);
+  }
+});
+
+/* ─── Tab System + Lazy Content Fetching ─── */
+const tabs = {
+  foot: { loaded: false, endpoint: '/footmatch',  loaderId: 'loading-foot', contentId: 'content-foot' },
+  cric: { loaded: false, endpoint: '/cricmatch',  loaderId: 'loading-cric', contentId: 'content-cric' },
+  high: { loaded: false, endpoint: '/highlights', loaderId: 'loading-high', contentId: 'content-high' },
+};
+
+const tabColors = {
+  foot: 'active-foot',
+  cric: 'active-cric',
+  high: 'active-high',
+};
+
+let currentTab = 'foot';
+
+function showLoading(tab) {
+  const zone = $(tabs[tab].contentId);
+  zone.innerHTML = `
+    <div class="loading-state">
+      <div class="loader-ring" style="border-top-color:${tab==='cric'?'var(--c-soon)':tab==='high'?'var(--c-highlight)':'var(--c-accent)'}"></div>
+      <p>Loading ${tab==='foot'?'football':tab==='cric'?'cricket':'highlights'}…</p>
+    </div>`;
+}
+
+function showError(tab, retry) {
+  const zone = $(tabs[tab].contentId);
+  zone.innerHTML = `
+    <div class="error-state">
+      <div class="err-icon">📡</div>
+      <h3>Content Unavailable</h3>
+      <p>Could not load matches right now. Check your connection or try again.</p>
+      <button class="btn-retry" onclick="retryLoad('${tab}')">Try Again</button>
+    </div>`;
+}
+
+function retryLoad(tab) {
+  tabs[tab].loaded = false;
+  loadTab(tab);
+}
+
+function loadTab(tab) {
+  if (tabs[tab].loaded) return;
+  showLoading(tab);
+  fetch(tabs[tab].endpoint)
+    .then(res => {
+      if (!res.ok) throw new Error('Network response not ok');
+      return res.text();
+    })
+    .then(html => {
+      $(tabs[tab].contentId).innerHTML = html;
+      tabs[tab].loaded = true;
+    })
+    .catch(() => showError(tab));
+}
+
+function switchTab(tab) {
+  if (tab === currentTab) return;
+
+  // Update buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active-foot', 'active-cric', 'active-high');
+    btn.setAttribute('aria-selected', 'false');
   });
-</script>
+  const activeBtn = $('tab-' + tab);
+  activeBtn.classList.add(tabColors[tab]);
+  activeBtn.setAttribute('aria-selected', 'true');
 
-<!-- ========== DARK MODE + UTIL SCRIPTS ========== -->
-<script>
-  function rdmode() {
-    if (localStorage.getItem('mode') === 'rdmode') {
-      localStorage.setItem('mode', 'light');
-      document.body.classList.remove('Night');
+  // Update panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  $('panel-' + tab).classList.add('active');
+
+  currentTab = tab;
+  loadTab(tab);
+}
+
+/* ─── Load Football on page ready (default tab) ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  loadTab('foot');
+});
+
+/* ─── Match Status Timer (for .notice elements loaded dynamically) ─── */
+function updateMatchStatus() {
+  document.querySelectorAll('.notice[data-start]').forEach(notice => {
+    const startTime = new Date(notice.getAttribute('data-start'));
+    const endTime   = new Date(notice.getAttribute('data-end'));
+    const now       = new Date();
+    const timerElem = notice.querySelector('.timer');
+    if (!timerElem) return;
+    if (now < startTime) {
+      timerElem.textContent = formatTime(startTime - now);
+      timerElem.classList.remove('blinking');
+    } else if (now >= startTime && now <= endTime) {
+      timerElem.textContent = 'Live Now';
+      timerElem.classList.add('blinking');
     } else {
-      localStorage.setItem('mode', 'rdmode');
-      document.body.classList.add('Night');
+      timerElem.textContent = 'Ended';
+      timerElem.classList.remove('blinking');
     }
-  }
+  });
+  setTimeout(updateMatchStatus, 1000);
+}
 
-  function dotab(elem) {
-    const buttons = document.getElementsByTagName('button');
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].classList.remove('active');
-    }
-    elem.classList.add('active');
-  }
+function formatTime(ms) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  const h = Math.floor(m / 60);
+  return h > 0 ? `${h}h ${m%60}m` : `${m}m ${s%60}s`;
+}
 
-  function setURL(url) {
-    document.getElementById('iframe').src = url;
-  }
-
-  function closeAd(adClass) {
-    const ad = document.querySelector('.' + adClass);
-    if (ad) ad.style.display = 'none';
-  }
-</script>
-
-<!-- ========== GOOGLE ANALYTICS ========== -->
-<script>
-  !function(e,a,t,g,n,o){
-    e.GoogleAnalyticsObject=g;
-    e.ga=e.ga||function(){(e.ga.q=e.ga.q||[]).push(arguments)};
-    e.ga.l=+new Date;
-    n=a.createElement(t);
-    o=a.getElementsByTagName(t)[0];
-    n.async=1;
-    n.src="https://www.google-analytics.com/analytics.js";
-    o.parentNode.insertBefore(n,o);
-  }(window,document,"script","ga");
-  ga("create","UA-XXXXXXXX-X","auto");
-  ga("send","pageview");
+updateMatchStatus();
 </script>
 
 </body>
