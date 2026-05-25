@@ -323,6 +323,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   gap: 10px;
   flex-wrap: wrap;
 }
+/* ensure join banner sits flush on mobile */
+@media (max-width: 640px) {
+  .join-banner { padding: 10px 0 8px; }
+  .join-banner-inner { gap: 8px; }
+}
 .join-btn {
   flex: 1;
   min-width: 180px;
@@ -749,18 +754,54 @@ body.night .btn-night svg path:first-child { display: none; }
   .sidebar { display: none; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
+
 @media (max-width: 640px) {
-  .header-nav { display: none; }
-  .btn-menu { display: flex; }
+  .header-nav  { display: none; }
+  .btn-menu    { display: flex; }
   .join-banner-inner { flex-direction: column; }
-  .join-btn { min-width: 0; }
+  .join-btn    { min-width: 0; width: 100%; justify-content: center; }
   .footer-grid { grid-template-columns: 1fr; }
-  .tab-btn { font-size: 14px; }
+
+  /* Tabs: shrink text, hide LIVE badge on smallest */
+  .tab-btn     { font-size: 13px; padding: 0 8px; gap: 5px; }
+  .tab-icon    { width: 18px; height: 18px; }
+  .tab-live-badge { display: none; }
+
+  /* Tab content less side padding on mobile */
+  .tab-content-zone { padding: 12px 10px; }
+  .tab-header       { padding: 10px 12px 8px; }
+
+  /* Sport card full-width, no side radius on mobile */
+  .sport-card { border-radius: 0; box-shadow: none; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
+  .container  { padding: 0 10px; }
+
+  /* Ticker smaller on mobile */
+  .ticker-bar  { font-size: 12px; }
+  .ticker-label { padding: 2px 8px; font-size: 11px; }
+
+  /* Fixed bottom ad smaller */
+  .fixedban-inner { padding: 4px 32px 4px 4px; }
+
+  /* Footer compact */
+  .site-footer { padding: 20px 0 14px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
+
 @media (max-width: 420px) {
-  :root { --header-h: 56px; }
-  .logo-name { font-size: 22px; }
-  .tab-btn { padding: 0 6px; gap: 5px; }
+  :root { --header-h: 56px; --tab-bar-h: 46px; }
+  .logo-name   { font-size: 22px; }
+  .tab-btn     { font-size: 12px; padding: 0 6px; gap: 4px; }
+  .tab-icon    { width: 16px; height: 16px; }
+  .tab-heading { font-size: 17px; }
+  .tab-date    { font-size: 11px; }
+  .join-btn    { font-size: 14px; padding: 10px 14px; }
+  .btn-social  { width: 30px; height: 30px; }
+  .btn-night   { width: 30px; height: 30px; }
+  .btn-menu    { width: 30px; height: 30px; }
+
+  /* Stack ticker label and scroll on very small screens */
+  .ticker-inner { flex-direction: column; gap: 2px; align-items: flex-start; }
+  .ticker-label { border-radius: 4px; margin-right: 0; margin-bottom: 2px; }
 }
 </style>
 </head>
@@ -810,9 +851,9 @@ body.night .btn-night svg path:first-child { display: none; }
 
     <!-- Desktop Nav -->
     <nav class="header-nav" aria-label="Main navigation">
-      <a href="/foot.html">Football</a>
-      <a href="/crict.html">Cricket</a>
-      <a href="/ads.html">Highlights</a>
+      <a href="https://sportssnap.github.io/footlive/foot">Football</a>
+      <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket</a>
+      <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
       <a href="#about">About</a>
     </nav>
 
@@ -840,9 +881,9 @@ body.night .btn-night svg path:first-child { display: none; }
 <!-- Mobile Nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="mobile-nav-inner">
-    <a href="/foot.html">⚽ Football Live</a>
-    <a href="/crict.html">🏏 Cricket Live</a>
-    <a href="/ads.html">🎬 Highlights</a>
+    <a href="https://sportssnap.github.io/footlive/foot">⚽ Football Live</a>
+    <a href="https://sportssnap.github.io/cricmatch/cmatch">🏏 Cricket Live</a>
+    <a href="https://sportssnap.github.io/highlights/hmatch">🎬 Highlights</a>
     <a href="#about">ℹ️ About</a>
     <div class="mobile-social">
       <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" style="width:38px;height:38px;">
@@ -948,24 +989,14 @@ body.night .btn-night svg path:first-child { display: none; }
               </div>
               <span class="tab-date" id="todayDate"></span>
             </div>
+            <div class="tab-content-zone" id="content-foot">
+              <!-- Loading state shown initially -->
+              <div class="loading-state" id="loading-foot">
+                <div class="loader-ring"></div>
+                <p>Loading football matches…</p>
+              </div>
+            </div>
           </div>
-
-
-           <!-- CONTENT START -->
-<div id="content">Loading...</div>
-
-  <script>
-    fetch("/footmatch/fmatch")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("content").innerHTML = data;
-      })
-      .catch(err => {
-        document.getElementById("content").innerText = "Failed to load content.";
-        console.error(err);
-      });
-  </script>
-  <!-- CONTENT END -- >
 
           <!-- ── CRICKET PANEL ── -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
@@ -1016,17 +1047,17 @@ body.night .btn-night svg path:first-child { display: none; }
         <div class="sidebar-card">
           <div class="sidebar-title">Quick Links</div>
           <nav class="quick-links">
-            <a href="/foot.html" class="quick-link">
+            <a href="https://sportssnap.github.io/footlive/foot" class="quick-link">
               <span class="ql-icon ql-foot">⚽</span>
               Football Live
               <span class="ql-arrow">›</span>
             </a>
-            <a href="/crict.html" class="quick-link">
+            <a href="https://sportssnap.github.io/cricmatch/cmatch" class="quick-link">
               <span class="ql-icon ql-cric">🏏</span>
               Cricket Live
               <span class="ql-arrow">›</span>
             </a>
-            <a href="/ads.html" class="quick-link">
+            <a href="https://sportssnap.github.io/highlights/hmatch" class="quick-link">
               <span class="ql-icon ql-high">🎬</span>
               Highlights
               <span class="ql-arrow">›</span>
@@ -1096,9 +1127,9 @@ body.night .btn-night svg path:first-child { display: none; }
       <div>
         <div class="footer-col-title">Pages</div>
         <nav class="footer-links">
-          <a href="/foot.html">Football Live</a>
-          <a href="/crict.html">Cricket Live</a>
-          <a href="/ads.html">Highlights</a>
+          <a href="https://sportssnap.github.io/footlive/foot">Football Live</a>
+          <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket Live</a>
+          <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
         </nav>
       </div>
 
@@ -1199,9 +1230,9 @@ mobileNav.addEventListener('click', e => {
 
 /* ─── Tab System + Lazy Content Fetching ─── */
 const tabs = {
-  foot: { loaded: false, endpoint: '/footmatch',  loaderId: 'loading-foot', contentId: 'content-foot' },
-  cric: { loaded: false, endpoint: '/cricmatch',  loaderId: 'loading-cric', contentId: 'content-cric' },
-  high: { loaded: false, endpoint: '/highlights', loaderId: 'loading-high', contentId: 'content-high' },
+  foot: { loaded: false, endpoint: '/footmatch/fmatch',   loaderId: 'loading-foot', contentId: 'content-foot' },
+  cric: { loaded: false, endpoint: 'https://sportssnap.github.io/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
+  high: { loaded: false, endpoint: 'https://sportssnap.github.io/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
 };
 
 const tabColors = {
