@@ -955,7 +955,7 @@ body.night .btn-night svg path:first-child { display: none; }
 <div id="content">Loading...</div>
 
   <script>
-    fetch("/footmatch")
+    fetch("/footmatch/fmatch")
       .then(res => res.text())
       .then(data => {
         document.getElementById("content").innerHTML = data;
