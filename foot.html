@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/>
-<meta name="description" content="LiveKick - Free Football, Cricket & Highlights Live Stream"/>
+<meta name="description" content="LiveKick - Free Football, Cricket &amp; Highlights Live Stream"/>
 <title>LiveKick | Football · Cricket · Highlights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -44,6 +44,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
+@keyframes fadeOut{from{opacity:1;pointer-events:auto}to{opacity:0;pointer-events:none}}
+@keyframes ticker-move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 
 /* ── LAYOUT ────────────────────────────────── */
 .container{max-width:1060px;margin:0 auto;padding:0 16px}
@@ -53,7 +56,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .ticker-inner{display:flex;align-items:center}
 .ticker-label{background:var(--red);padding:2px 12px;border-radius:0 4px 4px 0;margin-right:20px;flex-shrink:0;text-transform:uppercase;letter-spacing:.08em}
 .ticker-track{display:inline-flex;gap:60px;animation:ticker-move 32s linear infinite}
-@keyframes ticker-move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .ticker-track span{opacity:.9}
 .ticker-track b{color:#ffd166;font-weight:700}
 
@@ -96,7 +98,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .mob-nav{display:none;position:fixed;inset:var(--hdr-h) 0 0 0;background:rgba(0,0,0,.4);z-index:190;backdrop-filter:blur(2px)}
 .mob-nav.open{display:block}
 .mob-nav-inner{background:var(--surface);width:260px;height:100%;padding:20px 16px;display:flex;flex-direction:column;gap:6px;animation:slideIn .25s ease;box-shadow:var(--sh-md)}
-@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 .mob-nav-inner a{padding:10px 14px;border-radius:var(--r-sm);font-weight:500;font-size:15px;color:var(--text);transition:background .2s;display:block}
 .mob-nav-inner a:hover{background:var(--bg)}
 .mob-soc{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
@@ -113,13 +114,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 /* ── AD SLOT ───────────────────────────────── */
 .ad-slot{text-align:center;padding:6px 0;margin-bottom:14px}
 .ad-label{font-size:10px;color:#bbb;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.ad-placeholder{display:inline-flex;align-items:center;justify-content:center;background:var(--bg);border:1px dashed var(--border);border-radius:var(--r-sm);font-size:12px;color:var(--muted)}
 
 /* ── PAGE GRID ─────────────────────────────── */
 .page-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;padding-bottom:60px;animation:fadeUp .55s .1s ease both}
 .sidebar{display:flex;flex-direction:column;gap:16px}
 
 /* ── SPORT CARD ────────────────────────────── */
-/* NOTE: NO overflow:hidden — it clips iframes */
 .sport-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-md)}
 
 /* Tab Bar */
@@ -132,9 +133,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .tab-icon{width:22px;height:22px;flex-shrink:0}
 .live-badge{background:var(--red);color:#fff;font-family:var(--fd);font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.06em;animation:blink 1.4s ease infinite;line-height:16px}
 
-/* Tab Panels */
-/* IMPORTANT: use visibility:hidden + height:0 instead of display:none
-   so iframes inside inactive tabs still load and don't get destroyed    */
+/* Tab Panels — visibility trick keeps iframes alive */
 .tab-panel{visibility:hidden;height:0;overflow:hidden;pointer-events:none}
 .tab-panel.active{visibility:visible;height:auto;overflow:visible;pointer-events:auto}
 
@@ -147,24 +146,45 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .dot-high{background:#f59e0b}
 .tab-date{font-size:13px;color:var(--muted);font-weight:400}
 
-/* Content Zone */
-.tab-zone{min-height:280px;padding:16px 18px;position:relative}
-/* When an iframe is inside, remove padding */
-.tab-zone.has-frame{padding:0;min-height:500px}
+/* ── IFRAME ZONE ───────────────────────────── */
+/* Wrapper that holds both the loader overlay and the iframe */
+.iframe-wrap{position:relative;min-height:600px;width:100%}
 
-/* ── LOADING / ERROR ───────────────────────── */
-.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px 20px;color:var(--muted)}
-.ring{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-.loading-wrap p{font-size:14px;font-weight:500}
-.err-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;color:var(--muted);text-align:center}
-.err-icon{font-size:40px}
-.err-wrap h3{font-size:16px;color:var(--text);font-weight:600}
-.err-wrap p{font-size:13px;max-width:280px}
-.btn-retry{margin-top:8px;padding:8px 20px;border-radius:var(--r-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .2s}
-.btn-retry:hover{opacity:.85}
+/* Progressive loader overlay — sits on top of the iframe */
+.iframe-loader{
+  position:absolute;
+  inset:0;
+  background:var(--surface);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  z-index:10;
+  transition:opacity .5s ease;
+  border-radius:0 0 var(--r-lg) var(--r-lg);
+}
+.iframe-loader.hiding{animation:fadeOut .6s ease forwards}
+.iframe-loader.gone{display:none}
+.iframe-loader .ring{width:40px;height:40px;border:3px solid var(--border);border-radius:50%;animation:spin .75s linear infinite}
+.ring-foot{border-top-color:#0f4cdb}
+.ring-cric{border-top-color:#16a34a}
+.ring-high{border-top-color:#f59e0b}
+.iframe-loader p{font-size:14px;font-weight:500;color:var(--muted)}
+.loader-progress{width:180px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
+.loader-bar{height:100%;border-radius:2px;transition:width .4s ease}
+.bar-foot{background:#0f4cdb}
+.bar-cric{background:#16a34a}
+.bar-high{background:#f59e0b}
 
-/* iframe inside a tab zone */
-.tab-zone iframe{display:block;width:100%;border:none;min-height:500px;background:transparent}
+/* The iframe itself */
+.tab-iframe{
+  display:block;
+  width:100%;
+  border:none;
+  min-height:600px;
+  background:transparent;
+}
 
 /* ── SIDEBAR ───────────────────────────────── */
 .sb-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden;border:1px solid var(--border)}
@@ -208,6 +228,7 @@ body.night{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e8eaf0;--mute
 body.night .tab-bar{background:#141620}
 body.night .tab-header{background:#141620}
 body.night .sb-title{background:#141620}
+body.night .iframe-loader{background:#1a1d27}
 
 /* ── RESPONSIVE ────────────────────────────── */
 @media(max-width:900px){
@@ -224,9 +245,6 @@ body.night .sb-title{background:#141620}
   .tab-btn{font-size:13px;padding:0 8px;gap:5px}
   .tab-icon{width:18px;height:18px}
   .live-badge{display:none}
-  .tab-zone{padding:12px 10px}
-  .tab-zone.has-frame{padding:0}
-  .tab-header{padding:10px 12px 8px}
   .sport-card{border-radius:0;box-shadow:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
   .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
 }
@@ -336,7 +354,8 @@ body.night .sb-title{background:#141620}
     <!-- Top Ad -->
     <div class="ad-slot">
       <div class="ad-label">Advertisement</div>
-      <!-- INSERT TOP BANNER AD HERE -->
+      <!-- INSERT TOP BANNER AD CODE HERE -->
+      <div class="ad-placeholder" style="width:728px;max-width:100%;height:90px;">Ad Space 728×90</div>
     </div>
 
     <!-- Grid -->
@@ -364,43 +383,48 @@ body.night .sb-title{background:#141620}
             </button>
           </div>
 
-          <!-- FOOTBALL PANEL -->
+          <!-- ═══ FOOTBALL PANEL ═══ -->
           <div class="tab-panel active" id="panel-foot" role="tabpanel" aria-labelledby="tab-foot">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-foot"></span>Football Live</div>
               <span class="tab-date" id="todayDate"></span>
             </div>
-            <div class="tab-zone" id="zone-foot">
-              <div class="loading-wrap" id="load-foot">
-                <div class="ring"></div>
-                <p>Loading football matches…</p>
+            <!-- iframe wrap — loader overlays the iframe until content is ready -->
+            <div class="iframe-wrap" id="wrap-foot">
+              <div class="iframe-loader" id="loader-foot">
+                <div class="ring ring-foot"></div>
+                <p id="loader-foot-txt">Loading football matches…</p>
+                <div class="loader-progress"><div class="loader-bar bar-foot" id="bar-foot" style="width:0%"></div></div>
               </div>
+              <!-- iframe injected by JS -->
             </div>
           </div>
 
-          <!-- CRICKET PANEL -->
+          <!-- ═══ CRICKET PANEL ═══ -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-cric"></span>Cricket Live</div>
               <span class="tab-date" id="todayDate2"></span>
             </div>
-            <div class="tab-zone" id="zone-cric">
-              <div class="loading-wrap" id="load-cric" style="display:none">
-                <div class="ring" style="border-top-color:#16a34a"></div>
-                <p>Loading cricket matches…</p>
+            <div class="iframe-wrap" id="wrap-cric">
+              <div class="iframe-loader" id="loader-cric">
+                <div class="ring ring-cric"></div>
+                <p id="loader-cric-txt">Loading cricket matches…</p>
+                <div class="loader-progress"><div class="loader-bar bar-cric" id="bar-cric" style="width:0%"></div></div>
               </div>
             </div>
           </div>
 
-          <!-- HIGHLIGHTS PANEL -->
+          <!-- ═══ HIGHLIGHTS PANEL ═══ -->
           <div class="tab-panel" id="panel-high" role="tabpanel" aria-labelledby="tab-high">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-high"></span>Latest Highlights</div>
             </div>
-            <div class="tab-zone" id="zone-high">
-              <div class="loading-wrap" id="load-high" style="display:none">
-                <div class="ring" style="border-top-color:#f59e0b"></div>
-                <p>Loading highlights…</p>
+            <div class="iframe-wrap" id="wrap-high">
+              <div class="iframe-loader" id="loader-high">
+                <div class="ring ring-high"></div>
+                <p id="loader-high-txt">Loading highlights…</p>
+                <div class="loader-progress"><div class="loader-bar bar-high" id="bar-high" style="width:0%"></div></div>
               </div>
             </div>
           </div>
@@ -410,7 +434,8 @@ body.night .sb-title{background:#141620}
         <!-- Mid Ad -->
         <div class="ad-slot" style="margin-top:18px;">
           <div class="ad-label">Advertisement</div>
-          <!-- INSERT MID AD HERE -->
+          <!-- INSERT MID AD CODE HERE -->
+          <div class="ad-placeholder" style="width:728px;max-width:100%;height:90px;">Ad Space 728×90</div>
         </div>
       </div>
 
@@ -432,11 +457,12 @@ body.night .sb-title{background:#141620}
           </nav>
         </div>
 
+        <!-- Sidebar Ad 300x250 -->
         <div class="sb-card">
           <div class="sb-title">Advertisement</div>
-          <div class="ad-slot" style="padding:10px">
-            <!-- INSERT SIDEBAR AD 300x250 HERE -->
-            <div style="width:300px;height:250px;background:var(--bg);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)">Ad Space 300×250</div>
+          <div style="padding:10px;text-align:center;">
+            <!-- INSERT SIDEBAR AD 300x250 CODE HERE -->
+            <div class="ad-placeholder" style="width:280px;max-width:100%;height:250px;">Ad Space 300×250</div>
           </div>
         </div>
 
@@ -459,6 +485,15 @@ body.night .sb-title{background:#141620}
               <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               YouTube Channel
             </a>
+          </div>
+        </div>
+
+        <!-- Extra sidebar ad 300x250 bottom -->
+        <div class="sb-card">
+          <div class="sb-title">Advertisement</div>
+          <div style="padding:10px;text-align:center;">
+            <!-- INSERT SIDEBAR AD 2 CODE HERE -->
+            <div class="ad-placeholder" style="width:280px;max-width:100%;height:250px;">Ad Space 300×250</div>
           </div>
         </div>
 
@@ -508,25 +543,28 @@ body.night .sb-title{background:#141620}
 <!-- ── BOTTOM STICKY AD ────────────────────── -->
 <div id="fixedban">
   <div class="fixedban-inner">
-    <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none'" aria-label="Close">×</button>
-    <!-- INSERT BOTTOM AD 300x50 HERE -->
+    <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none'" aria-label="Close ad">×</button>
+    <!-- INSERT BOTTOM STICKY AD 320x50 CODE HERE -->
+    <div class="ad-placeholder" style="width:320px;height:50px;">Ad Space 320×50</div>
   </div>
 </div>
 
 <!-- ── SIDEBAR ADS ─────────────────────────── -->
 <div class="side-ad side-ad-l" id="leftAd">
-  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'">×</button>
-  <!-- INSERT LEFT AD 160x600 HERE -->
+  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'" aria-label="Close ad">×</button>
+  <!-- INSERT LEFT AD 160x600 CODE HERE -->
+  <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
 </div>
 <div class="side-ad side-ad-r" id="rightAd">
-  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'">×</button>
-  <!-- INSERT RIGHT AD 160x600 HERE -->
+  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'" aria-label="Close ad">×</button>
+  <!-- INSERT RIGHT AD 160x600 CODE HERE -->
+  <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
 </div>
 
 <!-- ── SCRIPTS ─────────────────────────────── -->
 <script>
 /* ─── Helpers ─────────────────────────────── */
-function eid(id) { return document.getElementById(id); }
+function eid(id){ return document.getElementById(id); }
 
 /* ─── Dates & Year ────────────────────────── */
 var ds = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
@@ -535,8 +573,8 @@ eid('todayDate2').textContent = ds;
 eid('footYear').textContent   = new Date().getFullYear();
 
 /* ─── Night Mode ──────────────────────────── */
-if (localStorage.getItem('night') === '1') document.body.classList.add('night');
-eid('nightToggle').addEventListener('click', function() {
+if(localStorage.getItem('night') === '1') document.body.classList.add('night');
+eid('nightToggle').addEventListener('click', function(){
   var on = document.body.classList.toggle('night');
   localStorage.setItem('night', on ? '1' : '0');
 });
@@ -544,200 +582,184 @@ eid('nightToggle').addEventListener('click', function() {
 /* ─── Mobile Menu ─────────────────────────── */
 var menuBtn = eid('menuBtn');
 var mobNav  = eid('mobNav');
-menuBtn.addEventListener('click', function() {
+menuBtn.addEventListener('click', function(){
   var open = menuBtn.classList.toggle('open');
   mobNav.classList.toggle('open', open);
   menuBtn.setAttribute('aria-expanded', String(open));
-  mobNav.setAttribute('aria-hidden', String(!open));
+  mobNav.setAttribute('aria-hidden',    String(!open));
 });
-mobNav.addEventListener('click', function(e) {
-  if (e.target === mobNav) {
+mobNav.addEventListener('click', function(e){
+  if(e.target === mobNav){
     menuBtn.classList.remove('open');
     mobNav.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    mobNav.setAttribute('aria-hidden', 'true');
+    menuBtn.setAttribute('aria-expanded','false');
+    mobNav.setAttribute('aria-hidden','true');
   }
 });
 
-/* ─── Tab Config ──────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TAB CONFIG
+   All three tabs use <iframe> so they all behave
+   the same way — whether the page is plain HTML or
+   encrypted with atob()+eval(). When you encrypt
+   Football later, no code changes needed here.
+   ═══════════════════════════════════════════════ */
 var tabs = {
   foot: {
-    loaded:   false,
-    url:      'https://sportssnap.github.io/footmatch/fmatch',
-    zoneId:   'zone-foot',
-    type:     'fetch'       /* plain HTML → fetch & inject */
+    loaded: false,
+    url:    'https://sportssnap.github.io/footmatch/fmatch',
+    wrapId: 'wrap-foot',
+    loadId: 'loader-foot',
+    barId:  'bar-foot',
+    txtId:  'loader-foot-txt',
+    label:  'Loading football matches\u2026',
+    /* Extra time (ms) after iframe load fires, to let
+       encryption / JS rendering finish before hiding overlay.
+       For plain HTML pages a small delay is fine;
+       for encrypted pages bump up to 2500-3000.          */
+    delay:  1800
   },
   cric: {
-    loaded:   false,
-    url:      'https://sportssnap.github.io/cricmatch/cmatch',
-    zoneId:   'zone-cric',
-    type:     'iframe'      /* encrypted page → iframe */
+    loaded: false,
+    url:    'https://sportssnap.github.io/cricmatch/cmatch',
+    wrapId: 'wrap-cric',
+    loadId: 'loader-cric',
+    barId:  'bar-cric',
+    txtId:  'loader-cric-txt',
+    label:  'Loading cricket matches\u2026',
+    delay:  2500
   },
   high: {
-    loaded:   false,
-    url:      'https://sportssnap.github.io/highlights/hmatch',
-    zoneId:   'zone-high',
-    type:     'iframe'      /* encrypted page → iframe */
+    loaded: false,
+    url:    'https://sportssnap.github.io/highlights/hmatch',
+    wrapId: 'wrap-high',
+    loadId: 'loader-high',
+    barId:  'bar-high',
+    txtId:  'loader-high-txt',
+    label:  'Loading highlights\u2026',
+    delay:  2500
   }
 };
 
 var tabColors = { foot:'act-foot', cric:'act-cric', high:'act-high' };
 var currentTab = 'foot';
 
-/* ─── Show Error ──────────────────────────── */
-function showError(zoneId, tabKey) {
-  eid(zoneId).innerHTML =
-    '<div class="err-wrap">' +
-      '<div class="err-icon">📡</div>' +
-      '<h3>Content Unavailable</h3>' +
-      '<p>Could not load content. Please check your connection.</p>' +
-      '<button class="btn-retry" onclick="retryTab(\'' + tabKey + '\')">Try Again</button>' +
-    '</div>';
+/* ─── Animated progress bar while waiting ─── */
+function animateBar(barId, targetPct, durationMs){
+  var bar  = eid(barId);
+  if(!bar) return;
+  var start = null;
+  var from  = parseFloat(bar.style.width) || 0;
+  function step(ts){
+    if(!start) start = ts;
+    var prog = Math.min((ts - start) / durationMs, 1);
+    bar.style.width = (from + (targetPct - from) * prog) + '%';
+    if(prog < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
-function retryTab(tabKey) {
-  tabs[tabKey].loaded = false;
-  loadTab(tabKey);
+/* ─── Hide loader overlay smoothly ──────────── */
+function hideLoader(loadId){
+  var loader = eid(loadId);
+  if(!loader || loader.classList.contains('gone')) return;
+  loader.classList.add('hiding');
+  setTimeout(function(){ loader.classList.add('gone'); }, 650);
 }
 
-/* ─── Re-execute scripts injected via innerHTML ─── */
-function runScripts(container) {
-  var scripts = container.querySelectorAll('script');
-  for (var i = 0; i < scripts.length; i++) {
-    var old = scripts[i];
-    var neo = document.createElement('script');
-    for (var j = 0; j < old.attributes.length; j++) {
-      neo.setAttribute(old.attributes[j].name, old.attributes[j].value);
+/* ─── Auto-height: try same-origin, fallback tall ─ */
+function autoHeight(iframe, fallback){
+  try {
+    var h = iframe.contentDocument.documentElement.scrollHeight
+            || iframe.contentDocument.body.scrollHeight;
+    if(h > 200){
+      iframe.style.height    = h + 'px';
+      iframe.style.minHeight = h + 'px';
+      return;
     }
-    neo.textContent = old.textContent;
-    old.parentNode.replaceChild(neo, old);
-  }
+  } catch(e){ /* cross-origin — use fallback */ }
+  iframe.style.height    = (fallback || 900) + 'px';
+  iframe.style.minHeight = (fallback || 900) + 'px';
 }
 
-/* ─── Load Tab Content ────────────────────── */
-/*
-  FOOTBALL  → plain HTML page  → fetch() the URL, strip the <body>, inject innerHTML
-              Scripts re-executed manually (innerHTML blocks script execution)
-
-  CRICKET   → encrypted page   → must use <iframe> because:
-  HIGHLIGHTS  The page decrypts itself via atob()+eval() at runtime inside the
-              browser. fetch() only returns the raw source; the eval() never runs,
-              so we'd get nothing. An iframe lets the browser load & execute the
-              page fully, exactly as designed.
-
-  IFRAME BLINKING FIX:
-  - We set loaded=true immediately after appending iframe so switchTab()
-    won't re-create it when user switches back and forth
-  - We use visibility:hidden / height:0 for inactive panels (not display:none)
-    so iframes keep their DOM and don't reload on every tab switch
-  - Auto-height runs after a 1.5s delay (giving the encryption time to finish)
-    and falls back to 800px on cross-origin restriction
-*/
-function loadTab(tabKey) {
+/* ─── Create and inject iframe ───────────────── */
+function loadTab(tabKey){
   var cfg = tabs[tabKey];
-  if (cfg.loaded) return;
+  if(cfg.loaded) return;
+  cfg.loaded = true;           /* prevent double-create on quick tab switches */
 
-  var zone = eid(cfg.zoneId);
+  var wrap   = eid(cfg.wrapId);
+  var loader = eid(cfg.loadId);
 
-  if (cfg.type === 'fetch') {
-    /* ── Football: fetch HTML, inject body ── */
-    zone.innerHTML =
-      '<div class="loading-wrap">' +
-        '<div class="ring"></div>' +
-        '<p>Loading football matches\u2026</p>' +
-      '</div>';
+  /* Show the loader text */
+  if(eid(cfg.txtId)) eid(cfg.txtId).textContent = cfg.label;
 
-    fetch(cfg.url, { mode: 'cors' })
-      .then(function(res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.text();
-      })
-      .then(function(html) {
-        /* Pull out everything inside <body>...</body> */
-        var m = html.match(/<body[^>]*>([\s\S]+?)<\/body>/i);
-        var content = m ? m[1] : html;
-        zone.innerHTML = content;
-        cfg.loaded = true;
-        runScripts(zone);
-      })
-      .catch(function(err) {
-        console.warn('Football fetch failed:', err);
-        showError(cfg.zoneId, tabKey);
-      });
+  /* Kick off a faked progress bar:
+     0 → 70% while the page fetches (variable time)
+     70 → 95% after load fires, waiting for decryption
+     95 → 100% just before we hide the overlay           */
+  animateBar(cfg.barId, 70, 4000);
 
-  } else {
-    /* ── Cricket / Highlights: load via iframe ── */
-    zone.innerHTML = '';
-    zone.classList.add('has-frame');
+  /* Build iframe */
+  var iframe = document.createElement('iframe');
+  iframe.className = 'tab-iframe';
+  iframe.setAttribute('src', cfg.url);
+  iframe.setAttribute('frameborder', '0');
+  iframe.setAttribute('scrolling', 'no');
+  iframe.setAttribute('allowtransparency', 'true');
+  iframe.setAttribute('loading', 'lazy');
+  iframe.style.cssText = 'display:block;width:100%;min-height:600px;height:600px;border:none;background:transparent;';
 
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('src', cfg.url);
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('allowtransparency', 'true');
-    iframe.setAttribute('loading', 'lazy');
-    iframe.style.cssText = [
-      'display:block',
-      'width:100%',
-      'min-height:600px',
-      'height:600px',
-      'border:none',
-      'background:transparent'
-    ].join(';');
+  /* On iframe load event: bump progress bar then wait for decryption */
+  iframe.addEventListener('load', function(){
+    animateBar(cfg.barId, 95, cfg.delay * 0.6);
 
-    /* After iframe loads, wait for the decryption eval() to finish,
-       then expand to full content height                             */
-    iframe.addEventListener('load', function() {
-      setTimeout(function() {
-        try {
-          var h = iframe.contentDocument.documentElement.scrollHeight
-                  || iframe.contentDocument.body.scrollHeight;
-          if (h > 200) {
-            iframe.style.height = h + 'px';
-            iframe.style.minHeight = h + 'px';
-          }
-        } catch (crossOriginErr) {
-          /* GitHub Pages cross-origin: just use a tall fixed height */
-          iframe.style.height = '900px';
-          iframe.style.minHeight = '900px';
-        }
-      }, 1500); /* 1.5 s lets the decryption + render finish */
-    });
+    /* Update loader text to hint at decryption */
+    if(eid(cfg.txtId)){
+      eid(cfg.txtId).textContent = 'Rendering content\u2026';
+    }
 
-    zone.appendChild(iframe);
-    cfg.loaded = true; /* mark loaded immediately so we never recreate it */
-  }
+    /* After the decryption/render delay, finalise height and hide overlay */
+    setTimeout(function(){
+      autoHeight(iframe, 900);
+      animateBar(cfg.barId, 100, 300);
+      setTimeout(function(){ hideLoader(cfg.loadId); }, 350);
+    }, cfg.delay);
+  });
+
+  /* Append iframe behind the loader overlay */
+  wrap.appendChild(iframe);
 }
 
 /* ─── Switch Tab ──────────────────────────── */
-function switchTab(tabKey) {
-  if (tabKey === currentTab) return;
+function switchTab(tabKey){
+  if(tabKey === currentTab) return;
 
-  /* Deactivate all tab buttons */
+  /* Deactivate all buttons */
   var btns = document.querySelectorAll('.tab-btn');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].classList.remove('act-foot', 'act-cric', 'act-high');
-    btns[i].setAttribute('aria-selected', 'false');
+  for(var i = 0; i < btns.length; i++){
+    btns[i].classList.remove('act-foot','act-cric','act-high');
+    btns[i].setAttribute('aria-selected','false');
   }
 
   /* Activate clicked button */
   var activeBtn = eid('tab-' + tabKey);
   activeBtn.classList.add(tabColors[tabKey]);
-  activeBtn.setAttribute('aria-selected', 'true');
+  activeBtn.setAttribute('aria-selected','true');
 
-  /* Hide all panels (visibility trick — keeps iframes alive) */
+  /* Hide/show panels (visibility trick — keeps iframes alive in DOM) */
   var panels = document.querySelectorAll('.tab-panel');
-  for (var j = 0; j < panels.length; j++) {
+  for(var j = 0; j < panels.length; j++){
     panels[j].classList.remove('active');
   }
   eid('panel-' + tabKey).classList.add('active');
 
   currentTab = tabKey;
-  loadTab(tabKey); /* only fetches/creates if not already loaded */
+  loadTab(tabKey);   /* no-op if already loaded */
 }
 
-/* ─── Boot: load football immediately ──────── */
-document.addEventListener('DOMContentLoaded', function() {
+/* ─── Boot ────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function(){
   loadTab('foot');
 });
 </script>
