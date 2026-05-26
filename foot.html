@@ -461,6 +461,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   min-height: 260px;
   padding: 16px 18px;
 }
+/* When zone contains an iframe, remove padding so it fills edge to edge */
+.tab-content-zone:has(iframe) {
+  padding: 0;
+  min-height: 600px;
+}
+/* Fallback for browsers without :has() support */
+.tab-content-zone iframe {
+  display: block;
+  width: 100%;
+  border: none;
+  min-height: 600px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
 
 /* ═══════════════════════════════════════════════
    LOADING STATE
@@ -1230,9 +1243,9 @@ mobileNav.addEventListener('click', e => {
 
 /* ─── Tab System + Lazy Content Fetching ─── */
 const tabs = {
-  foot: { loaded: false, endpoint: '/footmatch/fmatch',   loaderId: 'loading-foot', contentId: 'content-foot' },
-  cric: { loaded: false, endpoint: '/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
-  high: { loaded: false, endpoint: '/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
+  foot: { loaded: false, endpoint: 'https://sportssnap.github.io/footmatch/fmatch',   loaderId: 'loading-foot', contentId: 'content-foot' },
+  cric: { loaded: false, endpoint: 'https://sportssnap.github.io/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
+  high: { loaded: false, endpoint: 'https://sportssnap.github.io/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
 };
 
 const tabColors = {
@@ -1268,19 +1281,91 @@ function retryLoad(tab) {
   loadTab(tab);
 }
 
+/* ─── Re-execute <script> tags after innerHTML injection ─── */
+/* innerHTML doesn't run scripts — we must clone & replace each one */
+function execScripts(container) {
+  Array.from(container.querySelectorAll('script')).forEach(function(old) {
+    var neo = document.createElement('script');
+    Array.from(old.attributes).forEach(function(a) { neo.setAttribute(a.name, a.value); });
+    neo.textContent = old.textContent;
+    old.parentNode.replaceChild(neo, old);
+  });
+}
+
+/* ─── Load content into a tab zone ─── */
+/*
+  HOW IT WORKS:
+  ┌─────────────┬────────────────────────────────────────────────────────────┐
+  │ Football    │ Plain HTML page → fetch() → inject <body> content directly │
+  │             │ Scripts re-executed so match timers work                   │
+  ├─────────────┼────────────────────────────────────────────────────────────┤
+  │ Cricket     │ Encrypted page → the encryption runs via eval() inside the │
+  │ Highlights  │ browser, so fetch() only returns the raw source code, not  │
+  │             │ the decrypted output. Solution: load in a sandboxed iframe  │
+  │             │ which lets the browser execute the script naturally.        │
+  └─────────────┴────────────────────────────────────────────────────────────┘
+*/
 function loadTab(tab) {
   if (tabs[tab].loaded) return;
   showLoading(tab);
-  fetch(tabs[tab].endpoint)
-    .then(res => {
-      if (!res.ok) throw new Error('Network response not ok');
-      return res.text();
-    })
-    .then(html => {
-      $(tabs[tab].contentId).innerHTML = html;
+
+  var zone = $(tabs[tab].contentId);
+  var url  = tabs[tab].endpoint;
+
+  /* ── Football: plain HTML → fetch + inject ── */
+  if (tab === 'foot') {
+    fetch(url)
+      .then(function(res) {
+        if (!res.ok) throw new Error('bad response');
+        return res.text();
+      })
+      .then(function(raw) {
+        /* Extract only <body> content so we don't get nested <html>/<head> */
+        var bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+        zone.innerHTML = bodyMatch ? bodyMatch[1] : raw;
+        tabs[tab].loaded = true;
+        execScripts(zone); /* re-run timers, etc. */
+      })
+      .catch(function() { showError(tab); });
+
+  } else {
+    /* ── Cricket / Highlights: encrypted page → iframe ──
+       The page runs its own decryption via eval() and renders itself.
+       We give the iframe the full viewport height so all matches show.    */
+    var iframe = document.createElement('iframe');
+    iframe.src                  = url;
+    iframe.scrolling            = 'no';
+    iframe.frameBorder          = '0';
+    iframe.style.width          = '100%';
+    iframe.style.minHeight      = '600px';
+    iframe.style.border         = 'none';
+    iframe.style.display        = 'block';
+    iframe.style.borderRadius   = 'var(--radius-md)';
+    iframe.style.background     = 'transparent';
+    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('allowtransparency', 'true');
+
+    /* Auto-resize to fit content once loaded */
+    iframe.addEventListener('load', function() {
+      try {
+        var h = iframe.contentDocument.body.scrollHeight;
+        if (h > 200) iframe.style.height = h + 'px';
+      } catch(e) {
+        /* cross-origin restriction — just keep minHeight */
+        iframe.style.height = '700px';
+      }
+      zone.innerHTML = '';
+      zone.appendChild(iframe);
       tabs[tab].loaded = true;
-    })
-    .catch(() => showError(tab));
+    });
+
+    iframe.addEventListener('error', function() { showError(tab); });
+
+    /* Show iframe immediately, loading spinner shows underneath */
+    zone.innerHTML = '';
+    zone.appendChild(iframe);
+    tabs[tab].loaded = true;
+  }
 }
 
 function switchTab(tab) {
