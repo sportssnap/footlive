@@ -1231,8 +1231,8 @@ mobileNav.addEventListener('click', e => {
 /* ─── Tab System + Lazy Content Fetching ─── */
 const tabs = {
   foot: { loaded: false, endpoint: '/footmatch/fmatch',   loaderId: 'loading-foot', contentId: 'content-foot' },
-  cric: { loaded: false, endpoint: 'https://sportssnap.github.io/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
-  high: { loaded: false, endpoint: 'https://sportssnap.github.io/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
+  cric: { loaded: false, endpoint: '/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
+  high: { loaded: false, endpoint: '/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
 };
 
 const tabColors = {
