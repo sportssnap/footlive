@@ -10,880 +10,290 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
 <style>
-/* ═══════════════════════════════════════════════
-   ROOT / TOKENS
-═══════════════════════════════════════════════ */
+/* ── VARIABLES ─────────────────────────────── */
 :root {
-  --c-bg:        #f5f6f8;
-  --c-surface:   #ffffff;
-  --c-border:    #e4e6eb;
-  --c-text:      #111827;
-  --c-muted:     #6b7280;
-  --c-accent:    #0f4cdb;
-  --c-accent2:   #e63946;
-  --c-live:      #e63946;
-  --c-soon:      #16a34a;
-  --c-ended:     #9ca3af;
-  --c-highlight: #f59e0b;
-  --c-tab-foot:  #0f4cdb;
-  --c-tab-cric:  #16a34a;
-  --c-tab-high:  #f59e0b;
-
-  --radius-sm:   6px;
-  --radius-md:   10px;
-  --radius-lg:   16px;
-  --shadow-sm:   0 1px 4px rgba(0,0,0,.06);
-  --shadow-md:   0 4px 16px rgba(0,0,0,.09);
-  --shadow-lg:   0 8px 32px rgba(0,0,0,.12);
-
-  --font-display: 'Barlow Condensed', sans-serif;
-  --font-body:    'DM Sans', sans-serif;
-
-  --header-h: 64px;
-  --tab-bar-h: 52px;
+  --bg:        #f5f6f8;
+  --surface:   #ffffff;
+  --border:    #e4e6eb;
+  --text:      #111827;
+  --muted:     #6b7280;
+  --accent:    #0f4cdb;
+  --red:       #e63946;
+  --green:     #16a34a;
+  --amber:     #f59e0b;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px;
+  --sh-sm: 0 1px 4px rgba(0,0,0,.06);
+  --sh-md: 0 4px 16px rgba(0,0,0,.09);
+  --hdr-h: 64px;
+  --tab-h: 52px;
+  --fd: 'Barlow Condensed', sans-serif;
+  --fb: 'DM Sans', sans-serif;
 }
 
-/* ═══════════════════════════════════════════════
-   RESET
-═══════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--font-body);
-  background: var(--c-bg);
-  color: var(--c-text);
-  font-size: 15px;
-  line-height: 1.5;
-  min-height: 100vh;
-}
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
-ul, ol { list-style: none; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
+/* ── RESET ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;min-height:100vh}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+ul,ol{list-style:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
 
-/* ═══════════════════════════════════════════════
-   ANIMATIONS
-═══════════════════════════════════════════════ */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%       { transform: scale(1.4); opacity: .7; }
-}
-@keyframes shimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position: 600px 0; }
-}
+/* ── KEYFRAMES ─────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
 
-/* ═══════════════════════════════════════════════
-   LAYOUT HELPERS
-═══════════════════════════════════════════════ */
-.container {
-  max-width: 1060px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-.sr-only {
-  position: absolute; width: 1px; height: 1px;
-  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
-}
+/* ── LAYOUT ────────────────────────────────── */
+.container{max-width:1060px;margin:0 auto;padding:0 16px}
 
-/* ═══════════════════════════════════════════════
-   TOP ANNOUNCEMENT TICKER
-═══════════════════════════════════════════════ */
-.ticker-bar {
-  background: var(--c-accent);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  padding: 6px 0;
-  overflow: hidden;
-}
-.ticker-inner {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  white-space: nowrap;
-}
-.ticker-label {
-  background: var(--c-accent2);
-  padding: 2px 12px;
-  border-radius: 0 4px 4px 0;
-  margin-right: 20px;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-.ticker-scroll {
-  display: inline-flex;
-  gap: 60px;
-  animation: ticker-move 30s linear infinite;
-}
-@keyframes ticker-move {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.ticker-scroll span { opacity: .9; }
-.ticker-scroll b    { color: #ffd166; font-weight: 700; }
+/* ── TICKER ────────────────────────────────── */
+.ticker-bar{background:var(--accent);color:#fff;font-family:var(--fd);font-size:13px;font-weight:600;letter-spacing:.04em;padding:6px 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:flex;align-items:center}
+.ticker-label{background:var(--red);padding:2px 12px;border-radius:0 4px 4px 0;margin-right:20px;flex-shrink:0;text-transform:uppercase;letter-spacing:.08em}
+.ticker-track{display:inline-flex;gap:60px;animation:ticker-move 32s linear infinite}
+@keyframes ticker-move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-track span{opacity:.9}
+.ticker-track b{color:#ffd166;font-weight:700}
 
-/* ═══════════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════════ */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  background: var(--c-surface);
-  border-bottom: 1px solid var(--c-border);
-  box-shadow: var(--shadow-sm);
-  height: var(--header-h);
-}
-.header-inner {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
+/* ── HEADER ────────────────────────────────── */
+.site-header{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--sh-sm);height:var(--hdr-h)}
+.hdr-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px;max-width:1060px;margin:0 auto}
 
 /* Logo */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.logo-icon {
-  width: 38px;
-  height: 38px;
-  background: var(--c-accent);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-.logo-icon::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.25) 0%, transparent 60%);
-}
-.logo-icon svg { width: 22px; height: 22px; }
-.logo-name {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -.01em;
-  line-height: 1;
-}
-.logo-name span { color: var(--c-accent2); }
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.logo-icon::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 60%)}
+.logo-icon svg{width:22px;height:22px}
+.logo-name{font-family:var(--fd);font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1}
+.logo-name span{color:var(--red)}
 
-/* Header Nav */
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.header-nav a {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--c-muted);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  transition: color .2s, background .2s;
-}
-.header-nav a:hover {
-  color: var(--c-text);
-  background: var(--c-bg);
-}
+/* Desktop Nav */
+.hdr-nav{display:flex;align-items:center;gap:4px}
+.hdr-nav a{font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:var(--r-sm);transition:color .2s,background .2s}
+.hdr-nav a:hover{color:var(--text);background:var(--bg)}
 
-/* Header Actions */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.btn-social {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity .2s, transform .15s;
-}
-.btn-social:hover { opacity: .85; transform: translateY(-1px); }
-.btn-social.telegram { background: #29b6f6; }
-.btn-social.youtube  { background: #ff0000; }
-.btn-social svg { width: 16px; height: 16px; fill: #fff; }
-
-.btn-night {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  background: var(--c-bg);
-  border: 1px solid var(--c-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s;
-}
-.btn-night:hover { background: var(--c-border); }
-.btn-night svg { width: 16px; height: 16px; }
+/* Actions */
+.hdr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.btn-soc{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s}
+.btn-soc:hover{opacity:.85;transform:translateY(-1px)}
+.btn-soc.tg{background:#29b6f6}
+.btn-soc.yt{background:#ff0000}
+.btn-soc svg{width:16px;height:16px;fill:#fff}
+.btn-night{width:34px;height:34px;border-radius:var(--r-sm);background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.btn-night:hover{background:var(--border)}
+.btn-night svg{width:16px;height:16px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Hamburger */
-.btn-menu {
-  display: none;
-  width: 34px;
-  height: 34px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  border-radius: var(--radius-sm);
-  background: var(--c-bg);
-  border: 1px solid var(--c-border);
-}
-.btn-menu span {
-  width: 18px;
-  height: 2px;
-  background: var(--c-text);
-  border-radius: 2px;
-  transition: all .3s;
-}
-.btn-menu.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
-.btn-menu.open span:nth-child(2) { opacity: 0; }
-.btn-menu.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+.btn-ham{display:none;width:34px;height:34px;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:var(--r-sm);background:var(--bg);border:1px solid var(--border)}
+.btn-ham span{width:18px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.btn-ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.btn-ham.open span:nth-child(2){opacity:0}
+.btn-ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-/* Mobile drawer */
-.mobile-nav {
-  display: none;
-  position: fixed;
-  inset: var(--header-h) 0 0 0;
-  background: rgba(0,0,0,.4);
-  z-index: 190;
-  backdrop-filter: blur(2px);
-}
-.mobile-nav.open { display: block; }
-.mobile-nav-inner {
-  background: var(--c-surface);
-  width: 260px;
-  height: 100%;
-  padding: 20px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  animation: slideIn .25s ease;
-  box-shadow: var(--shadow-lg);
-}
-@keyframes slideIn {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(0); }
-}
-.mobile-nav-inner a {
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  font-weight: 500;
-  font-size: 15px;
-  color: var(--c-text);
-  transition: background .2s;
-}
-.mobile-nav-inner a:hover { background: var(--c-bg); }
-.mobile-social {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--c-border);
-}
+/* Mobile Nav Drawer */
+.mob-nav{display:none;position:fixed;inset:var(--hdr-h) 0 0 0;background:rgba(0,0,0,.4);z-index:190;backdrop-filter:blur(2px)}
+.mob-nav.open{display:block}
+.mob-nav-inner{background:var(--surface);width:260px;height:100%;padding:20px 16px;display:flex;flex-direction:column;gap:6px;animation:slideIn .25s ease;box-shadow:var(--sh-md)}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+.mob-nav-inner a{padding:10px 14px;border-radius:var(--r-sm);font-weight:500;font-size:15px;color:var(--text);transition:background .2s;display:block}
+.mob-nav-inner a:hover{background:var(--bg)}
+.mob-soc{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 
-/* ═══════════════════════════════════════════════
-   JOIN BANNER
-═══════════════════════════════════════════════ */
-.join-banner {
-  padding: 12px 0;
-  animation: fadeUp .5s ease both;
-}
-.join-banner-inner {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-/* ensure join banner sits flush on mobile */
-@media (max-width: 640px) {
-  .join-banner { padding: 10px 0 8px; }
-  .join-banner-inner { gap: 8px; }
-}
-.join-btn {
-  flex: 1;
-  min-width: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 11px 18px;
-  border-radius: var(--radius-md);
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: .02em;
-  color: #fff;
-  transition: transform .15s, box-shadow .15s;
-}
-.join-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.join-btn.tg  { background: linear-gradient(135deg, #2ca5e0, #1d7bb5); }
-.join-btn.yt  { background: linear-gradient(135deg, #ff4444, #c50000); }
-.join-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+/* ── JOIN BANNER ───────────────────────────── */
+.join-banner{padding:12px 0;animation:fadeUp .5s ease both}
+.join-inner{display:flex;gap:10px;flex-wrap:wrap}
+.join-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 18px;border-radius:var(--r-md);font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;transition:transform .15s,box-shadow .15s}
+.join-btn:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.join-btn.tg{background:linear-gradient(135deg,#2ca5e0,#1d7bb5)}
+.join-btn.yt{background:linear-gradient(135deg,#ff4444,#c50000)}
+.join-btn svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
 
-/* ═══════════════════════════════════════════════
-   MAIN CONTENT AREA
-═══════════════════════════════════════════════ */
-.main-wrap {
-  padding-bottom: 60px;
-  animation: fadeUp .55s .1s ease both;
-}
+/* ── AD SLOT ───────────────────────────────── */
+.ad-slot{text-align:center;padding:6px 0;margin-bottom:14px}
+.ad-label{font-size:10px;color:#bbb;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
 
-/* ═══════════════════════════════════════════════
-   SPORT CARD (the big tabbed panel)
-═══════════════════════════════════════════════ */
-.sport-card {
-  background: var(--c-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  overflow: hidden;
-}
+/* ── PAGE GRID ─────────────────────────────── */
+.page-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;padding-bottom:60px;animation:fadeUp .55s .1s ease both}
+.sidebar{display:flex;flex-direction:column;gap:16px}
+
+/* ── SPORT CARD ────────────────────────────── */
+/* NOTE: NO overflow:hidden — it clips iframes */
+.sport-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-md)}
 
 /* Tab Bar */
-.tab-bar {
-  display: flex;
-  background: #f8f9fb;
-  border-bottom: 1px solid var(--c-border);
-  position: relative;
-}
-
-.tab-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 0 12px;
-  height: var(--tab-bar-h);
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: .03em;
-  color: var(--c-muted);
-  border-bottom: 3px solid transparent;
-  transition: color .2s, border-color .2s, background .2s;
-  position: relative;
-  text-transform: uppercase;
-}
-.tab-btn:hover { color: var(--c-text); background: rgba(0,0,0,.03); }
-
-.tab-btn.active-foot { color: var(--c-tab-foot); border-color: var(--c-tab-foot); }
-.tab-btn.active-cric { color: var(--c-tab-cric); border-color: var(--c-tab-cric); }
-.tab-btn.active-high { color: var(--c-tab-high); border-color: var(--c-tab-high); }
-
-.tab-icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-}
-
-.tab-live-badge {
-  background: var(--c-live);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 3px;
-  letter-spacing: .06em;
-  animation: blink 1.4s ease infinite;
-  line-height: 16px;
-}
+.tab-bar{display:flex;background:#f8f9fb;border-bottom:1px solid var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;overflow:hidden}
+.tab-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;height:var(--tab-h);font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:.03em;color:var(--muted);border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s;text-transform:uppercase;cursor:pointer}
+.tab-btn:hover{color:var(--text);background:rgba(0,0,0,.03)}
+.tab-btn.act-foot{color:#0f4cdb;border-color:#0f4cdb}
+.tab-btn.act-cric{color:#16a34a;border-color:#16a34a}
+.tab-btn.act-high{color:#f59e0b;border-color:#f59e0b}
+.tab-icon{width:22px;height:22px;flex-shrink:0}
+.live-badge{background:var(--red);color:#fff;font-family:var(--fd);font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.06em;animation:blink 1.4s ease infinite;line-height:16px}
 
 /* Tab Panels */
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+/* IMPORTANT: use visibility:hidden + height:0 instead of display:none
+   so iframes inside inactive tabs still load and don't get destroyed    */
+.tab-panel{visibility:hidden;height:0;overflow:hidden;pointer-events:none}
+.tab-panel.active{visibility:visible;height:auto;overflow:visible;pointer-events:auto}
 
-/* Tab Header Strip */
-.tab-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 18px 10px;
-  border-bottom: 1px solid var(--c-border);
-  gap: 10px;
-}
-.tab-heading {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: .02em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.tab-heading .dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  animation: pulse-dot 1.6s ease infinite;
-}
-.dot-foot { background: var(--c-tab-foot); }
-.dot-cric { background: var(--c-tab-cric); }
-.dot-high { background: var(--c-tab-high); }
+/* Tab Header */
+.tab-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 10px;border-bottom:1px solid var(--border);gap:10px}
+.tab-heading{font-family:var(--fd);font-size:20px;font-weight:800;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.tab-heading .dot{width:9px;height:9px;border-radius:50%;animation:pulseDot 1.6s ease infinite}
+.dot-foot{background:#0f4cdb}
+.dot-cric{background:#16a34a}
+.dot-high{background:#f59e0b}
+.tab-date{font-size:13px;color:var(--muted);font-weight:400}
 
-.tab-date {
-  font-size: 13px;
-  color: var(--c-muted);
-  font-weight: 400;
-}
+/* Content Zone */
+.tab-zone{min-height:280px;padding:16px 18px;position:relative}
+/* When an iframe is inside, remove padding */
+.tab-zone.has-frame{padding:0;min-height:500px}
 
-/* Content zone */
-.tab-content-zone {
-  min-height: 260px;
-  padding: 16px 18px;
-}
-/* When zone contains an iframe, remove padding so it fills edge to edge */
-.tab-content-zone:has(iframe) {
-  padding: 0;
-  min-height: 600px;
-}
-/* Fallback for browsers without :has() support */
-.tab-content-zone iframe {
-  display: block;
-  width: 100%;
-  border: none;
-  min-height: 600px;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-}
+/* ── LOADING / ERROR ───────────────────────── */
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px 20px;color:var(--muted)}
+.ring{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.loading-wrap p{font-size:14px;font-weight:500}
+.err-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:50px 20px;color:var(--muted);text-align:center}
+.err-icon{font-size:40px}
+.err-wrap h3{font-size:16px;color:var(--text);font-weight:600}
+.err-wrap p{font-size:13px;max-width:280px}
+.btn-retry{margin-top:8px;padding:8px 20px;border-radius:var(--r-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:opacity .2s}
+.btn-retry:hover{opacity:.85}
 
-/* ═══════════════════════════════════════════════
-   LOADING STATE
-═══════════════════════════════════════════════ */
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 60px 20px;
-  color: var(--c-muted);
-}
-.loader-ring {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--c-border);
-  border-top-color: var(--c-accent);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-}
-.loading-state p {
-  font-size: 14px;
-  font-weight: 500;
-}
+/* iframe inside a tab zone */
+.tab-zone iframe{display:block;width:100%;border:none;min-height:500px;background:transparent}
 
-/* Skeleton shimmer */
-.skeleton {
-  background: linear-gradient(90deg, #f0f2f5 25%, #e8eaed 50%, #f0f2f5 75%);
-  background-size: 600px 100%;
-  animation: shimmer 1.4s infinite;
-  border-radius: var(--radius-sm);
-}
+/* ── SIDEBAR ───────────────────────────────── */
+.sb-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden;border:1px solid var(--border)}
+.sb-title{font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbfc}
+.ql-list{padding:8px 0}
+.ql-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:14px;font-weight:500;color:var(--text);transition:background .15s}
+.ql-item:hover{background:var(--bg)}
+.ql-ico{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.ql-arr{margin-left:auto;color:var(--muted);font-size:11px}
+.sb-body{padding:14px 16px;font-size:13px;color:var(--muted);line-height:1.65}
+.sb-body p{margin-bottom:10px}
+.sb-body p:last-child{margin-bottom:0}
 
-/* Error state */
-.error-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 50px 20px;
-  color: var(--c-muted);
-  text-align: center;
-}
-.error-state .err-icon { font-size: 40px; }
-.error-state h3 { font-size: 16px; color: var(--c-text); font-weight: 600; }
-.error-state p  { font-size: 13px; max-width: 280px; }
-.btn-retry {
-  margin-top: 8px;
-  padding: 8px 20px;
-  border-radius: var(--radius-sm);
-  background: var(--c-accent);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  transition: opacity .2s;
-}
-.btn-retry:hover { opacity: .85; }
+/* ── FOOTER ────────────────────────────────── */
+.site-footer{background:var(--surface);border-top:1px solid var(--border);padding:28px 0 20px;margin-top:40px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:24px;margin-bottom:24px}
+.foot-col-title{font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.foot-links{display:flex;flex-direction:column;gap:6px}
+.foot-links a{font-size:13px;color:var(--muted);transition:color .15s}
+.foot-links a:hover{color:var(--accent)}
+.foot-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-top:6px}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border);gap:12px;flex-wrap:wrap}
+.foot-copy{font-size:12px;color:var(--muted)}
+.foot-soc{display:flex;gap:8px}
 
-/* ═══════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════ */
-.page-grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 20px;
-  align-items: start;
-}
+/* ── STICKY BOTTOM AD ──────────────────────── */
+#fixedban{position:fixed;bottom:0;left:0;width:100%;text-align:center;z-index:999}
+.fixedban-inner{display:inline-block;position:relative;background:var(--surface);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(0,0,0,.08);padding:6px 40px 6px 6px}
+.fixedban-close{position:absolute;top:-14px;right:6px;width:24px;height:24px;background:var(--red);border-radius:50%;color:#fff;font-size:14px;font-weight:700;line-height:24px;text-align:center;cursor:pointer;border:none}
 
-.sidebar { display: flex; flex-direction: column; gap: 16px; }
+/* ── SIDEBAR ADS ───────────────────────────── */
+.side-ad{position:fixed;top:22%;width:160px;z-index:100;background:var(--surface);box-shadow:var(--sh-md);border-radius:var(--r-md);overflow:hidden}
+.side-ad-l{left:12px}
+.side-ad-r{right:12px}
+.side-ad-close{display:block;width:100%;text-align:right;padding:4px 8px;background:#f8f9fb;border-bottom:1px solid var(--border);font-size:18px;color:var(--muted);line-height:1;cursor:pointer;border:none;font-family:inherit}
+.side-ad-close:hover{color:var(--red)}
+@media(max-width:1400px){.side-ad{display:none}}
 
-.sidebar-card {
-  background: var(--c-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  border: 1px solid var(--c-border);
-}
+/* ── DARK MODE ─────────────────────────────── */
+body.night{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e8eaf0;--muted:#7c8098}
+body.night .tab-bar{background:#141620}
+body.night .tab-header{background:#141620}
+body.night .sb-title{background:#141620}
 
-.sidebar-title {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--c-border);
-  background: #fafbfc;
+/* ── RESPONSIVE ────────────────────────────── */
+@media(max-width:900px){
+  .page-grid{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
 }
-
-/* Quick links */
-.quick-links { padding: 10px 0; }
-.quick-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--c-text);
-  transition: background .15s;
+@media(max-width:640px){
+  .hdr-nav{display:none}
+  .btn-ham{display:flex}
+  .join-inner{flex-direction:column}
+  .join-btn{min-width:0;width:100%}
+  .foot-grid{grid-template-columns:1fr}
+  .tab-btn{font-size:13px;padding:0 8px;gap:5px}
+  .tab-icon{width:18px;height:18px}
+  .live-badge{display:none}
+  .tab-zone{padding:12px 10px}
+  .tab-zone.has-frame{padding:0}
+  .tab-header{padding:10px 12px 8px}
+  .sport-card{border-radius:0;box-shadow:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
 }
-.quick-link:hover { background: var(--c-bg); }
-.ql-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 14px;
-}
-.ql-foot { background: #eff4ff; }
-.ql-cric { background: #f0fdf4; }
-.ql-high { background: #fffbeb; }
-.ql-arrow {
-  margin-left: auto;
-  color: var(--c-muted);
-  font-size: 11px;
-}
-
-/* Info card */
-.info-card-body { padding: 14px 16px; }
-.info-card-body p {
-  font-size: 13px;
-  color: var(--c-muted);
-  line-height: 1.65;
-  margin-bottom: 10px;
-}
-.info-card-body p:last-child { margin-bottom: 0; }
-
-/* ═══════════════════════════════════════════════
-   AD SLOTS  
-═══════════════════════════════════════════════ */
-.ad-slot {
-  text-align: center;
-  padding: 6px 0;
-}
-.ad-slot-label {
-  font-size: 10px;
-  color: #bbb;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-/* ═══════════════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════════════ */
-.site-footer {
-  background: var(--c-surface);
-  border-top: 1px solid var(--c-border);
-  padding: 28px 0 20px;
-  margin-top: 40px;
-}
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-.footer-col-title {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-  margin-bottom: 10px;
-}
-.footer-links { display: flex; flex-direction: column; gap: 6px; }
-.footer-links a {
-  font-size: 13px;
-  color: var(--c-muted);
-  transition: color .15s;
-}
-.footer-links a:hover { color: var(--c-accent); }
-.footer-desc {
-  font-size: 13px;
-  color: var(--c-muted);
-  line-height: 1.65;
-  margin-top: 6px;
-}
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 18px;
-  border-top: 1px solid var(--c-border);
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.footer-copy {
-  font-size: 12px;
-  color: var(--c-muted);
-}
-.footer-social { display: flex; gap: 8px; }
-
-/* ═══════════════════════════════════════════════
-   FLOATING ADS BOTTOM
-═══════════════════════════════════════════════ */
-#fixedban {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  z-index: 999;
-  transform: translateZ(0);
-}
-.fixedban-inner {
-  display: inline-block;
-  position: relative;
-  background: var(--c-surface);
-  border-top: 1px solid var(--c-border);
-  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
-  padding: 6px 40px 6px 6px;
-}
-.fixedban-close {
-  position: absolute;
-  top: -14px;
-  right: 6px;
-  width: 24px;
-  height: 24px;
-  background: var(--c-accent2);
-  border-radius: 50%;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 24px;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-}
-
-/* ═══════════════════════════════════════════════
-   SIDEBAR ADS
-═══════════════════════════════════════════════ */
-.side-ad {
-  position: fixed;
-  top: 22%;
-  width: 160px;
-  z-index: 100;
-  background: var(--c-surface);
-  box-shadow: var(--shadow-md);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-.side-ad-left  { left: 12px; }
-.side-ad-right { right: 12px; }
-.side-ad-close {
-  display: block;
-  width: 100%;
-  text-align: right;
-  padding: 4px 8px;
-  background: #f8f9fb;
-  border-bottom: 1px solid var(--c-border);
-  font-size: 18px;
-  color: var(--c-muted);
-  line-height: 1;
-  cursor: pointer;
-  border: none;
-  font-family: inherit;
-}
-.side-ad-close:hover { color: var(--c-accent2); }
-@media (max-width: 1400px) { .side-ad { display: none; } }
-
-/* ═══════════════════════════════════════════════
-   DARK / NIGHT MODE
-═══════════════════════════════════════════════ */
-body.night {
-  --c-bg:      #0f1117;
-  --c-surface: #1a1d27;
-  --c-border:  #2a2d3a;
-  --c-text:    #e8eaf0;
-  --c-muted:   #7c8098;
-}
-body.night .tab-bar         { background: #141620; }
-body.night .tab-header      { background: #141620; }
-body.night .sidebar-title   { background: #141620; }
-body.night .skeleton        { background: linear-gradient(90deg, #1e2130 25%, #252836 50%, #1e2130 75%); background-size: 600px 100%; animation: shimmer 1.4s infinite; }
-body.night .btn-night svg path:first-child { display: none; }
-
-/* ═══════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .page-grid { grid-template-columns: 1fr; }
-  .sidebar { display: none; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 640px) {
-  .header-nav  { display: none; }
-  .btn-menu    { display: flex; }
-  .join-banner-inner { flex-direction: column; }
-  .join-btn    { min-width: 0; width: 100%; justify-content: center; }
-  .footer-grid { grid-template-columns: 1fr; }
-
-  /* Tabs: shrink text, hide LIVE badge on smallest */
-  .tab-btn     { font-size: 13px; padding: 0 8px; gap: 5px; }
-  .tab-icon    { width: 18px; height: 18px; }
-  .tab-live-badge { display: none; }
-
-  /* Tab content less side padding on mobile */
-  .tab-content-zone { padding: 12px 10px; }
-  .tab-header       { padding: 10px 12px 8px; }
-
-  /* Sport card full-width, no side radius on mobile */
-  .sport-card { border-radius: 0; box-shadow: none; border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
-  .container  { padding: 0 10px; }
-
-  /* Ticker smaller on mobile */
-  .ticker-bar  { font-size: 12px; }
-  .ticker-label { padding: 2px 8px; font-size: 11px; }
-
-  /* Fixed bottom ad smaller */
-  .fixedban-inner { padding: 4px 32px 4px 4px; }
-
-  /* Footer compact */
-  .site-footer { padding: 20px 0 14px; }
-  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
-}
-
-@media (max-width: 420px) {
-  :root { --header-h: 56px; --tab-bar-h: 46px; }
-  .logo-name   { font-size: 22px; }
-  .tab-btn     { font-size: 12px; padding: 0 6px; gap: 4px; }
-  .tab-icon    { width: 16px; height: 16px; }
-  .tab-heading { font-size: 17px; }
-  .tab-date    { font-size: 11px; }
-  .join-btn    { font-size: 14px; padding: 10px 14px; }
-  .btn-social  { width: 30px; height: 30px; }
-  .btn-night   { width: 30px; height: 30px; }
-  .btn-menu    { width: 30px; height: 30px; }
-
-  /* Stack ticker label and scroll on very small screens */
-  .ticker-inner { flex-direction: column; gap: 2px; align-items: flex-start; }
-  .ticker-label { border-radius: 4px; margin-right: 0; margin-bottom: 2px; }
+@media(max-width:420px){
+  :root{--hdr-h:56px;--tab-h:46px}
+  .logo-name{font-size:22px}
+  .tab-btn{font-size:12px;padding:0 6px;gap:4px}
+  .tab-icon{width:16px;height:16px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ══════════════════════════════════
-     TICKER
-══════════════════════════════════ -->
-<div class="ticker-bar" role="marquee" aria-label="Live updates">
-  <div class="container">
-    <div class="ticker-inner">
-      <span class="ticker-label">🔴 Live</span>
-      <div class="ticker-scroll" id="tickerScroll">
-        <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
-        <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
-        <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting in 45 min</span>
-        <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
-        <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
-        <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
-        <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
-        <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting in 45 min</span>
-        <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
-        <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
-      </div>
+<!-- ── TICKER ──────────────────────────────── -->
+<div class="ticker-bar" role="marquee">
+  <div class="ticker-inner">
+    <span class="ticker-label">🔴 Live</span>
+    <div class="ticker-track">
+      <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
+      <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
+      <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting Soon</span>
+      <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
+      <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
+      <!-- duplicate for seamless loop -->
+      <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
+      <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
+      <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting Soon</span>
+      <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
+      <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     HEADER
-══════════════════════════════════ -->
+<!-- ── HEADER ──────────────────────────────── -->
 <header class="site-header" role="banner">
-  <div class="container header-inner">
+  <div class="hdr-inner">
 
-    <!-- Logo -->
-    <a href="/" class="logo" aria-label="LiveKick Home">
+    <a href="https://sportssnap.github.io/footlive/foot" class="logo" aria-label="LiveKick Home">
       <div class="logo-icon">
         <svg viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
-          <path d="M12 2 L12 6 M12 18 L12 22 M2 12 L6 12 M18 12 L22 12" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
           <circle cx="12" cy="12" r="3" fill="#fff"/>
         </svg>
       </div>
       <div class="logo-name">Live<span>Kick</span></div>
     </a>
 
-    <!-- Desktop Nav -->
-    <nav class="header-nav" aria-label="Main navigation">
+    <nav class="hdr-nav" aria-label="Main navigation">
       <a href="https://sportssnap.github.io/footlive/foot">Football</a>
       <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket</a>
       <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
       <a href="#about">About</a>
     </nav>
 
-    <!-- Actions -->
-    <div class="header-actions">
-      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" title="Join Telegram" aria-label="Telegram">
-        <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+    <div class="hdr-actions">
+      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" aria-label="Telegram">
+        <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
       </a>
-      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" title="YouTube Channel" aria-label="YouTube">
+      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" aria-label="YouTube">
         <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </a>
-      <button class="btn-night" id="nightToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
-        <svg id="nightIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+      <button class="btn-night" id="nightToggle" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button class="btn-menu" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+      <button class="btn-ham" id="menuBtn" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -891,35 +301,29 @@ body.night .btn-night svg path:first-child { display: none; }
   </div>
 </header>
 
-<!-- Mobile Nav -->
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <div class="mobile-nav-inner">
+<!-- Mobile Drawer -->
+<div class="mob-nav" id="mobNav" aria-hidden="true">
+  <div class="mob-nav-inner">
     <a href="https://sportssnap.github.io/footlive/foot">⚽ Football Live</a>
     <a href="https://sportssnap.github.io/cricmatch/cmatch">🏏 Cricket Live</a>
     <a href="https://sportssnap.github.io/highlights/hmatch">🎬 Highlights</a>
     <a href="#about">ℹ️ About</a>
-    <div class="mobile-social">
-      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" style="width:38px;height:38px;">
-        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
-      </a>
-      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" style="width:38px;height:38px;">
-        <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
+    <div class="mob-soc">
+      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></a>
+      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     PAGE BODY
-══════════════════════════════════ -->
+<!-- ── MAIN ────────────────────────────────── -->
 <main>
   <div class="container">
 
     <!-- Join Banner -->
     <div class="join-banner">
-      <div class="join-banner-inner">
+      <div class="join-inner">
         <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg">
-          <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
           Join Us on Telegram
         </a>
         <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt">
@@ -929,116 +333,73 @@ body.night .btn-night svg path:first-child { display: none; }
       </div>
     </div>
 
-    <!-- Top Ad Slot -->
-    <div class="ad-slot" style="margin-bottom:16px;">
-      <div class="ad-slot-label">Advertisement</div>
+    <!-- Top Ad -->
+    <div class="ad-slot">
+      <div class="ad-label">Advertisement</div>
       <!-- INSERT TOP BANNER AD HERE -->
-      <!-- <script>atOptions={...};</script><script src="..."></script> -->
     </div>
 
-    <!-- Main Grid: Sport Card + Sidebar -->
-    <div class="page-grid main-wrap">
+    <!-- Grid -->
+    <div class="page-grid">
 
-      <!-- ── SPORT CARD ── -->
+      <!-- SPORT CARD -->
       <div>
         <div class="sport-card">
 
           <!-- TAB BAR -->
-          <div class="tab-bar" role="tablist" aria-label="Sports sections">
-
-            <button class="tab-btn active-foot"
-                    id="tab-foot"
-                    role="tab"
-                    aria-selected="true"
-                    aria-controls="panel-foot"
-                    onclick="switchTab('foot')">
-              <!-- Football Icon -->
-              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <circle cx="12" cy="12" r="9.5"/>
-                <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/>
-                <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/>
-              </svg>
+          <div class="tab-bar" role="tablist">
+            <button class="tab-btn act-foot" id="tab-foot" role="tab" aria-selected="true" aria-controls="panel-foot" onclick="switchTab('foot')">
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
               Football
-              <span class="tab-live-badge">LIVE</span>
+              <span class="live-badge">LIVE</span>
             </button>
-
-            <button class="tab-btn"
-                    id="tab-cric"
-                    role="tab"
-                    aria-selected="false"
-                    aria-controls="panel-cric"
-                    onclick="switchTab('cric')">
-              <!-- Cricket Icon -->
-              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M4 20 L20 4" stroke-linecap="round"/>
-                <path d="M8 20 L20 8" stroke-linecap="round"/>
-                <circle cx="5" cy="19" r="2.5" fill="currentColor" stroke="none"/>
-              </svg>
+            <button class="tab-btn" id="tab-cric" role="tab" aria-selected="false" aria-controls="panel-cric" onclick="switchTab('cric')">
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20L20 4" stroke-linecap="round"/><path d="M8 20L20 8" stroke-linecap="round"/><circle cx="5" cy="19" r="2.5" fill="currentColor" stroke="none"/></svg>
               Cricket
-              <span class="tab-live-badge" style="background:var(--c-soon);">LIVE</span>
+              <span class="live-badge" style="background:#16a34a">LIVE</span>
             </button>
-
-            <button class="tab-btn"
-                    id="tab-high"
-                    role="tab"
-                    aria-selected="false"
-                    aria-controls="panel-high"
-                    onclick="switchTab('high')">
-              <!-- Highlights Icon -->
-              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <polygon points="5,3 19,12 5,21" fill="currentColor" stroke="none"/>
-              </svg>
+            <button class="tab-btn" id="tab-high" role="tab" aria-selected="false" aria-controls="panel-high" onclick="switchTab('high')">
+              <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="5,3 19,12 5,21" fill="currentColor" stroke="none"/></svg>
               Highlights
             </button>
-
           </div>
 
-          <!-- ── FOOTBALL PANEL ── -->
+          <!-- FOOTBALL PANEL -->
           <div class="tab-panel active" id="panel-foot" role="tabpanel" aria-labelledby="tab-foot">
             <div class="tab-header">
-              <div class="tab-heading">
-                <span class="dot dot-foot"></span>
-                Football Live
-              </div>
+              <div class="tab-heading"><span class="dot dot-foot"></span>Football Live</div>
               <span class="tab-date" id="todayDate"></span>
             </div>
-            <div class="tab-content-zone" id="content-foot">
-              <!-- Loading state shown initially -->
-              <div class="loading-state" id="loading-foot">
-                <div class="loader-ring"></div>
+            <div class="tab-zone" id="zone-foot">
+              <div class="loading-wrap" id="load-foot">
+                <div class="ring"></div>
                 <p>Loading football matches…</p>
               </div>
             </div>
           </div>
 
-          <!-- ── CRICKET PANEL ── -->
+          <!-- CRICKET PANEL -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
             <div class="tab-header">
-              <div class="tab-heading">
-                <span class="dot dot-cric"></span>
-                Cricket Live
-              </div>
+              <div class="tab-heading"><span class="dot dot-cric"></span>Cricket Live</div>
               <span class="tab-date" id="todayDate2"></span>
             </div>
-            <div class="tab-content-zone" id="content-cric">
-              <div class="loading-state" id="loading-cric" style="display:none;">
-                <div class="loader-ring" style="border-top-color:var(--c-soon);"></div>
+            <div class="tab-zone" id="zone-cric">
+              <div class="loading-wrap" id="load-cric" style="display:none">
+                <div class="ring" style="border-top-color:#16a34a"></div>
                 <p>Loading cricket matches…</p>
               </div>
             </div>
           </div>
 
-          <!-- ── HIGHLIGHTS PANEL ── -->
+          <!-- HIGHLIGHTS PANEL -->
           <div class="tab-panel" id="panel-high" role="tabpanel" aria-labelledby="tab-high">
             <div class="tab-header">
-              <div class="tab-heading">
-                <span class="dot dot-high"></span>
-                Latest Highlights
-              </div>
+              <div class="tab-heading"><span class="dot dot-high"></span>Latest Highlights</div>
             </div>
-            <div class="tab-content-zone" id="content-high">
-              <div class="loading-state" id="loading-high" style="display:none;">
-                <div class="loader-ring" style="border-top-color:var(--c-highlight);"></div>
+            <div class="tab-zone" id="zone-high">
+              <div class="loading-wrap" id="load-high" style="display:none">
+                <div class="ring" style="border-top-color:#f59e0b"></div>
                 <p>Loading highlights…</p>
               </div>
             </div>
@@ -1048,381 +409,337 @@ body.night .btn-night svg path:first-child { display: none; }
 
         <!-- Mid Ad -->
         <div class="ad-slot" style="margin-top:18px;">
-          <div class="ad-slot-label">Advertisement</div>
+          <div class="ad-label">Advertisement</div>
           <!-- INSERT MID AD HERE -->
         </div>
       </div>
 
-      <!-- ── SIDEBAR ── -->
+      <!-- SIDEBAR -->
       <aside class="sidebar" aria-label="Sidebar">
 
-        <!-- Quick Links -->
-        <div class="sidebar-card">
-          <div class="sidebar-title">Quick Links</div>
-          <nav class="quick-links">
-            <a href="https://sportssnap.github.io/footlive/foot" class="quick-link">
-              <span class="ql-icon ql-foot">⚽</span>
-              Football Live
-              <span class="ql-arrow">›</span>
+        <div class="sb-card">
+          <div class="sb-title">Quick Links</div>
+          <nav class="ql-list">
+            <a href="https://sportssnap.github.io/footlive/foot" class="ql-item">
+              <span class="ql-ico" style="background:#eff4ff">⚽</span> Football Live <span class="ql-arr">›</span>
             </a>
-            <a href="https://sportssnap.github.io/cricmatch/cmatch" class="quick-link">
-              <span class="ql-icon ql-cric">🏏</span>
-              Cricket Live
-              <span class="ql-arrow">›</span>
+            <a href="https://sportssnap.github.io/cricmatch/cmatch" class="ql-item">
+              <span class="ql-ico" style="background:#f0fdf4">🏏</span> Cricket Live <span class="ql-arr">›</span>
             </a>
-            <a href="https://sportssnap.github.io/highlights/hmatch" class="quick-link">
-              <span class="ql-icon ql-high">🎬</span>
-              Highlights
-              <span class="ql-arrow">›</span>
+            <a href="https://sportssnap.github.io/highlights/hmatch" class="ql-item">
+              <span class="ql-ico" style="background:#fffbeb">🎬</span> Highlights <span class="ql-arr">›</span>
             </a>
           </nav>
         </div>
 
-        <!-- Sidebar Ad -->
-        <div class="sidebar-card" style="overflow:visible;">
-          <div class="sidebar-title">Advertisement</div>
-          <div class="ad-slot" style="padding:10px;">
-            <!-- INSERT SIDEBAR AD HERE (300x250) -->
-            <div style="width:300px;height:250px;background:var(--c-bg);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--c-muted);">Ad Space 300×250</div>
+        <div class="sb-card">
+          <div class="sb-title">Advertisement</div>
+          <div class="ad-slot" style="padding:10px">
+            <!-- INSERT SIDEBAR AD 300x250 HERE -->
+            <div style="width:300px;height:250px;background:var(--bg);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)">Ad Space 300×250</div>
           </div>
         </div>
 
-        <!-- About Info -->
-        <div class="sidebar-card" id="about">
-          <div class="sidebar-title">About LiveKick</div>
-          <div class="info-card-body">
+        <div class="sb-card" id="about">
+          <div class="sb-title">About LiveKick</div>
+          <div class="sb-body">
             <p>LiveKick is a free sports aggregator providing links to live football, cricket and match highlights from around the web.</p>
             <p>We do not host or store any media. All streams are sourced from publicly available third-party platforms.</p>
           </div>
         </div>
 
-        <!-- Social -->
-        <div class="sidebar-card">
-          <div class="sidebar-title">Follow Us</div>
-          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
-            <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg" style="font-size:14px;padding:9px 14px;">
-              <svg style="width:18px;height:18px;fill:#fff;" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
+        <div class="sb-card">
+          <div class="sb-title">Follow Us</div>
+          <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+            <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg" style="font-size:14px;padding:9px 14px">
+              <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
               Telegram Channel
             </a>
-            <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt" style="font-size:14px;padding:9px 14px;">
-              <svg style="width:18px;height:18px;fill:#fff;" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt" style="font-size:14px;padding:9px 14px">
+              <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               YouTube Channel
             </a>
           </div>
         </div>
 
       </aside>
-
     </div><!-- /page-grid -->
   </div><!-- /container -->
 </main>
 
-<!-- ══════════════════════════════════
-     FOOTER
-══════════════════════════════════ -->
+<!-- ── FOOTER ──────────────────────────────── -->
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
-
+    <div class="foot-grid">
       <div>
-        <a href="/" class="logo" style="margin-bottom:10px;" aria-label="LiveKick">
-          <div class="logo-icon" style="width:30px;height:30px;">
-            <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px;">
-              <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
-              <circle cx="12" cy="12" r="3" fill="#fff"/>
-            </svg>
-          </div>
-          <div class="logo-name" style="font-size:20px;">Live<span>Kick</span></div>
+        <a href="https://sportssnap.github.io/footlive/foot" class="logo" style="margin-bottom:10px">
+          <div class="logo-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg></div>
+          <div class="logo-name" style="font-size:20px">Live<span>Kick</span></div>
         </a>
-        <p class="footer-desc">Free sports streaming aggregator. We link to publicly available streams for football, cricket and highlights worldwide.</p>
+        <p class="foot-desc">Free sports streaming aggregator. We link to publicly available streams for football, cricket and highlights worldwide.</p>
       </div>
-
       <div>
-        <div class="footer-col-title">Pages</div>
-        <nav class="footer-links">
+        <div class="foot-col-title">Pages</div>
+        <nav class="foot-links">
           <a href="https://sportssnap.github.io/footlive/foot">Football Live</a>
           <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket Live</a>
           <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
         </nav>
       </div>
-
       <div>
-        <div class="footer-col-title">Legal</div>
-        <nav class="footer-links">
+        <div class="foot-col-title">Legal</div>
+        <nav class="foot-links">
           <a href="#">DMCA / Disclaimer</a>
           <a href="#">Privacy Policy</a>
           <a href="#">Contact Us</a>
         </nav>
       </div>
-
     </div>
-
-    <div class="footer-bottom">
-      <p class="footer-copy">© <span id="footYear"></span> LiveKick. All streams are sourced from third-party platforms.</p>
-      <div class="footer-social">
-        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-social telegram" aria-label="Telegram">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972.001-.001c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
-        </a>
-        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-social youtube" aria-label="YouTube">
-          <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
+    <div class="foot-bottom">
+      <p class="foot-copy">© <span id="footYear"></span> LiveKick. All streams are sourced from third-party platforms.</p>
+      <div class="foot-soc">
+        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" aria-label="Telegram"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></a>
+        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" aria-label="YouTube"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- ══════════════════════════════════
-     FLOATING BOTTOM AD
-══════════════════════════════════ -->
+<!-- ── BOTTOM STICKY AD ────────────────────── -->
 <div id="fixedban">
   <div class="fixedban-inner">
-    <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none';" aria-label="Close ad">×</button>
-    <!-- INSERT BOTTOM STICKY AD (300x50 or 320x50) HERE -->
-    <!-- <script>atOptions={...};</script><script src="..."></script> -->
-    <div style="width:300px;height:50px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;border-radius:4px;">Bottom Ad 300×50</div>
+    <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none'" aria-label="Close">×</button>
+    <!-- INSERT BOTTOM AD 300x50 HERE -->
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     SIDEBAR ADS (desktop wide only)
-══════════════════════════════════ -->
-<div class="side-ad side-ad-left" id="leftAd">
-  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none';" aria-label="Close">×</button>
-  <!-- INSERT LEFT AD (160x600) -->
-  <div style="width:160px;height:600px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;writing-mode:vertical-rl;">Left Ad 160×600</div>
+<!-- ── SIDEBAR ADS ─────────────────────────── -->
+<div class="side-ad side-ad-l" id="leftAd">
+  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'">×</button>
+  <!-- INSERT LEFT AD 160x600 HERE -->
+</div>
+<div class="side-ad side-ad-r" id="rightAd">
+  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'">×</button>
+  <!-- INSERT RIGHT AD 160x600 HERE -->
 </div>
 
-<div class="side-ad side-ad-right" id="rightAd">
-  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none';" aria-label="Close">×</button>
-  <!-- INSERT RIGHT AD (160x600) -->
-  <div style="width:160px;height:600px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;writing-mode:vertical-rl;">Right Ad 160×600</div>
-</div>
-
-<!-- ══════════════════════════════════
-     SCRIPTS
-══════════════════════════════════ -->
+<!-- ── SCRIPTS ─────────────────────────────── -->
 <script>
-/* ─── Utility ─── */
-const $ = id => document.getElementById(id);
+/* ─── Helpers ─────────────────────────────── */
+function eid(id) { return document.getElementById(id); }
 
-/* ─── Date ─── */
-const dateStr = new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-$('todayDate').textContent  = dateStr;
-$('todayDate2').textContent = dateStr;
-$('footYear').textContent   = new Date().getFullYear();
+/* ─── Dates & Year ────────────────────────── */
+var ds = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+eid('todayDate').textContent  = ds;
+eid('todayDate2').textContent = ds;
+eid('footYear').textContent   = new Date().getFullYear();
 
-/* ─── Night Mode ─── */
-(function initNight() {
-  if (localStorage.getItem('night') === '1') document.body.classList.add('night');
-})();
-
-$('nightToggle').addEventListener('click', () => {
-  const on = document.body.classList.toggle('night');
+/* ─── Night Mode ──────────────────────────── */
+if (localStorage.getItem('night') === '1') document.body.classList.add('night');
+eid('nightToggle').addEventListener('click', function() {
+  var on = document.body.classList.toggle('night');
   localStorage.setItem('night', on ? '1' : '0');
 });
 
-/* ─── Mobile Menu ─── */
-const menuBtn   = $('menuBtn');
-const mobileNav = $('mobileNav');
-
-menuBtn.addEventListener('click', () => {
-  const open = menuBtn.classList.toggle('open');
-  mobileNav.classList.toggle('open', open);
-  menuBtn.setAttribute('aria-expanded', open);
-  mobileNav.setAttribute('aria-hidden', !open);
+/* ─── Mobile Menu ─────────────────────────── */
+var menuBtn = eid('menuBtn');
+var mobNav  = eid('mobNav');
+menuBtn.addEventListener('click', function() {
+  var open = menuBtn.classList.toggle('open');
+  mobNav.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', String(open));
+  mobNav.setAttribute('aria-hidden', String(!open));
 });
-
-mobileNav.addEventListener('click', e => {
-  if (e.target === mobileNav) {
+mobNav.addEventListener('click', function(e) {
+  if (e.target === mobNav) {
     menuBtn.classList.remove('open');
-    mobileNav.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded', false);
-    mobileNav.setAttribute('aria-hidden', true);
+    mobNav.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    mobNav.setAttribute('aria-hidden', 'true');
   }
 });
 
-/* ─── Tab System + Lazy Content Fetching ─── */
-const tabs = {
-  foot: { loaded: false, endpoint: 'https://sportssnap.github.io/footmatch/fmatch',   loaderId: 'loading-foot', contentId: 'content-foot' },
-  cric: { loaded: false, endpoint: 'https://sportssnap.github.io/cricmatch/cmatch',   loaderId: 'loading-cric', contentId: 'content-cric' },
-  high: { loaded: false, endpoint: 'https://sportssnap.github.io/highlights/hmatch',  loaderId: 'loading-high', contentId: 'content-high' },
+/* ─── Tab Config ──────────────────────────── */
+var tabs = {
+  foot: {
+    loaded:   false,
+    url:      'https://sportssnap.github.io/footmatch/fmatch',
+    zoneId:   'zone-foot',
+    type:     'fetch'       /* plain HTML → fetch & inject */
+  },
+  cric: {
+    loaded:   false,
+    url:      'https://sportssnap.github.io/cricmatch/cmatch',
+    zoneId:   'zone-cric',
+    type:     'iframe'      /* encrypted page → iframe */
+  },
+  high: {
+    loaded:   false,
+    url:      'https://sportssnap.github.io/highlights/hmatch',
+    zoneId:   'zone-high',
+    type:     'iframe'      /* encrypted page → iframe */
+  }
 };
 
-const tabColors = {
-  foot: 'active-foot',
-  cric: 'active-cric',
-  high: 'active-high',
-};
+var tabColors = { foot:'act-foot', cric:'act-cric', high:'act-high' };
+var currentTab = 'foot';
 
-let currentTab = 'foot';
-
-function showLoading(tab) {
-  const zone = $(tabs[tab].contentId);
-  zone.innerHTML = `
-    <div class="loading-state">
-      <div class="loader-ring" style="border-top-color:${tab==='cric'?'var(--c-soon)':tab==='high'?'var(--c-highlight)':'var(--c-accent)'}"></div>
-      <p>Loading ${tab==='foot'?'football':tab==='cric'?'cricket':'highlights'}…</p>
-    </div>`;
+/* ─── Show Error ──────────────────────────── */
+function showError(zoneId, tabKey) {
+  eid(zoneId).innerHTML =
+    '<div class="err-wrap">' +
+      '<div class="err-icon">📡</div>' +
+      '<h3>Content Unavailable</h3>' +
+      '<p>Could not load content. Please check your connection.</p>' +
+      '<button class="btn-retry" onclick="retryTab(\'' + tabKey + '\')">Try Again</button>' +
+    '</div>';
 }
 
-function showError(tab, retry) {
-  const zone = $(tabs[tab].contentId);
-  zone.innerHTML = `
-    <div class="error-state">
-      <div class="err-icon">📡</div>
-      <h3>Content Unavailable</h3>
-      <p>Could not load matches right now. Check your connection or try again.</p>
-      <button class="btn-retry" onclick="retryLoad('${tab}')">Try Again</button>
-    </div>`;
+function retryTab(tabKey) {
+  tabs[tabKey].loaded = false;
+  loadTab(tabKey);
 }
 
-function retryLoad(tab) {
-  tabs[tab].loaded = false;
-  loadTab(tab);
-}
-
-/* ─── Re-execute <script> tags after innerHTML injection ─── */
-/* innerHTML doesn't run scripts — we must clone & replace each one */
-function execScripts(container) {
-  Array.from(container.querySelectorAll('script')).forEach(function(old) {
+/* ─── Re-execute scripts injected via innerHTML ─── */
+function runScripts(container) {
+  var scripts = container.querySelectorAll('script');
+  for (var i = 0; i < scripts.length; i++) {
+    var old = scripts[i];
     var neo = document.createElement('script');
-    Array.from(old.attributes).forEach(function(a) { neo.setAttribute(a.name, a.value); });
+    for (var j = 0; j < old.attributes.length; j++) {
+      neo.setAttribute(old.attributes[j].name, old.attributes[j].value);
+    }
     neo.textContent = old.textContent;
     old.parentNode.replaceChild(neo, old);
-  });
-}
-
-/* ─── Load content into a tab zone ─── */
-/*
-  HOW IT WORKS:
-  ┌─────────────┬────────────────────────────────────────────────────────────┐
-  │ Football    │ Plain HTML page → fetch() → inject <body> content directly │
-  │             │ Scripts re-executed so match timers work                   │
-  ├─────────────┼────────────────────────────────────────────────────────────┤
-  │ Cricket     │ Encrypted page → the encryption runs via eval() inside the │
-  │ Highlights  │ browser, so fetch() only returns the raw source code, not  │
-  │             │ the decrypted output. Solution: load in a sandboxed iframe  │
-  │             │ which lets the browser execute the script naturally.        │
-  └─────────────┴────────────────────────────────────────────────────────────┘
-*/
-function loadTab(tab) {
-  if (tabs[tab].loaded) return;
-  showLoading(tab);
-
-  var zone = $(tabs[tab].contentId);
-  var url  = tabs[tab].endpoint;
-
-  /* ── Football: plain HTML → fetch + inject ── */
-  if (tab === 'foot') {
-    fetch(url)
-      .then(function(res) {
-        if (!res.ok) throw new Error('bad response');
-        return res.text();
-      })
-      .then(function(raw) {
-        /* Extract only <body> content so we don't get nested <html>/<head> */
-        var bodyMatch = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-        zone.innerHTML = bodyMatch ? bodyMatch[1] : raw;
-        tabs[tab].loaded = true;
-        execScripts(zone); /* re-run timers, etc. */
-      })
-      .catch(function() { showError(tab); });
-
-  } else {
-    /* ── Cricket / Highlights: encrypted page → iframe ──
-       The page runs its own decryption via eval() and renders itself.
-       We give the iframe the full viewport height so all matches show.    */
-    var iframe = document.createElement('iframe');
-    iframe.src                  = url;
-    iframe.scrolling            = 'no';
-    iframe.frameBorder          = '0';
-    iframe.style.width          = '100%';
-    iframe.style.minHeight      = '600px';
-    iframe.style.border         = 'none';
-    iframe.style.display        = 'block';
-    iframe.style.borderRadius   = 'var(--radius-md)';
-    iframe.style.background     = 'transparent';
-    iframe.setAttribute('loading', 'lazy');
-    iframe.setAttribute('allowtransparency', 'true');
-
-    /* Auto-resize to fit content once loaded */
-    iframe.addEventListener('load', function() {
-      try {
-        var h = iframe.contentDocument.body.scrollHeight;
-        if (h > 200) iframe.style.height = h + 'px';
-      } catch(e) {
-        /* cross-origin restriction — just keep minHeight */
-        iframe.style.height = '700px';
-      }
-      zone.innerHTML = '';
-      zone.appendChild(iframe);
-      tabs[tab].loaded = true;
-    });
-
-    iframe.addEventListener('error', function() { showError(tab); });
-
-    /* Show iframe immediately, loading spinner shows underneath */
-    zone.innerHTML = '';
-    zone.appendChild(iframe);
-    tabs[tab].loaded = true;
   }
 }
 
-function switchTab(tab) {
-  if (tab === currentTab) return;
+/* ─── Load Tab Content ────────────────────── */
+/*
+  FOOTBALL  → plain HTML page  → fetch() the URL, strip the <body>, inject innerHTML
+              Scripts re-executed manually (innerHTML blocks script execution)
 
-  // Update buttons
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.remove('active-foot', 'active-cric', 'active-high');
-    btn.setAttribute('aria-selected', 'false');
-  });
-  const activeBtn = $('tab-' + tab);
-  activeBtn.classList.add(tabColors[tab]);
+  CRICKET   → encrypted page   → must use <iframe> because:
+  HIGHLIGHTS  The page decrypts itself via atob()+eval() at runtime inside the
+              browser. fetch() only returns the raw source; the eval() never runs,
+              so we'd get nothing. An iframe lets the browser load & execute the
+              page fully, exactly as designed.
+
+  IFRAME BLINKING FIX:
+  - We set loaded=true immediately after appending iframe so switchTab()
+    won't re-create it when user switches back and forth
+  - We use visibility:hidden / height:0 for inactive panels (not display:none)
+    so iframes keep their DOM and don't reload on every tab switch
+  - Auto-height runs after a 1.5s delay (giving the encryption time to finish)
+    and falls back to 800px on cross-origin restriction
+*/
+function loadTab(tabKey) {
+  var cfg = tabs[tabKey];
+  if (cfg.loaded) return;
+
+  var zone = eid(cfg.zoneId);
+
+  if (cfg.type === 'fetch') {
+    /* ── Football: fetch HTML, inject body ── */
+    zone.innerHTML =
+      '<div class="loading-wrap">' +
+        '<div class="ring"></div>' +
+        '<p>Loading football matches\u2026</p>' +
+      '</div>';
+
+    fetch(cfg.url, { mode: 'cors' })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function(html) {
+        /* Pull out everything inside <body>...</body> */
+        var m = html.match(/<body[^>]*>([\s\S]+?)<\/body>/i);
+        var content = m ? m[1] : html;
+        zone.innerHTML = content;
+        cfg.loaded = true;
+        runScripts(zone);
+      })
+      .catch(function(err) {
+        console.warn('Football fetch failed:', err);
+        showError(cfg.zoneId, tabKey);
+      });
+
+  } else {
+    /* ── Cricket / Highlights: load via iframe ── */
+    zone.innerHTML = '';
+    zone.classList.add('has-frame');
+
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', cfg.url);
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('allowtransparency', 'true');
+    iframe.setAttribute('loading', 'lazy');
+    iframe.style.cssText = [
+      'display:block',
+      'width:100%',
+      'min-height:600px',
+      'height:600px',
+      'border:none',
+      'background:transparent'
+    ].join(';');
+
+    /* After iframe loads, wait for the decryption eval() to finish,
+       then expand to full content height                             */
+    iframe.addEventListener('load', function() {
+      setTimeout(function() {
+        try {
+          var h = iframe.contentDocument.documentElement.scrollHeight
+                  || iframe.contentDocument.body.scrollHeight;
+          if (h > 200) {
+            iframe.style.height = h + 'px';
+            iframe.style.minHeight = h + 'px';
+          }
+        } catch (crossOriginErr) {
+          /* GitHub Pages cross-origin: just use a tall fixed height */
+          iframe.style.height = '900px';
+          iframe.style.minHeight = '900px';
+        }
+      }, 1500); /* 1.5 s lets the decryption + render finish */
+    });
+
+    zone.appendChild(iframe);
+    cfg.loaded = true; /* mark loaded immediately so we never recreate it */
+  }
+}
+
+/* ─── Switch Tab ──────────────────────────── */
+function switchTab(tabKey) {
+  if (tabKey === currentTab) return;
+
+  /* Deactivate all tab buttons */
+  var btns = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.remove('act-foot', 'act-cric', 'act-high');
+    btns[i].setAttribute('aria-selected', 'false');
+  }
+
+  /* Activate clicked button */
+  var activeBtn = eid('tab-' + tabKey);
+  activeBtn.classList.add(tabColors[tabKey]);
   activeBtn.setAttribute('aria-selected', 'true');
 
-  // Update panels
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  $('panel-' + tab).classList.add('active');
+  /* Hide all panels (visibility trick — keeps iframes alive) */
+  var panels = document.querySelectorAll('.tab-panel');
+  for (var j = 0; j < panels.length; j++) {
+    panels[j].classList.remove('active');
+  }
+  eid('panel-' + tabKey).classList.add('active');
 
-  currentTab = tab;
-  loadTab(tab);
+  currentTab = tabKey;
+  loadTab(tabKey); /* only fetches/creates if not already loaded */
 }
 
-/* ─── Load Football on page ready (default tab) ─── */
-document.addEventListener('DOMContentLoaded', () => {
+/* ─── Boot: load football immediately ──────── */
+document.addEventListener('DOMContentLoaded', function() {
   loadTab('foot');
 });
-
-/* ─── Match Status Timer (for .notice elements loaded dynamically) ─── */
-function updateMatchStatus() {
-  document.querySelectorAll('.notice[data-start]').forEach(notice => {
-    const startTime = new Date(notice.getAttribute('data-start'));
-    const endTime   = new Date(notice.getAttribute('data-end'));
-    const now       = new Date();
-    const timerElem = notice.querySelector('.timer');
-    if (!timerElem) return;
-    if (now < startTime) {
-      timerElem.textContent = formatTime(startTime - now);
-      timerElem.classList.remove('blinking');
-    } else if (now >= startTime && now <= endTime) {
-      timerElem.textContent = 'Live Now';
-      timerElem.classList.add('blinking');
-    } else {
-      timerElem.textContent = 'Ended';
-      timerElem.classList.remove('blinking');
-    }
-  });
-  setTimeout(updateMatchStatus, 1000);
-}
-
-function formatTime(ms) {
-  const s = Math.floor(ms / 1000);
-  const m = Math.floor(s / 60);
-  const h = Math.floor(m / 60);
-  return h > 0 ? `${h}h ${m%60}m` : `${m}m ${s%60}s`;
-}
-
-updateMatchStatus();
 </script>
 
 </body>
