@@ -12,22 +12,12 @@
 <style>
 /* ── VARIABLES ─────────────────────────────── */
 :root {
-  --bg:        #f5f6f8;
-  --surface:   #ffffff;
-  --border:    #e4e6eb;
-  --text:      #111827;
-  --muted:     #6b7280;
-  --accent:    #0f4cdb;
-  --red:       #e63946;
-  --green:     #16a34a;
-  --amber:     #f59e0b;
-  --r-sm: 6px; --r-md: 10px; --r-lg: 16px;
-  --sh-sm: 0 1px 4px rgba(0,0,0,.06);
-  --sh-md: 0 4px 16px rgba(0,0,0,.09);
-  --hdr-h: 64px;
-  --tab-h: 52px;
-  --fd: 'Barlow Condensed', sans-serif;
-  --fb: 'DM Sans', sans-serif;
+  --bg:#f5f6f8;--surface:#ffffff;--border:#e4e6eb;--text:#111827;--muted:#6b7280;
+  --accent:#0f4cdb;--red:#e63946;--green:#16a34a;--amber:#f59e0b;
+  --r-sm:6px;--r-md:10px;--r-lg:16px;
+  --sh-sm:0 1px 4px rgba(0,0,0,.06);--sh-md:0 4px 16px rgba(0,0,0,.09);
+  --hdr-h:64px;--tab-h:52px;
+  --fd:'Barlow Condensed',sans-serif;--fb:'DM Sans',sans-serif;
 }
 
 /* ── RESET ─────────────────────────────────── */
@@ -39,46 +29,197 @@ img{display:block;max-width:100%}
 ul,ol{list-style:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 
+/* ── HIDE URL PREVIEW for all nav/tab links ──
+   Replaces href with data-href and uses JS navigation,
+   so the browser status bar never shows the URL          */
+.nav-link, .tab-nav { cursor:pointer; }
+
 /* ── KEYFRAMES ─────────────────────────────── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
 @keyframes fadeOut{from{opacity:1;pointer-events:auto}to{opacity:0;pointer-events:none}}
-@keyframes ticker-move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes scrollX{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ── LAYOUT ────────────────────────────────── */
 .container{max-width:1060px;margin:0 auto;padding:0 16px}
 
-/* ── TICKER ────────────────────────────────── */
-.ticker-bar{background:var(--accent);color:#fff;font-family:var(--fd);font-size:13px;font-weight:600;letter-spacing:.04em;padding:6px 0;overflow:hidden;white-space:nowrap}
-.ticker-inner{display:flex;align-items:center}
-.ticker-label{background:var(--red);padding:2px 12px;border-radius:0 4px 4px 0;margin-right:20px;flex-shrink:0;text-transform:uppercase;letter-spacing:.08em}
-.ticker-track{display:inline-flex;gap:60px;animation:ticker-move 32s linear infinite}
-.ticker-track span{opacity:.9}
-.ticker-track b{color:#ffd166;font-weight:700}
+/* ══════════════════════════════════════════════
+   FEATURED MATCHES BANNER (replaces ticker)
+   Shows upcoming important matches like World Cup
+   ══════════════════════════════════════════════ */
+.featured-bar {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+/* subtle shimmer overlay */
+.featured-bar::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.03) 50%, transparent 100%);
+  background-size: 400px 100%;
+  animation: shimmer 3s ease infinite;
+  pointer-events: none;
+}
+
+.featured-inner {
+  display: flex;
+  align-items: stretch;
+  height: 52px;
+}
+
+/* Left label */
+.featured-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  background: rgba(255,255,255,.07);
+  border-right: 1px solid rgba(255,255,255,.1);
+  flex-shrink: 0;
+  font-family: var(--fd);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #ffd166;
+  white-space: nowrap;
+}
+.featured-label .hot-dot {
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: blink 1s ease infinite;
+  flex-shrink: 0;
+}
+
+/* Scrolling cards track */
+.featured-scroll-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+/* fade edges */
+.featured-scroll-wrap::before,
+.featured-scroll-wrap::after {
+  content:'';
+  position:absolute;
+  top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
+}
+.featured-scroll-wrap::before { left:0;  background:linear-gradient(to right, #0f172a, transparent); }
+.featured-scroll-wrap::after  { right:0; background:linear-gradient(to left,  #0f172a, transparent); }
+
+.featured-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 52px;
+  animation: scrollX 36s linear infinite;
+  white-space: nowrap;
+}
+.featured-track:hover { animation-play-state: paused; }
+
+/* Single match card inside the track */
+.f-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  border-right: 1px solid rgba(255,255,255,.07);
+  height: 100%;
+  cursor: default;
+  transition: background .2s;
+}
+.f-card:hover { background: rgba(255,255,255,.06); }
+
+.f-badge {
+  font-family: var(--fd);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  line-height: 16px;
+}
+.f-badge.wc   { background:#e63946; color:#fff; }
+.f-badge.ucl  { background:#1a56db; color:#fff; }
+.f-badge.ipl  { background:#f59e0b; color:#111; }
+.f-badge.t20  { background:#059669; color:#fff; }
+.f-badge.epl  { background:#38003c; color:#fff; }
+.f-badge.odi  { background:#0891b2; color:#fff; }
+
+.f-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fd);
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: .01em;
+}
+.f-vs {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .05em;
+}
+.f-flag { font-size: 16px; line-height: 1; }
+
+.f-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+.f-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffd166;
+  font-family: var(--fd);
+  letter-spacing: .03em;
+}
+.f-venue {
+  font-size: 10px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: .02em;
+}
+/* Live pulse on time */
+.f-time.live {
+  color: #4ade80;
+  animation: blink 1.4s ease infinite;
+}
+.f-time.soon { color: #fbbf24; }
 
 /* ── HEADER ────────────────────────────────── */
 .site-header{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--sh-sm);height:var(--hdr-h)}
 .hdr-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px;max-width:1060px;margin:0 auto}
 
 /* Logo */
-.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer}
 .logo-icon{width:38px;height:38px;background:var(--accent);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
 .logo-icon::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 60%)}
 .logo-icon svg{width:22px;height:22px}
 .logo-name{font-family:var(--fd);font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1}
 .logo-name span{color:var(--red)}
 
-/* Desktop Nav */
+/* Desktop Nav — use span/button not <a> to prevent URL preview */
 .hdr-nav{display:flex;align-items:center;gap:4px}
-.hdr-nav a{font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:var(--r-sm);transition:color .2s,background .2s}
-.hdr-nav a:hover{color:var(--text);background:var(--bg)}
+.hdr-nav .nav-link{font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:var(--r-sm);transition:color .2s,background .2s;cursor:pointer;user-select:none}
+.hdr-nav .nav-link:hover{color:var(--text);background:var(--bg)}
 
 /* Actions */
 .hdr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.btn-soc{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s}
+.btn-soc{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s;cursor:pointer}
 .btn-soc:hover{opacity:.85;transform:translateY(-1px)}
 .btn-soc.tg{background:#29b6f6}
 .btn-soc.yt{background:#ff0000}
@@ -98,14 +239,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .mob-nav{display:none;position:fixed;inset:var(--hdr-h) 0 0 0;background:rgba(0,0,0,.4);z-index:190;backdrop-filter:blur(2px)}
 .mob-nav.open{display:block}
 .mob-nav-inner{background:var(--surface);width:260px;height:100%;padding:20px 16px;display:flex;flex-direction:column;gap:6px;animation:slideIn .25s ease;box-shadow:var(--sh-md)}
-.mob-nav-inner a{padding:10px 14px;border-radius:var(--r-sm);font-weight:500;font-size:15px;color:var(--text);transition:background .2s;display:block}
-.mob-nav-inner a:hover{background:var(--bg)}
+/* use span not <a> in mobile nav too */
+.mob-nav-inner .nav-link{padding:10px 14px;border-radius:var(--r-sm);font-weight:500;font-size:15px;color:var(--text);transition:background .2s;display:block;cursor:pointer}
+.mob-nav-inner .nav-link:hover{background:var(--bg)}
 .mob-soc{display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
 
 /* ── JOIN BANNER ───────────────────────────── */
 .join-banner{padding:12px 0;animation:fadeUp .5s ease both}
 .join-inner{display:flex;gap:10px;flex-wrap:wrap}
-.join-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 18px;border-radius:var(--r-md);font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;transition:transform .15s,box-shadow .15s}
+/* join buttons use onclick, no href, so no URL preview */
+.join-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 18px;border-radius:var(--r-md);font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;transition:transform .15s,box-shadow .15s;cursor:pointer;border:none}
 .join-btn:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
 .join-btn.tg{background:linear-gradient(135deg,#2ca5e0,#1d7bb5)}
 .join-btn.yt{background:linear-gradient(135deg,#ff4444,#c50000)}
@@ -117,7 +260,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .ad-placeholder{display:inline-flex;align-items:center;justify-content:center;background:var(--bg);border:1px dashed var(--border);border-radius:var(--r-sm);font-size:12px;color:var(--muted)}
 
 /* ── PAGE GRID ─────────────────────────────── */
-.page-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;padding-bottom:60px;animation:fadeUp .55s .1s ease both}
+.page-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;padding-bottom:80px;animation:fadeUp .55s .1s ease both}
 .sidebar{display:flex;flex-direction:column;gap:16px}
 
 /* ── SPORT CARD ────────────────────────────── */
@@ -125,7 +268,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
 /* Tab Bar */
 .tab-bar{display:flex;background:#f8f9fb;border-bottom:1px solid var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;overflow:hidden}
-.tab-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;height:var(--tab-h);font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:.03em;color:var(--muted);border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s;text-transform:uppercase;cursor:pointer}
+/* Tab buttons are <button> — no URL preview ever */
+.tab-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;height:var(--tab-h);font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:.03em;color:var(--muted);border-bottom:3px solid transparent;transition:color .2s,border-color .2s,background .2s;text-transform:uppercase;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none}
 .tab-btn:hover{color:var(--text);background:rgba(0,0,0,.03)}
 .tab-btn.act-foot{color:#0f4cdb;border-color:#0f4cdb}
 .tab-btn.act-cric{color:#16a34a;border-color:#16a34a}
@@ -146,21 +290,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .dot-high{background:#f59e0b}
 .tab-date{font-size:13px;color:var(--muted);font-weight:400}
 
-/* ── IFRAME ZONE ───────────────────────────── */
-/* Wrapper that holds both the loader overlay and the iframe */
+/* ── IFRAME WRAP ───────────────────────────── */
 .iframe-wrap{position:relative;min-height:600px;width:100%}
 
-/* Progressive loader overlay — sits on top of the iframe */
 .iframe-loader{
-  position:absolute;
-  inset:0;
+  position:absolute;inset:0;
   background:var(--surface);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-  z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;z-index:10;
   transition:opacity .5s ease;
   border-radius:0 0 var(--r-lg) var(--r-lg);
 }
@@ -177,20 +314,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .bar-cric{background:#16a34a}
 .bar-high{background:#f59e0b}
 
-/* The iframe itself */
-.tab-iframe{
-  display:block;
-  width:100%;
-  border:none;
-  min-height:600px;
-  background:transparent;
-}
+.tab-iframe{display:block;width:100%;border:none;min-height:600px;background:transparent;}
 
 /* ── SIDEBAR ───────────────────────────────── */
 .sb-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden;border:1px solid var(--border)}
 .sb-title{font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 16px;border-bottom:1px solid var(--border);background:#fafbfc}
 .ql-list{padding:8px 0}
-.ql-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:14px;font-weight:500;color:var(--text);transition:background .15s}
+/* Quick links also use span + onclick — no URL preview */
+.ql-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:14px;font-weight:500;color:var(--text);transition:background .15s;cursor:pointer}
 .ql-item:hover{background:var(--bg)}
 .ql-ico{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
 .ql-arr{margin-left:auto;color:var(--muted);font-size:11px}
@@ -203,8 +334,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:24px;margin-bottom:24px}
 .foot-col-title{font-family:var(--fd);font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .foot-links{display:flex;flex-direction:column;gap:6px}
-.foot-links a{font-size:13px;color:var(--muted);transition:color .15s}
-.foot-links a:hover{color:var(--accent)}
+/* Footer links also use span+onclick */
+.foot-links .nav-link{font-size:13px;color:var(--muted);transition:color .15s;cursor:pointer}
+.foot-links .nav-link:hover{color:var(--accent)}
 .foot-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-top:6px}
 .foot-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--border);gap:12px;flex-wrap:wrap}
 .foot-copy{font-size:12px;color:var(--muted)}
@@ -229,6 +361,7 @@ body.night .tab-bar{background:#141620}
 body.night .tab-header{background:#141620}
 body.night .sb-title{background:#141620}
 body.night .iframe-loader{background:#1a1d27}
+body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50%,#080c14 100%)}
 
 /* ── RESPONSIVE ────────────────────────────── */
 @media(max-width:900px){
@@ -247,35 +380,177 @@ body.night .iframe-loader{background:#1a1d27}
   .live-badge{display:none}
   .sport-card{border-radius:0;box-shadow:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
   .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+  /* Compact featured bar on mobile */
+  .featured-inner{height:44px}
+  .featured-label{padding:0 10px;font-size:10px}
+  .f-card{padding:0 12px;gap:7px}
+  .f-teams{font-size:13px}
+  .f-flag{font-size:13px}
+  .f-venue{display:none}
 }
 @media(max-width:420px){
   :root{--hdr-h:56px;--tab-h:46px}
   .logo-name{font-size:22px}
   .tab-btn{font-size:12px;padding:0 6px;gap:4px}
   .tab-icon{width:16px;height:16px}
+  .featured-bar{display:none}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ── TICKER ──────────────────────────────── -->
-<div class="ticker-bar" role="marquee">
-  <div class="ticker-inner">
-    <span class="ticker-label">🔴 Live</span>
-    <div class="ticker-track">
-      <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
-      <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
-      <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting Soon</span>
-      <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
-      <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
-      <!-- duplicate for seamless loop -->
-      <span>⚽ <b>Man City vs Arsenal</b> — 67' · 2-1</span>
-      <span>🏏 <b>India vs England</b> — 3rd Test · Day 2</span>
-      <span>⚽ <b>Real Madrid vs Barcelona</b> — Starting Soon</span>
-      <span>🏏 <b>Australia vs Pakistan</b> — ODI Series · Live</span>
-      <span>⚽ <b>PSG vs Bayern</b> — UCL Quarter Final · Tonight</span>
+<!-- ══════════════════════════════════════════
+     FEATURED MATCHES BANNER
+     Important upcoming / live matches — World Cup,
+     UCL, IPL, T20 etc. Edit the f-card items below.
+     ══════════════════════════════════════════ -->
+<div class="featured-bar" aria-label="Featured matches">
+  <div class="featured-inner">
+
+    <!-- Left Label -->
+    <div class="featured-label">
+      <span class="hot-dot"></span>
+      🔥 Hot Matches
     </div>
+
+    <!-- Scrolling match cards -->
+    <div class="featured-scroll-wrap">
+      <div class="featured-track">
+
+        <!-- ── ADD / EDIT MATCH CARDS HERE ── -->
+
+        <div class="f-card">
+          <span class="f-badge wc">World Cup</span>
+          <div class="f-teams">
+            <span class="f-flag">🇮🇳</span> India
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> England
+          </div>
+          <div class="f-meta">
+            <span class="f-time live">● LIVE NOW</span>
+            <span class="f-venue">Lord's, London</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge ucl">UCL</span>
+          <div class="f-teams">
+            <span class="f-flag">🇫🇷</span> PSG
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🇩🇪</span> Bayern
+          </div>
+          <div class="f-meta">
+            <span class="f-time soon">Today 21:00</span>
+            <span class="f-venue">Parc des Princes</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge t20">T20 WC</span>
+          <div class="f-teams">
+            <span class="f-flag">🇦🇺</span> Australia
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🇵🇰</span> Pakistan
+          </div>
+          <div class="f-meta">
+            <span class="f-time soon">Today 14:30</span>
+            <span class="f-venue">MCG, Melbourne</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge epl">EPL</span>
+          <div class="f-teams">
+            <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Man City
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Arsenal
+          </div>
+          <div class="f-meta">
+            <span class="f-time">Tomorrow 17:30</span>
+            <span class="f-venue">Etihad Stadium</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge ipl">IPL</span>
+          <div class="f-teams">
+            <span class="f-flag">🏏</span> MI
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🏏</span> CSK
+          </div>
+          <div class="f-meta">
+            <span class="f-time soon">Today 19:30</span>
+            <span class="f-venue">Wankhede, Mumbai</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge odi">ODI WC</span>
+          <div class="f-teams">
+            <span class="f-flag">🇳🇿</span> New Zealand
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🇿🇦</span> South Africa
+          </div>
+          <div class="f-meta">
+            <span class="f-time">Jun 2 · 09:30</span>
+            <span class="f-venue">Eden Park, Auckland</span>
+          </div>
+        </div>
+
+        <div class="f-card">
+          <span class="f-badge ucl">UCL Final</span>
+          <div class="f-teams">
+            <span class="f-flag">🇪🇸</span> Real Madrid
+            <span class="f-vs">VS</span>
+            <span class="f-flag">🇩🇪</span> Dortmund
+          </div>
+          <div class="f-meta">
+            <span class="f-time soon">Jun 1 · 21:00</span>
+            <span class="f-venue">Wembley, London</span>
+          </div>
+        </div>
+
+        <!-- ── DUPLICATE for seamless loop ── -->
+        <div class="f-card">
+          <span class="f-badge wc">World Cup</span>
+          <div class="f-teams"><span class="f-flag">🇮🇳</span> India <span class="f-vs">VS</span> <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> England</div>
+          <div class="f-meta"><span class="f-time live">● LIVE NOW</span><span class="f-venue">Lord's, London</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge ucl">UCL</span>
+          <div class="f-teams"><span class="f-flag">🇫🇷</span> PSG <span class="f-vs">VS</span> <span class="f-flag">🇩🇪</span> Bayern</div>
+          <div class="f-meta"><span class="f-time soon">Today 21:00</span><span class="f-venue">Parc des Princes</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge t20">T20 WC</span>
+          <div class="f-teams"><span class="f-flag">🇦🇺</span> Australia <span class="f-vs">VS</span> <span class="f-flag">🇵🇰</span> Pakistan</div>
+          <div class="f-meta"><span class="f-time soon">Today 14:30</span><span class="f-venue">MCG, Melbourne</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge epl">EPL</span>
+          <div class="f-teams"><span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Man City <span class="f-vs">VS</span> <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Arsenal</div>
+          <div class="f-meta"><span class="f-time">Tomorrow 17:30</span><span class="f-venue">Etihad Stadium</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge ipl">IPL</span>
+          <div class="f-teams"><span class="f-flag">🏏</span> MI <span class="f-vs">VS</span> <span class="f-flag">🏏</span> CSK</div>
+          <div class="f-meta"><span class="f-time soon">Today 19:30</span><span class="f-venue">Wankhede, Mumbai</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge odi">ODI WC</span>
+          <div class="f-teams"><span class="f-flag">🇳🇿</span> New Zealand <span class="f-vs">VS</span> <span class="f-flag">🇿🇦</span> South Africa</div>
+          <div class="f-meta"><span class="f-time">Jun 2 · 09:30</span><span class="f-venue">Eden Park, Auckland</span></div>
+        </div>
+        <div class="f-card">
+          <span class="f-badge ucl">UCL Final</span>
+          <div class="f-teams"><span class="f-flag">🇪🇸</span> Real Madrid <span class="f-vs">VS</span> <span class="f-flag">🇩🇪</span> Dortmund</div>
+          <div class="f-meta"><span class="f-time soon">Jun 1 · 21:00</span><span class="f-venue">Wembley, London</span></div>
+        </div>
+
+      </div><!-- /featured-track -->
+    </div><!-- /featured-scroll-wrap -->
+
   </div>
 </div>
 
@@ -283,7 +558,8 @@ body.night .iframe-loader{background:#1a1d27}
 <header class="site-header" role="banner">
   <div class="hdr-inner">
 
-    <a href="https://sportssnap.github.io/footlive/foot" class="logo" aria-label="LiveKick Home">
+    <!-- Logo — onclick navigation, no href -->
+    <div class="logo" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" aria-label="LiveKick Home">
       <div class="logo-icon">
         <svg viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/>
@@ -292,22 +568,24 @@ body.night .iframe-loader{background:#1a1d27}
         </svg>
       </div>
       <div class="logo-name">Live<span>Kick</span></div>
-    </a>
+    </div>
 
+    <!-- Desktop Nav — spans with onclick, NO href = NO URL preview in status bar -->
     <nav class="hdr-nav" aria-label="Main navigation">
-      <a href="https://sportssnap.github.io/footlive/foot">Football</a>
-      <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket</a>
-      <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
-      <a href="#about">About</a>
+      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">Football</span>
+      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">Cricket</span>
+      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">Highlights</span>
+      <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" role="link" tabindex="0">About</span>
     </nav>
 
     <div class="hdr-actions">
-      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" aria-label="Telegram">
+      <!-- Social links still use href (external, no issue hiding needed) -->
+      <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" aria-label="Telegram">
         <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
-      </a>
-      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" aria-label="YouTube">
+      </span>
+      <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" aria-label="YouTube">
         <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
+      </span>
       <button class="btn-night" id="nightToggle" aria-label="Toggle dark mode">
         <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -322,13 +600,13 @@ body.night .iframe-loader{background:#1a1d27}
 <!-- Mobile Drawer -->
 <div class="mob-nav" id="mobNav" aria-hidden="true">
   <div class="mob-nav-inner">
-    <a href="https://sportssnap.github.io/footlive/foot">⚽ Football Live</a>
-    <a href="https://sportssnap.github.io/cricmatch/cmatch">🏏 Cricket Live</a>
-    <a href="https://sportssnap.github.io/highlights/hmatch">🎬 Highlights</a>
-    <a href="#about">ℹ️ About</a>
+    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">⚽ Football Live</span>
+    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">🏏 Cricket Live</span>
+    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">🎬 Highlights</span>
+    <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});closeMobNav();" role="link" tabindex="0">ℹ️ About</span>
     <div class="mob-soc">
-      <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></a>
-      <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
+      <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
     </div>
   </div>
 </div>
@@ -337,17 +615,17 @@ body.night .iframe-loader{background:#1a1d27}
 <main>
   <div class="container">
 
-    <!-- Join Banner -->
+    <!-- Join Banner — buttons not links, no URL preview -->
     <div class="join-banner">
       <div class="join-inner">
-        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg">
+        <button class="join-btn tg" onclick="goTo('https://t.me/sportssnapofficial')">
           <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
           Join Us on Telegram
-        </a>
-        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt">
+        </button>
+        <button class="join-btn yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')">
           <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           Subscribe on YouTube
-        </a>
+        </button>
       </div>
     </div>
 
@@ -365,7 +643,7 @@ body.night .iframe-loader{background:#1a1d27}
       <div>
         <div class="sport-card">
 
-          <!-- TAB BAR -->
+          <!-- TAB BAR — <button> elements, never show URL -->
           <div class="tab-bar" role="tablist">
             <button class="tab-btn act-foot" id="tab-foot" role="tab" aria-selected="true" aria-controls="panel-foot" onclick="switchTab('foot')">
               <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
@@ -383,24 +661,22 @@ body.night .iframe-loader{background:#1a1d27}
             </button>
           </div>
 
-          <!-- ═══ FOOTBALL PANEL ═══ -->
+          <!-- FOOTBALL PANEL -->
           <div class="tab-panel active" id="panel-foot" role="tabpanel" aria-labelledby="tab-foot">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-foot"></span>Football Live</div>
               <span class="tab-date" id="todayDate"></span>
             </div>
-            <!-- iframe wrap — loader overlays the iframe until content is ready -->
             <div class="iframe-wrap" id="wrap-foot">
               <div class="iframe-loader" id="loader-foot">
                 <div class="ring ring-foot"></div>
                 <p id="loader-foot-txt">Loading football matches…</p>
                 <div class="loader-progress"><div class="loader-bar bar-foot" id="bar-foot" style="width:0%"></div></div>
               </div>
-              <!-- iframe injected by JS -->
             </div>
           </div>
 
-          <!-- ═══ CRICKET PANEL ═══ -->
+          <!-- CRICKET PANEL -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-cric"></span>Cricket Live</div>
@@ -415,7 +691,7 @@ body.night .iframe-loader{background:#1a1d27}
             </div>
           </div>
 
-          <!-- ═══ HIGHLIGHTS PANEL ═══ -->
+          <!-- HIGHLIGHTS PANEL -->
           <div class="tab-panel" id="panel-high" role="tabpanel" aria-labelledby="tab-high">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-high"></span>Latest Highlights</div>
@@ -445,15 +721,15 @@ body.night .iframe-loader{background:#1a1d27}
         <div class="sb-card">
           <div class="sb-title">Quick Links</div>
           <nav class="ql-list">
-            <a href="https://sportssnap.github.io/footlive/foot" class="ql-item">
+            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#eff4ff">⚽</span> Football Live <span class="ql-arr">›</span>
-            </a>
-            <a href="https://sportssnap.github.io/cricmatch/cmatch" class="ql-item">
+            </div>
+            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#f0fdf4">🏏</span> Cricket Live <span class="ql-arr">›</span>
-            </a>
-            <a href="https://sportssnap.github.io/highlights/hmatch" class="ql-item">
+            </div>
+            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#fffbeb">🎬</span> Highlights <span class="ql-arr">›</span>
-            </a>
+            </div>
           </nav>
         </div>
 
@@ -477,18 +753,18 @@ body.night .iframe-loader{background:#1a1d27}
         <div class="sb-card">
           <div class="sb-title">Follow Us</div>
           <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
-            <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="join-btn tg" style="font-size:14px;padding:9px 14px">
+            <button class="join-btn tg" onclick="goTo('https://t.me/sportssnapofficial')" style="font-size:14px;padding:9px 14px">
               <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
               Telegram Channel
-            </a>
-            <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="join-btn yt" style="font-size:14px;padding:9px 14px">
+            </button>
+            <button class="join-btn yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" style="font-size:14px;padding:9px 14px">
               <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               YouTube Channel
-            </a>
+            </button>
           </div>
         </div>
 
-        <!-- Extra sidebar ad 300x250 bottom -->
+        <!-- Extra sidebar ad -->
         <div class="sb-card">
           <div class="sb-title">Advertisement</div>
           <div style="padding:10px;text-align:center;">
@@ -498,8 +774,8 @@ body.night .iframe-loader{background:#1a1d27}
         </div>
 
       </aside>
-    </div><!-- /page-grid -->
-  </div><!-- /container -->
+    </div>
+  </div>
 </main>
 
 <!-- ── FOOTER ──────────────────────────────── -->
@@ -507,34 +783,34 @@ body.night .iframe-loader{background:#1a1d27}
   <div class="container">
     <div class="foot-grid">
       <div>
-        <a href="https://sportssnap.github.io/footlive/foot" class="logo" style="margin-bottom:10px">
+        <div class="logo" onclick="goTo('https://sportssnap.github.io/footlive/foot')" style="margin-bottom:10px;cursor:pointer">
           <div class="logo-icon" style="width:30px;height:30px"><svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="1.5"/><circle cx="12" cy="12" r="3" fill="#fff"/></svg></div>
           <div class="logo-name" style="font-size:20px">Live<span>Kick</span></div>
-        </a>
-        <p class="foot-desc">Free sports streaming aggregator. We link to publicly available streams for football, cricket and highlights worldwide.</p>
+        </div>
+        <p class="foot-desc">Free sports streaming aggregator. Links to publicly available streams for football, cricket and highlights worldwide.</p>
       </div>
       <div>
         <div class="foot-col-title">Pages</div>
         <nav class="foot-links">
-          <a href="https://sportssnap.github.io/footlive/foot">Football Live</a>
-          <a href="https://sportssnap.github.io/cricmatch/cmatch">Cricket Live</a>
-          <a href="https://sportssnap.github.io/highlights/hmatch">Highlights</a>
+          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">Football Live</span>
+          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">Cricket Live</span>
+          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">Highlights</span>
         </nav>
       </div>
       <div>
         <div class="foot-col-title">Legal</div>
         <nav class="foot-links">
-          <a href="#">DMCA / Disclaimer</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Contact Us</a>
+          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">DMCA / Disclaimer</span>
+          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">Privacy Policy</span>
+          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">Contact Us</span>
         </nav>
       </div>
     </div>
     <div class="foot-bottom">
       <p class="foot-copy">© <span id="footYear"></span> LiveKick. All streams are sourced from third-party platforms.</p>
       <div class="foot-soc">
-        <a href="https://t.me/sportssnapofficial" target="_blank" rel="noopener" class="btn-soc tg" aria-label="Telegram"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></a>
-        <a href="https://www.youtube.com/channel/sportssnap2023" target="_blank" rel="noopener" class="btn-soc yt" aria-label="YouTube"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+        <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" aria-label="Telegram"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
+        <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" aria-label="YouTube"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
       </div>
     </div>
   </div>
@@ -551,115 +827,116 @@ body.night .iframe-loader{background:#1a1d27}
 
 <!-- ── SIDEBAR ADS ─────────────────────────── -->
 <div class="side-ad side-ad-l" id="leftAd">
-  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'" aria-label="Close ad">×</button>
+  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'" aria-label="Close">×</button>
   <!-- INSERT LEFT AD 160x600 CODE HERE -->
   <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
 </div>
 <div class="side-ad side-ad-r" id="rightAd">
-  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'" aria-label="Close ad">×</button>
+  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'" aria-label="Close">×</button>
   <!-- INSERT RIGHT AD 160x600 CODE HERE -->
   <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
 </div>
 
 <!-- ── SCRIPTS ─────────────────────────────── -->
 <script>
-/* ─── Helpers ─────────────────────────────── */
+/* ── goTo: open URL in new tab without ever showing it in status bar ──
+   Works because onclick fires immediately; window.open is trusted.     */
+function goTo(url) {
+  if (!url || url === '#') return;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+/* ── Helpers ─────────────────────────────── */
 function eid(id){ return document.getElementById(id); }
 
-/* ─── Dates & Year ────────────────────────── */
+/* ── Dates & Year ───────────────────────── */
 var ds = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 eid('todayDate').textContent  = ds;
 eid('todayDate2').textContent = ds;
 eid('footYear').textContent   = new Date().getFullYear();
 
-/* ─── Night Mode ──────────────────────────── */
+/* ── Night Mode ─────────────────────────── */
 if(localStorage.getItem('night') === '1') document.body.classList.add('night');
 eid('nightToggle').addEventListener('click', function(){
   var on = document.body.classList.toggle('night');
   localStorage.setItem('night', on ? '1' : '0');
 });
 
-/* ─── Mobile Menu ─────────────────────────── */
+/* ── Mobile Menu ────────────────────────── */
 var menuBtn = eid('menuBtn');
 var mobNav  = eid('mobNav');
+function closeMobNav(){
+  menuBtn.classList.remove('open');
+  mobNav.classList.remove('open');
+  menuBtn.setAttribute('aria-expanded','false');
+  mobNav.setAttribute('aria-hidden','true');
+}
 menuBtn.addEventListener('click', function(){
   var open = menuBtn.classList.toggle('open');
   mobNav.classList.toggle('open', open);
   menuBtn.setAttribute('aria-expanded', String(open));
-  mobNav.setAttribute('aria-hidden',    String(!open));
+  mobNav.setAttribute('aria-hidden', String(!open));
 });
 mobNav.addEventListener('click', function(e){
-  if(e.target === mobNav){
-    menuBtn.classList.remove('open');
-    mobNav.classList.remove('open');
-    menuBtn.setAttribute('aria-expanded','false');
-    mobNav.setAttribute('aria-hidden','true');
-  }
+  if(e.target === mobNav) closeMobNav();
 });
 
-/* ═══════════════════════════════════════════════
-   TAB CONFIG
-   All three tabs use <iframe> so they all behave
-   the same way — whether the page is plain HTML or
-   encrypted with atob()+eval(). When you encrypt
-   Football later, no code changes needed here.
-   ═══════════════════════════════════════════════ */
+/* ── Keyboard accessibility for span nav-links ─ */
+document.querySelectorAll('.nav-link[tabindex]').forEach(function(el){
+  el.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      el.click();
+    }
+  });
+});
+
+/* ═══════════════════════════════════════════
+   TAB SYSTEM — all three tabs use iframes.
+   Football is iframe too so when you encrypt it
+   later, zero code changes needed here.
+   ═══════════════════════════════════════════ */
 var tabs = {
   foot: {
-    loaded: false,
-    url:    'https://sportssnap.github.io/footmatch/fmatch',
-    wrapId: 'wrap-foot',
-    loadId: 'loader-foot',
-    barId:  'bar-foot',
-    txtId:  'loader-foot-txt',
-    label:  'Loading football matches\u2026',
-    /* Extra time (ms) after iframe load fires, to let
-       encryption / JS rendering finish before hiding overlay.
-       For plain HTML pages a small delay is fine;
-       for encrypted pages bump up to 2500-3000.          */
-    delay:  1800
+    loaded:false,
+    url:   'https://sportssnap.github.io/footmatch/fmatch',
+    wrapId:'wrap-foot', loadId:'loader-foot', barId:'bar-foot', txtId:'loader-foot-txt',
+    label: 'Loading football matches\u2026',
+    delay: 1800   /* ms to wait after load event — plain HTML needs less time */
   },
   cric: {
-    loaded: false,
-    url:    'https://sportssnap.github.io/cricmatch/cmatch',
-    wrapId: 'wrap-cric',
-    loadId: 'loader-cric',
-    barId:  'bar-cric',
-    txtId:  'loader-cric-txt',
-    label:  'Loading cricket matches\u2026',
-    delay:  2500
+    loaded:false,
+    url:   'https://sportssnap.github.io/cricmatch/cmatch',
+    wrapId:'wrap-cric', loadId:'loader-cric', barId:'bar-cric', txtId:'loader-cric-txt',
+    label: 'Loading cricket matches\u2026',
+    delay: 2500   /* encrypted pages need longer for eval() to finish */
   },
   high: {
-    loaded: false,
-    url:    'https://sportssnap.github.io/highlights/hmatch',
-    wrapId: 'wrap-high',
-    loadId: 'loader-high',
-    barId:  'bar-high',
-    txtId:  'loader-high-txt',
-    label:  'Loading highlights\u2026',
-    delay:  2500
+    loaded:false,
+    url:   'https://sportssnap.github.io/highlights/hmatch',
+    wrapId:'wrap-high', loadId:'loader-high', barId:'bar-high', txtId:'loader-high-txt',
+    label: 'Loading highlights\u2026',
+    delay: 2500
   }
 };
-
 var tabColors = { foot:'act-foot', cric:'act-cric', high:'act-high' };
 var currentTab = 'foot';
 
-/* ─── Animated progress bar while waiting ─── */
+/* ── Animate progress bar smoothly ─────── */
 function animateBar(barId, targetPct, durationMs){
-  var bar  = eid(barId);
+  var bar = eid(barId);
   if(!bar) return;
   var start = null;
   var from  = parseFloat(bar.style.width) || 0;
-  function step(ts){
+  (function step(ts){
     if(!start) start = ts;
-    var prog = Math.min((ts - start) / durationMs, 1);
-    bar.style.width = (from + (targetPct - from) * prog) + '%';
-    if(prog < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+    var p = Math.min((ts - start) / durationMs, 1);
+    bar.style.width = (from + (targetPct - from) * p) + '%';
+    if(p < 1) requestAnimationFrame(step);
+  })(performance.now());
 }
 
-/* ─── Hide loader overlay smoothly ──────────── */
+/* ── Fade out & remove loader overlay ──── */
 function hideLoader(loadId){
   var loader = eid(loadId);
   if(!loader || loader.classList.contains('gone')) return;
@@ -667,7 +944,7 @@ function hideLoader(loadId){
   setTimeout(function(){ loader.classList.add('gone'); }, 650);
 }
 
-/* ─── Auto-height: try same-origin, fallback tall ─ */
+/* ── Auto-height iframe to fit content ─── */
 function autoHeight(iframe, fallback){
   try {
     var h = iframe.contentDocument.documentElement.scrollHeight
@@ -677,49 +954,38 @@ function autoHeight(iframe, fallback){
       iframe.style.minHeight = h + 'px';
       return;
     }
-  } catch(e){ /* cross-origin — use fallback */ }
+  } catch(e){ /* cross-origin fallback */ }
   iframe.style.height    = (fallback || 900) + 'px';
   iframe.style.minHeight = (fallback || 900) + 'px';
 }
 
-/* ─── Create and inject iframe ───────────────── */
+/* ── Build and inject iframe into wrap ─── */
 function loadTab(tabKey){
   var cfg = tabs[tabKey];
   if(cfg.loaded) return;
-  cfg.loaded = true;           /* prevent double-create on quick tab switches */
+  cfg.loaded = true;
 
-  var wrap   = eid(cfg.wrapId);
-  var loader = eid(cfg.loadId);
-
-  /* Show the loader text */
+  var wrap = eid(cfg.wrapId);
   if(eid(cfg.txtId)) eid(cfg.txtId).textContent = cfg.label;
 
-  /* Kick off a faked progress bar:
-     0 → 70% while the page fetches (variable time)
-     70 → 95% after load fires, waiting for decryption
-     95 → 100% just before we hide the overlay           */
+  /* Fake progress: 0→70% while page loads, 70→95% during decrypt, 95→100% before hide */
   animateBar(cfg.barId, 70, 4000);
 
-  /* Build iframe */
   var iframe = document.createElement('iframe');
   iframe.className = 'tab-iframe';
   iframe.setAttribute('src', cfg.url);
-  iframe.setAttribute('frameborder', '0');
-  iframe.setAttribute('scrolling', 'no');
-  iframe.setAttribute('allowtransparency', 'true');
-  iframe.setAttribute('loading', 'lazy');
+  iframe.setAttribute('frameborder','0');
+  iframe.setAttribute('scrolling','no');
+  iframe.setAttribute('allowtransparency','true');
+  iframe.setAttribute('loading','lazy');
   iframe.style.cssText = 'display:block;width:100%;min-height:600px;height:600px;border:none;background:transparent;';
 
-  /* On iframe load event: bump progress bar then wait for decryption */
   iframe.addEventListener('load', function(){
+    /* Step progress to 95% and update text to show decryption phase */
     animateBar(cfg.barId, 95, cfg.delay * 0.6);
+    if(eid(cfg.txtId)) eid(cfg.txtId).textContent = 'Rendering content\u2026';
 
-    /* Update loader text to hint at decryption */
-    if(eid(cfg.txtId)){
-      eid(cfg.txtId).textContent = 'Rendering content\u2026';
-    }
-
-    /* After the decryption/render delay, finalise height and hide overlay */
+    /* After decryption/render delay: set correct height, complete bar, hide loader */
     setTimeout(function(){
       autoHeight(iframe, 900);
       animateBar(cfg.barId, 100, 300);
@@ -727,38 +993,29 @@ function loadTab(tabKey){
     }, cfg.delay);
   });
 
-  /* Append iframe behind the loader overlay */
-  wrap.appendChild(iframe);
+  /* Insert iframe underneath the loader overlay (z-index layering handles the rest) */
+  wrap.insertBefore(iframe, wrap.firstChild);
 }
 
-/* ─── Switch Tab ──────────────────────────── */
+/* ── Switch between tabs ─────────────────── */
 function switchTab(tabKey){
   if(tabKey === currentTab) return;
 
-  /* Deactivate all buttons */
-  var btns = document.querySelectorAll('.tab-btn');
-  for(var i = 0; i < btns.length; i++){
-    btns[i].classList.remove('act-foot','act-cric','act-high');
-    btns[i].setAttribute('aria-selected','false');
-  }
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.classList.remove('act-foot','act-cric','act-high');
+    b.setAttribute('aria-selected','false');
+  });
+  eid('tab-' + tabKey).classList.add(tabColors[tabKey]);
+  eid('tab-' + tabKey).setAttribute('aria-selected','true');
 
-  /* Activate clicked button */
-  var activeBtn = eid('tab-' + tabKey);
-  activeBtn.classList.add(tabColors[tabKey]);
-  activeBtn.setAttribute('aria-selected','true');
-
-  /* Hide/show panels (visibility trick — keeps iframes alive in DOM) */
-  var panels = document.querySelectorAll('.tab-panel');
-  for(var j = 0; j < panels.length; j++){
-    panels[j].classList.remove('active');
-  }
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
   eid('panel-' + tabKey).classList.add('active');
 
   currentTab = tabKey;
-  loadTab(tabKey);   /* no-op if already loaded */
+  loadTab(tabKey);
 }
 
-/* ─── Boot ────────────────────────────────── */
+/* ── Boot ───────────────────────────────── */
 document.addEventListener('DOMContentLoaded', function(){
   loadTab('foot');
 });
