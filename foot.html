@@ -172,11 +172,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .dot-foot{background:#0f4cdb}.dot-cric{background:#16a34a}.dot-high{background:#f59e0b}
 .tab-date{font-size:13px;color:var(--muted);font-weight:400}
 
-/* ── IFRAME WRAP — RESPONSIVE FIX ── */
+/* ── IFRAME WRAP ── */
 .iframe-wrap{
   position:relative;
   width:100%;
-  overflow:hidden; /* clip any overflowing iframe content */
+  overflow:hidden;
 }
 .iframe-loader{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:10;transition:opacity .5s ease;border-radius:0 0 var(--r-lg) var(--r-lg);min-height:340px;}
 .iframe-loader.hiding{animation:fadeOut .6s ease forwards}
@@ -188,20 +188,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .loader-bar{height:100%;border-radius:2px;transition:width .4s ease}
 .bar-foot{background:#0f4cdb}.bar-cric{background:#16a34a}.bar-high{background:#f59e0b}
 
-/* Responsive iframe — scales to fill container on all screen sizes */
-.iframe-scaler{
-  position:relative;
-  width:100%;
-  /* Default: no fixed ratio — iframe defines its own height */
-}
 .tab-iframe{
   display:block;
   width:100%;
   min-height:500px;
   border:none;
   background:transparent;
-  /* Prevent iframe from overflowing its container */
-  max-width:100%;
 }
 
 /* ── SIDEBAR ── */
@@ -777,21 +769,6 @@ function hideLoader(loadId) {
   setTimeout(function() { loader.classList.add('gone'); }, 650);
 }
 
-function setIframeHeight(iframe, wrap) {
-  /* Try to read content height; fallback to a sensible default */
-  var h = 600;
-  try {
-    var ch = iframe.contentDocument.documentElement.scrollHeight
-             || iframe.contentDocument.body.scrollHeight;
-    if (ch > 200) h = ch;
-  } catch(e) {}
-  /* Clamp to viewport-friendly size on mobile */
-  var maxH = Math.max(window.innerHeight * 0.85, 380);
-  h = Math.min(h, maxH > 900 ? h : maxH);
-  iframe.style.height = h + 'px';
-  iframe.style.minHeight = h + 'px';
-}
-
 function loadTab(tabKey) {
   var cfg = tabs[tabKey];
   if (cfg.loaded) return;
@@ -808,14 +785,12 @@ function loadTab(tabKey) {
   iframe.setAttribute('scrolling', 'yes');
   iframe.setAttribute('allowtransparency', 'true');
   iframe.setAttribute('loading', 'lazy');
-  /* Start with a sensible height; JS will adjust after load */
-  iframe.style.cssText = 'display:block;width:100%;min-height:400px;height:600px;border:none;background:transparent;max-width:100%;';
+  iframe.style.cssText = 'display:block;width:100%;min-height:500px;border:none;background:transparent;';
 
   iframe.addEventListener('load', function() {
     animateBar(cfg.barId, 95, cfg.delay * 0.6);
     if (eid(cfg.txtId)) eid(cfg.txtId).textContent = 'Rendering content\u2026';
     setTimeout(function() {
-      setIframeHeight(iframe, wrap);
       animateBar(cfg.barId, 100, 300);
       setTimeout(function() { hideLoader(cfg.loadId); }, 350);
     }, cfg.delay);
@@ -823,13 +798,6 @@ function loadTab(tabKey) {
 
   wrap.insertBefore(iframe, wrap.firstChild);
 }
-
-/* Re-measure iframes on resize so they never overflow */
-window.addEventListener('resize', function() {
-  document.querySelectorAll('.tab-iframe').forEach(function(iframe) {
-    setIframeHeight(iframe, iframe.parentElement);
-  });
-});
 
 function switchTab(tabKey) {
   if (tabKey === currentTab) return;
