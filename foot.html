@@ -25,13 +25,11 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 ul,ol{list-style:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
-.nav-link,.tab-nav{cursor:pointer}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
-@keyframes fadeOut{from{opacity:1;pointer-events:auto}to{opacity:0;pointer-events:none}}
 @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 @keyframes scrollX{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -39,66 +37,25 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .container{max-width:1060px;margin:0 auto;padding:0 16px}
 
 /* ── FEATURED BAR ── */
-.featured-bar{
-  background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  overflow:hidden;position:relative;width:100%;
-}
-.featured-bar::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.03) 50%,transparent 100%);
-  background-size:400px 100%;animation:shimmer 3s ease infinite;pointer-events:none;
-}
+.featured-bar{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden;position:relative;width:100%;}
 .featured-inner{display:flex;align-items:stretch;height:58px;}
-.featured-label{
-  display:flex;align-items:center;gap:6px;padding:0 16px;
-  background:rgba(255,255,255,.07);border-right:1px solid rgba(255,255,255,.1);
-  flex-shrink:0;font-family:var(--fd);font-size:12px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;color:#ffd166;white-space:nowrap;
-}
+.featured-label{display:flex;align-items:center;gap:6px;padding:0 16px;background:rgba(255,255,255,.07);border-right:1px solid rgba(255,255,255,.1);flex-shrink:0;font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ffd166;white-space:nowrap;}
 .featured-label .hot-dot{width:7px;height:7px;background:var(--red);border-radius:50%;animation:blink 1s ease infinite;flex-shrink:0;}
 .featured-scroll-wrap{flex:1;overflow:hidden;position:relative;min-width:0;}
-.featured-scroll-wrap::before,.featured-scroll-wrap::after{
-  content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
-}
+.featured-scroll-wrap::before,.featured-scroll-wrap::after{content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;}
 .featured-scroll-wrap::before{left:0;background:linear-gradient(to right,#0f172a,transparent);}
 .featured-scroll-wrap::after{right:0;background:linear-gradient(to left,#0f172a,transparent);}
-.featured-track{
-  display:inline-flex;align-items:center;gap:0;height:58px;
-  animation:scrollX 40s linear infinite;white-space:nowrap;
-}
+.featured-track{display:inline-flex;align-items:center;gap:0;height:58px;animation:scrollX 40s linear infinite;white-space:nowrap;}
 .featured-track:hover{animation-play-state:paused;}
-
-.f-card{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:0 18px;border-right:1px solid rgba(255,255,255,.07);
-  height:100%;cursor:default;transition:background .2s;
-}
+.f-card{display:inline-flex;align-items:center;gap:10px;padding:0 18px;border-right:1px solid rgba(255,255,255,.07);height:100%;cursor:pointer;transition:background .2s;}
 .f-card:hover{background:rgba(255,255,255,.06);}
-.f-badge{
-  font-family:var(--fd);font-size:9px;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;
-  padding:2px 6px;border-radius:3px;flex-shrink:0;line-height:16px;
-}
-.f-badge.wc  {background:#e63946;color:#fff;}
-.f-badge.ucl {background:#1a56db;color:#fff;}
-.f-badge.ipl {background:#f59e0b;color:#111;}
-.f-badge.t20 {background:#059669;color:#fff;}
-.f-badge.epl {background:#38003c;color:#fff;}
-.f-badge.odi {background:#0891b2;color:#fff;}
-.f-teams{
-  display:flex;align-items:center;gap:6px;
-  font-family:var(--fd);font-size:15px;font-weight:700;
-  color:#f1f5f9;letter-spacing:.01em;
-}
+.f-badge{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;flex-shrink:0;line-height:16px;}
+.f-badge.wc{background:#e63946;color:#fff;}.f-badge.ucl{background:#1a56db;color:#fff;}.f-badge.ipl{background:#f59e0b;color:#111;}.f-badge.t20{background:#059669;color:#fff;}.f-badge.epl{background:#38003c;color:#fff;}.f-badge.odi{background:#0891b2;color:#fff;}.f-badge.laliga{background:#ff4500;color:#fff;}.f-badge.seriea{background:#1e3a6e;color:#fff;}.f-badge.test{background:#7c3aed;color:#fff;}.f-badge.default{background:#555;color:#fff;}
+.f-teams{display:flex;align-items:center;gap:6px;font-family:var(--fd);font-size:15px;font-weight:700;color:#f1f5f9;letter-spacing:.01em;}
 .f-vs{font-size:10px;font-weight:400;color:rgba(255,255,255,.4);letter-spacing:.05em;}
 .f-flag{font-size:16px;line-height:1;}
 .f-meta{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:90px;}
-.f-timer{
-  font-size:11px;font-weight:700;font-family:var(--fd);
-  letter-spacing:.04em;color:#fbbf24;
-  transition:color .3s;white-space:nowrap;
-}
+.f-timer{font-size:11px;font-weight:700;font-family:var(--fd);letter-spacing:.04em;color:#fbbf24;white-space:nowrap;}
 .f-timer.is-live{color:#4ade80;animation:blink 1.4s ease infinite;}
 .f-timer.is-ended{color:rgba(255,255,255,.35);font-weight:400;}
 .f-timer.is-soon{color:#fbbf24;}
@@ -118,8 +75,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hdr-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .btn-soc{width:34px;height:34px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s;cursor:pointer}
 .btn-soc:hover{opacity:.85;transform:translateY(-1px)}
-.btn-soc.tg{background:#29b6f6}
-.btn-soc.yt{background:#ff0000}
+.btn-soc.tg{background:#29b6f6}.btn-soc.yt{background:#ff0000}
 .btn-soc svg{width:16px;height:16px;fill:#fff}
 .btn-night{width:34px;height:34px;border-radius:var(--r-sm);background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:background .2s}
 .btn-night:hover{background:var(--border)}
@@ -141,8 +97,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .join-inner{display:flex;gap:10px;flex-wrap:wrap}
 .join-btn{flex:1;min-width:180px;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 18px;border-radius:var(--r-md);font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;transition:transform .15s,box-shadow .15s;cursor:pointer;border:none}
 .join-btn:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
-.join-btn.tg{background:linear-gradient(135deg,#2ca5e0,#1d7bb5)}
-.join-btn.yt{background:linear-gradient(135deg,#ff4444,#c50000)}
+.join-btn.tg{background:linear-gradient(135deg,#2ca5e0,#1d7bb5)}.join-btn.yt{background:linear-gradient(135deg,#ff4444,#c50000)}
 .join-btn svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
 
 /* ── ADS ── */
@@ -174,44 +129,49 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .dot-foot{background:#0f4cdb}.dot-cric{background:#16a34a}.dot-high{background:#f59e0b}
 .tab-date{font-size:13px;color:var(--muted);font-weight:400}
 
-/* ── IFRAME WRAP ── */
-.iframe-wrap{
-  position:relative;
-  width:100%;
-  overflow:hidden;
-}
+/* ── MATCH CARDS IN PANEL ── */
+.panel-matches{padding:12px 14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.pm-card{border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg);cursor:pointer;transition:box-shadow .2s,transform .15s;overflow:hidden;display:flex;flex-direction:column;position:relative;}
+.pm-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.pm-card-inner{display:flex;align-items:center;justify-content:space-around;padding:12px 8px 8px;gap:4px;}
+.pm-team{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+.pm-logo{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.pm-logo img{width:32px;height:32px;object-fit:contain}
+.pm-logo .pm-flag{font-size:22px;line-height:1}
+.pm-name{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--text);letter-spacing:.01em;line-height:1.2;max-width:80px;word-break:break-word;text-align:center;}
+.pm-center{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;padding:0 4px}
+.pm-vs{font-family:var(--fd);font-size:10px;font-weight:400;color:var(--muted);letter-spacing:.06em;}
+.pm-status{text-align:center;padding:3px 7px;border-radius:var(--r-sm);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.03em;line-height:1.5;white-space:nowrap;}
+.pm-status.s-live{background:var(--red);color:#fff;animation:blink 1.4s ease infinite}
+.pm-status.s-soon{background:#16a34a;color:#fff}
+.pm-status.s-upcoming{background:#263545;color:#fff}
+.pm-status.s-ended{background:#6b7280;color:#fff}
+.pm-info{border-top:1px solid var(--border);display:flex;width:100%;text-align:center;}
+.pm-info-item{flex:1;font-size:11px;font-weight:500;padding:4px 3px;border-right:1px solid var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;gap:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pm-info-item:last-child{border-right:none}
+.pm-badge{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:1px 5px;border-radius:2px;color:#fff;flex-shrink:0;}
+.badge-wc{background:#e63946}.badge-ucl{background:#1a56db}.badge-ipl{background:#f59e0b;color:#111}.badge-t20{background:#059669}.badge-epl{background:#38003c}.badge-odi{background:#0891b2}.badge-laliga{background:#ff4500}.badge-seriea{background:#1e3a6e}.badge-test{background:#7c3aed}.badge-default{background:#555}
+.watch-over{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s,background .2s;pointer-events:none;}
+.pm-card:hover .watch-over{opacity:1;background:rgba(0,0,0,.5);pointer-events:auto}
+.watch-play{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;}
+.watch-play svg{width:16px;height:16px;fill:#0f4cdb}
 
-.iframe-loader{
-  position:absolute;inset:0;background:var(--surface);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;z-index:10;transition:opacity .5s ease;
-  border-radius:0 0 var(--r-lg) var(--r-lg);min-height:340px;
-}
-.iframe-loader.hiding{animation:fadeOut .6s ease forwards}
+/* Skeleton */
+.pm-skeleton{height:105px;border-radius:var(--r-md);background:linear-gradient(90deg,#eceef2 25%,#f8f9fb 50%,#eceef2 75%);background-size:400px 100%;animation:shimmer 1.4s ease infinite}
+.pm-empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* Highlights iframe wrap */
+.iframe-wrap{position:relative;width:100%;overflow:hidden;}
+.tab-iframe{display:block;width:100%;min-width:0;max-width:100%;height:560px;border:none;background:transparent;}
+.iframe-loader{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:10;transition:opacity .5s ease;border-radius:0 0 var(--r-lg) var(--r-lg);min-height:340px;}
+.iframe-loader.hiding{opacity:0;pointer-events:none}
 .iframe-loader.gone{display:none}
 .iframe-loader .ring{width:40px;height:40px;border:3px solid var(--border);border-radius:50%;animation:spin .75s linear infinite}
-.ring-foot{border-top-color:#0f4cdb}.ring-cric{border-top-color:#16a34a}.ring-high{border-top-color:#f59e0b}
+.ring-high{border-top-color:#f59e0b}
 .iframe-loader p{font-size:14px;font-weight:500;color:var(--muted)}
 .loader-progress{width:180px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
 .loader-bar{height:100%;border-radius:2px;transition:width .4s ease}
-.bar-foot{background:#0f4cdb}.bar-cric{background:#16a34a}.bar-high{background:#f59e0b}
-
-/* ── IFRAME — scrollable inside a fixed-height clipping box ── */
-.iframe-wrap{
-  position:relative;
-  width:100%;
-  overflow:hidden;        /* clips the iframe to card width */
-  -webkit-overflow-scrolling:touch;
-}
-.tab-iframe{
-  display:block;
-  width:100%;
-  min-width:0;
-  max-width:100%;
-  height:560px;
-  border:none;
-  background:transparent;
-}
+.bar-high{background:#f59e0b}
 
 /* ── SIDEBAR ── */
 .sb-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden;border:1px solid var(--border)}
@@ -241,13 +201,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .fixedban-inner{display:inline-block;position:relative;background:var(--surface);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(0,0,0,.08);padding:6px 40px 6px 6px}
 .fixedban-close{position:absolute;top:-14px;right:6px;width:24px;height:24px;background:var(--red);border-radius:50%;color:#fff;font-size:14px;font-weight:700;line-height:24px;text-align:center;cursor:pointer;border:none}
 
-/* ── SIDE ADS ── */
-.side-ad{position:fixed;top:22%;width:160px;z-index:100;background:var(--surface);box-shadow:var(--sh-md);border-radius:var(--r-md);overflow:hidden}
-.side-ad-l{left:12px}.side-ad-r{right:12px}
-.side-ad-close{display:block;width:100%;text-align:right;padding:4px 8px;background:#f8f9fb;border-bottom:1px solid var(--border);font-size:18px;color:var(--muted);line-height:1;cursor:pointer;border:none;font-family:inherit}
-.side-ad-close:hover{color:var(--red)}
-@media(max-width:1400px){.side-ad{display:none}}
-
 /* ── DARK MODE ── */
 body.night{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e8eaf0;--muted:#7c8098}
 body.night .tab-bar{background:#141620}
@@ -255,20 +208,17 @@ body.night .tab-header{background:#141620}
 body.night .sb-title{background:#141620}
 body.night .iframe-loader{background:#1a1d27}
 body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50%,#080c14 100%)}
+body.night .pm-card{background:#141620}
+body.night .pm-logo{background:#1a1d27}
+body.night .pm-skeleton{background:linear-gradient(90deg,#1a1d27 25%,#141620 50%,#1a1d27 75%);background-size:400px 100%}
 
-/* ══════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-   ══════════════════════════════════════ */
-
-/* Tablet */
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .page-grid{grid-template-columns:1fr}
   .sidebar{display:none}
   .foot-grid{grid-template-columns:1fr 1fr}
   .tab-iframe{height:480px}
 }
-
-/* Mobile */
 @media(max-width:640px){
   .hdr-nav{display:none}
   .btn-ham{display:flex}
@@ -280,8 +230,6 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
   .live-badge{display:none}
   .sport-card{border-radius:0;box-shadow:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
   .foot-bottom{flex-direction:column;align-items:flex-start;gap:8px}
-
-  /* Featured bar compact */
   .featured-inner{height:44px;}
   .featured-label{padding:0 10px;font-size:10px;gap:5px;}
   .featured-label .hot-dot{width:6px;height:6px;}
@@ -292,88 +240,39 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
   .f-venue{display:none;}
   .f-meta{min-width:70px;}
   .f-timer{font-size:10px;}
-
-  /* Iframe on mobile — full width, scrolls inside */
   .tab-iframe{height:420px}
-  .iframe-loader{min-height:280px;}
-
-  /* Container no side padding so iframe fills edge to edge */
   .container{padding:0}
   .join-banner{padding:12px 16px}
   .ad-slot{padding:6px 16px}
   .page-grid{padding-bottom:80px}
+  .panel-matches{grid-template-columns:1fr 1fr;padding:10px}
 }
-
-/* Very small phones */
 @media(max-width:420px){
   :root{--hdr-h:56px;--tab-h:46px}
   .logo-img{height:30px;}
   .logo-name{font-size:20px;}
   .tab-btn{font-size:12px;padding:0 6px;gap:4px}
   .tab-icon{width:16px;height:16px}
-
   .featured-inner{height:40px;}
   .featured-label{padding:0 8px;font-size:9px;}
   .f-card{padding:0 8px;gap:5px;}
   .f-teams{font-size:12px;}
-  .f-flag{font-size:12px;}
   .tab-iframe{height:380px}
+  .panel-matches{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<!-- ── FEATURED BAR (populated by JS from matches.json) ── -->
 <div class="featured-bar" aria-label="Featured matches">
   <div class="featured-inner">
     <div class="featured-label">
-      <span class="hot-dot"></span>
-      🔥 Hot Matches
+      <span class="hot-dot"></span>🔥 Hot Matches
     </div>
     <div class="featured-scroll-wrap">
       <div class="featured-track" id="featuredTrack">
-
-        <div class="f-card" data-start="2025-05-28T19:00:00+05:45" data-end="2025-05-28T23:00:00+05:45">
-          <span class="f-badge wc">World Cup</span>
-          <div class="f-teams"><span class="f-flag">🇮🇳</span> India <span class="f-vs">VS</span> <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> England</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Lord's, London</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-05-28T02:15:00+05:45" data-end="2025-05-28T04:15:00+05:45">
-          <span class="f-badge ucl">UCL</span>
-          <div class="f-teams"><span class="f-flag">🇫🇷</span> PSG <span class="f-vs">VS</span> <span class="f-flag">🇩🇪</span> Bayern</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Parc des Princes</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-05-28T14:30:00+05:45" data-end="2025-05-28T21:30:00+05:45">
-          <span class="f-badge t20">T20 WC</span>
-          <div class="f-teams"><span class="f-flag">🇦🇺</span> Australia <span class="f-vs">VS</span> <span class="f-flag">🇵🇰</span> Pakistan</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">MCG, Melbourne</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-05-29T23:15:00+05:45" data-end="2025-05-30T01:15:00+05:45">
-          <span class="f-badge epl">EPL</span>
-          <div class="f-teams"><span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Man City <span class="f-vs">VS</span> <span class="f-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Arsenal</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Etihad Stadium</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-05-28T19:30:00+05:45" data-end="2025-05-28T23:30:00+05:45">
-          <span class="f-badge ipl">IPL</span>
-          <div class="f-teams"><span class="f-flag">🏏</span> MI <span class="f-vs">VS</span> <span class="f-flag">🏏</span> CSK</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Wankhede, Mumbai</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-06-02T15:15:00+05:45" data-end="2025-06-02T22:15:00+05:45">
-          <span class="f-badge odi">ODI WC</span>
-          <div class="f-teams"><span class="f-flag">🇳🇿</span> New Zealand <span class="f-vs">VS</span> <span class="f-flag">🇿🇦</span> South Africa</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Eden Park, Auckland</span></div>
-        </div>
-
-        <div class="f-card" data-start="2025-06-01T02:15:00+05:45" data-end="2025-06-01T04:15:00+05:45">
-          <span class="f-badge ucl">UCL Final</span>
-          <div class="f-teams"><span class="f-flag">🇪🇸</span> Real Madrid <span class="f-vs">VS</span> <span class="f-flag">🇩🇪</span> Dortmund</div>
-          <div class="f-meta"><span class="f-timer"></span><span class="f-venue">Wembley, London</span></div>
-        </div>
-
+        <!-- injected by JS -->
       </div>
     </div>
   </div>
@@ -382,21 +281,21 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
 <!-- ── HEADER ── -->
 <header class="site-header" role="banner">
   <div class="hdr-inner">
-    <div class="logo" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" aria-label="Sports Snap Home">
+    <div class="logo" onclick="location.href='https://sportssnap.github.io/footlive/foot'" role="link" aria-label="Sports Snap Home">
       <img class="logo-img" src="https://i.ibb.co/BTM5dLF/sportssnap-logo.png" alt="Sports Snap" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
       <div class="logo-name" style="display:none">Sports<span>Snap</span></div>
     </div>
     <nav class="hdr-nav" aria-label="Main navigation">
-      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">Football</span>
-      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">Cricket</span>
-      <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">Highlights</span>
-      <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})" role="link" tabindex="0">About</span>
+      <span class="nav-link" onclick="switchTab('foot')">Football</span>
+      <span class="nav-link" onclick="switchTab('cric')">Cricket</span>
+      <span class="nav-link" onclick="switchTab('high')">Highlights</span>
+      <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About</span>
     </nav>
     <div class="hdr-actions">
-      <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" aria-label="Telegram">
+      <span class="btn-soc tg" onclick="window.open('https://t.me/sportssnapofficial','_blank','noopener')" aria-label="Telegram">
         <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
       </span>
-      <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" aria-label="YouTube">
+      <span class="btn-soc yt" onclick="window.open('https://www.youtube.com/channel/sportssnap2023','_blank','noopener')" aria-label="YouTube">
         <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </span>
       <button class="btn-night" id="nightToggle" aria-label="Toggle dark mode">
@@ -412,13 +311,13 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
 <!-- Mobile Drawer -->
 <div class="mob-nav" id="mobNav" aria-hidden="true">
   <div class="mob-nav-inner">
-    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">⚽ Football Live</span>
-    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">🏏 Cricket Live</span>
-    <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">🎬 Highlights</span>
-    <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});closeMobNav();" role="link" tabindex="0">ℹ️ About</span>
+    <span class="nav-link" onclick="switchTab('foot');closeMobNav()">⚽ Football Live</span>
+    <span class="nav-link" onclick="switchTab('cric');closeMobNav()">🏏 Cricket Live</span>
+    <span class="nav-link" onclick="switchTab('high');closeMobNav()">🎬 Highlights</span>
+    <span class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});closeMobNav()">ℹ️ About</span>
     <div class="mob-soc">
-      <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
-      <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+      <span class="btn-soc tg" onclick="window.open('https://t.me/sportssnapofficial','_blank')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
+      <span class="btn-soc yt" onclick="window.open('https://www.youtube.com/channel/sportssnap2023','_blank')" style="width:38px;height:38px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
     </div>
   </div>
 </div>
@@ -429,11 +328,11 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
 
     <div class="join-banner">
       <div class="join-inner">
-        <button class="join-btn tg" onclick="goTo('https://t.me/sportssnapofficial')">
+        <button class="join-btn tg" onclick="window.open('https://t.me/sportssnapofficial','_blank','noopener')">
           <svg viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
           Join Us on Telegram
         </button>
-        <button class="join-btn yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')">
+        <button class="join-btn yt" onclick="window.open('https://www.youtube.com/channel/sportssnap2023','_blank','noopener')">
           <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
           Subscribe on YouTube
         </button>
@@ -453,12 +352,12 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
             <button class="tab-btn act-foot" id="tab-foot" role="tab" aria-selected="true" aria-controls="panel-foot" onclick="switchTab('foot')">
               <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
               Football
-              <span class="live-badge">LIVE</span>
+              <span class="live-badge" id="foot-live-badge" style="display:none">LIVE</span>
             </button>
             <button class="tab-btn" id="tab-cric" role="tab" aria-selected="false" aria-controls="panel-cric" onclick="switchTab('cric')">
               <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20L20 4" stroke-linecap="round"/><path d="M8 20L20 8" stroke-linecap="round"/><circle cx="5" cy="19" r="2.5" fill="currentColor" stroke="none"/></svg>
               Cricket
-              <span class="live-badge" style="background:#16a34a">LIVE</span>
+              <span class="live-badge" id="cric-live-badge" style="display:none;background:#16a34a">LIVE</span>
             </button>
             <button class="tab-btn" id="tab-high" role="tab" aria-selected="false" aria-controls="panel-high" onclick="switchTab('high')">
               <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="5,3 19,12 5,21" fill="currentColor" stroke="none"/></svg>
@@ -466,34 +365,29 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
             </button>
           </div>
 
+          <!-- Football Panel -->
           <div class="tab-panel active" id="panel-foot" role="tabpanel" aria-labelledby="tab-foot">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-foot"></span>Football Live</div>
               <span class="tab-date" id="todayDate"></span>
             </div>
-            <div class="iframe-wrap" id="wrap-foot">
-              <div class="iframe-loader" id="loader-foot">
-                <div class="ring ring-foot"></div>
-                <p id="loader-foot-txt">Loading football matches…</p>
-                <div class="loader-progress"><div class="loader-bar bar-foot" id="bar-foot" style="width:0%"></div></div>
-              </div>
+            <div id="foot-matches-grid" class="panel-matches">
+              <div class="pm-skeleton"></div><div class="pm-skeleton"></div><div class="pm-skeleton"></div><div class="pm-skeleton"></div>
             </div>
           </div>
 
+          <!-- Cricket Panel -->
           <div class="tab-panel" id="panel-cric" role="tabpanel" aria-labelledby="tab-cric">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-cric"></span>Cricket Live</div>
               <span class="tab-date" id="todayDate2"></span>
             </div>
-            <div class="iframe-wrap" id="wrap-cric">
-              <div class="iframe-loader" id="loader-cric">
-                <div class="ring ring-cric"></div>
-                <p id="loader-cric-txt">Loading cricket matches…</p>
-                <div class="loader-progress"><div class="loader-bar bar-cric" id="bar-cric" style="width:0%"></div></div>
-              </div>
+            <div id="cric-matches-grid" class="panel-matches">
+              <div class="pm-skeleton"></div><div class="pm-skeleton"></div><div class="pm-skeleton"></div><div class="pm-skeleton"></div>
             </div>
           </div>
 
+          <!-- Highlights Panel -->
           <div class="tab-panel" id="panel-high" role="tabpanel" aria-labelledby="tab-high">
             <div class="tab-header">
               <div class="tab-heading"><span class="dot dot-high"></span>Latest Highlights</div>
@@ -501,7 +395,7 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
             <div class="iframe-wrap" id="wrap-high">
               <div class="iframe-loader" id="loader-high">
                 <div class="ring ring-high"></div>
-                <p id="loader-high-txt">Loading highlights…</p>
+                <p>Loading highlights…</p>
                 <div class="loader-progress"><div class="loader-bar bar-high" id="bar-high" style="width:0%"></div></div>
               </div>
             </div>
@@ -519,13 +413,13 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
         <div class="sb-card">
           <div class="sb-title">Quick Links</div>
           <nav class="ql-list">
-            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">
+            <div class="ql-item" onclick="switchTab('foot')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#eff4ff">⚽</span> Football Live <span class="ql-arr">›</span>
             </div>
-            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">
+            <div class="ql-item" onclick="switchTab('cric')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#f0fdf4">🏏</span> Cricket Live <span class="ql-arr">›</span>
             </div>
-            <div class="ql-item" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">
+            <div class="ql-item" onclick="switchTab('high')" role="link" tabindex="0">
               <span class="ql-ico" style="background:#fffbeb">🎬</span> Highlights <span class="ql-arr">›</span>
             </div>
           </nav>
@@ -546,11 +440,11 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
         <div class="sb-card">
           <div class="sb-title">Follow Us</div>
           <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
-            <button class="join-btn tg" onclick="goTo('https://t.me/sportssnapofficial')" style="font-size:14px;padding:9px 14px">
+            <button class="join-btn tg" onclick="window.open('https://t.me/sportssnapofficial','_blank')" style="font-size:14px;padding:9px 14px">
               <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg>
               Telegram Channel
             </button>
-            <button class="join-btn yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" style="font-size:14px;padding:9px 14px">
+            <button class="join-btn yt" onclick="window.open('https://www.youtube.com/channel/sportssnap2023','_blank')" style="font-size:14px;padding:9px 14px">
               <svg style="width:18px;height:18px;fill:#fff" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               YouTube Channel
             </button>
@@ -572,7 +466,7 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
   <div class="container">
     <div class="foot-grid">
       <div>
-        <div class="logo" onclick="goTo('https://sportssnap.github.io/footlive/foot')" style="margin-bottom:10px;cursor:pointer">
+        <div class="logo" onclick="location.href='https://sportssnap.github.io/footlive/foot'" style="margin-bottom:10px;cursor:pointer">
           <img class="logo-img" src="https://i.ibb.co/BTM5dLF/sportssnap-logo.png" alt="Sports Snap" style="height:28px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
           <div class="logo-name" style="display:none;font-size:20px">Sports<span>Snap</span></div>
         </div>
@@ -581,31 +475,30 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
       <div>
         <div class="foot-col-title">Pages</div>
         <nav class="foot-links">
-          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/footlive/foot')" role="link" tabindex="0">Football Live</span>
-          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/cricmatch/cmatch')" role="link" tabindex="0">Cricket Live</span>
-          <span class="nav-link" onclick="goTo('https://sportssnap.github.io/highlights/hmatch')" role="link" tabindex="0">Highlights</span>
+          <span class="nav-link" onclick="switchTab('foot')">Football Live</span>
+          <span class="nav-link" onclick="switchTab('cric')">Cricket Live</span>
+          <span class="nav-link" onclick="switchTab('high')">Highlights</span>
         </nav>
       </div>
       <div>
         <div class="foot-col-title">Legal</div>
         <nav class="foot-links">
-          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">DMCA / Disclaimer</span>
-          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">Privacy Policy</span>
-          <span class="nav-link" onclick="goTo('#')" role="link" tabindex="0">Contact Us</span>
+          <span class="nav-link">DMCA / Disclaimer</span>
+          <span class="nav-link">Privacy Policy</span>
+          <span class="nav-link">Contact Us</span>
         </nav>
       </div>
     </div>
     <div class="foot-bottom">
       <p class="foot-copy">© <span id="footYear"></span> Sports Snap. All streams are sourced from third-party platforms.</p>
       <div class="foot-soc">
-        <span class="btn-soc tg" onclick="goTo('https://t.me/sportssnapofficial')" aria-label="Telegram"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
-        <span class="btn-soc yt" onclick="goTo('https://www.youtube.com/channel/sportssnap2023')" aria-label="YouTube"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+        <span class="btn-soc tg" onclick="window.open('https://t.me/sportssnapofficial','_blank')" aria-label="Telegram"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="m9.417 15.181-.397 5.584c.568 0 .814-.244 1.109-.537l2.663-2.545 5.518 4.041c1.012.564 1.725.267 1.998-.931l3.622-16.972c.321-1.496-.541-2.081-1.527-1.714l-21.29 8.151c-1.453.564-1.431 1.374-.247 1.741l5.443 1.693 12.643-7.911c.595-.394 1.136-.176.691.218z"/></svg></span>
+        <span class="btn-soc yt" onclick="window.open('https://www.youtube.com/channel/sportssnap2023','_blank')" aria-label="YouTube"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- Bottom sticky ad -->
 <div id="fixedban">
   <div class="fixedban-inner">
     <button class="fixedban-close" onclick="document.getElementById('fixedban').style.display='none'" aria-label="Close ad">×</button>
@@ -613,180 +506,209 @@ body.night .featured-bar{background:linear-gradient(135deg,#080c14 0%,#130f2e 50
   </div>
 </div>
 
-<!-- Side ads -->
-<div class="side-ad side-ad-l" id="leftAd">
-  <button class="side-ad-close" onclick="document.getElementById('leftAd').style.display='none'" aria-label="Close">×</button>
-  <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
-</div>
-<div class="side-ad side-ad-r" id="rightAd">
-  <button class="side-ad-close" onclick="document.getElementById('rightAd').style.display='none'" aria-label="Close">×</button>
-  <div class="ad-placeholder" style="width:160px;height:600px;">Ad Space 160×600</div>
-</div>
-
 <script>
-/* ── Match Timers ── */
-function formatCountdown(ms) {
-  var totalSec = Math.floor(ms / 1000);
-  var days  = Math.floor(totalSec / 86400);
-  var hours = Math.floor((totalSec % 86400) / 3600);
-  var mins  = Math.floor((totalSec % 3600) / 60);
-  var secs  = totalSec % 60;
-  if (days > 0) return days + 'd ' + hours + 'h ' + mins + 'm';
-  return hours + 'h ' + mins + 'm ' + secs + 's';
+/* ── Utils ── */
+function eid(id){return document.getElementById(id)}
+function getStatus(start,end){
+  var now=new Date(),s=new Date(start),e=new Date(end);
+  if(now<s)return'upcoming';
+  if(now>=s&&now<=e)return'live';
+  return'ended';
 }
-function updateMatchTimers() {
-  var cards = document.querySelectorAll('.f-card[data-start]');
-  var now   = new Date();
-  cards.forEach(function(card) {
-    var startTime = new Date(card.getAttribute('data-start'));
-    var endTime   = new Date(card.getAttribute('data-end'));
-    var timerEl   = card.querySelector('.f-timer');
-    if (!timerEl) return;
-    timerEl.classList.remove('is-live','is-ended','is-soon','is-countdown');
-    if (now < startTime) {
-      var diff = startTime - now;
-      timerEl.textContent = formatCountdown(diff);
-      timerEl.classList.add(diff < 3600000 ? 'is-soon' : 'is-countdown');
-    } else if (now >= startTime && now <= endTime) {
-      timerEl.textContent = '● LIVE NOW';
-      timerEl.classList.add('is-live');
-    } else {
-      timerEl.textContent = 'Match Ended';
-      timerEl.classList.add('is-ended');
-    }
-  });
+function formatCountdown(ms){
+  var s=Math.floor(ms/1000),d=Math.floor(s/86400),h=Math.floor((s%86400)/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  if(d>0)return d+'d '+h+'h '+m+'m';
+  if(h>0)return h+'h '+m+'m '+sec+'s';
+  return m+'m '+sec+'s';
 }
-updateMatchTimers();
-setInterval(updateMatchTimers, 1000);
-
-/* ── Duplicate track for seamless scroll ── */
-(function duplicateTrack() {
-  var track = document.getElementById('featuredTrack');
-  if (!track) return;
-  track.querySelectorAll('.f-card').forEach(function(card) {
-    track.appendChild(card.cloneNode(true));
-  });
-})();
-
-/* ── Navigation ── */
-function goTo(url) {
-  if (!url || url === '#') return;
-  window.open(url, '_blank', 'noopener,noreferrer');
-}
-function eid(id) { return document.getElementById(id); }
 
 /* ── Dates ── */
-var ds = new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
-eid('todayDate').textContent  = ds;
-eid('todayDate2').textContent = ds;
-eid('footYear').textContent   = new Date().getFullYear();
+var ds=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+eid('todayDate').textContent=ds;
+eid('todayDate2').textContent=ds;
+eid('footYear').textContent=new Date().getFullYear();
 
 /* ── Night Mode ── */
-if (localStorage.getItem('night') === '1') document.body.classList.add('night');
-eid('nightToggle').addEventListener('click', function() {
-  localStorage.setItem('night', document.body.classList.toggle('night') ? '1' : '0');
+if(localStorage.getItem('night')==='1')document.body.classList.add('night');
+eid('nightToggle').addEventListener('click',function(){
+  localStorage.setItem('night',document.body.classList.toggle('night')?'1':'0');
 });
 
 /* ── Mobile Menu ── */
-var menuBtn = eid('menuBtn');
-var mobNav  = eid('mobNav');
-function closeMobNav() {
-  menuBtn.classList.remove('open');
-  mobNav.classList.remove('open');
-  menuBtn.setAttribute('aria-expanded','false');
-  mobNav.setAttribute('aria-hidden','true');
-}
-menuBtn.addEventListener('click', function() {
-  var open = menuBtn.classList.toggle('open');
-  mobNav.classList.toggle('open', open);
-  menuBtn.setAttribute('aria-expanded', String(open));
-  mobNav.setAttribute('aria-hidden', String(!open));
+var menuBtn=eid('menuBtn'),mobNav=eid('mobNav');
+function closeMobNav(){menuBtn.classList.remove('open');mobNav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');mobNav.setAttribute('aria-hidden','true');}
+menuBtn.addEventListener('click',function(){
+  var open=menuBtn.classList.toggle('open');
+  mobNav.classList.toggle('open',open);
+  menuBtn.setAttribute('aria-expanded',String(open));
+  mobNav.setAttribute('aria-hidden',String(!open));
 });
-mobNav.addEventListener('click', function(e) { if (e.target === mobNav) closeMobNav(); });
+mobNav.addEventListener('click',function(e){if(e.target===mobNav)closeMobNav();});
 
-document.querySelectorAll('.nav-link[tabindex]').forEach(function(el) {
-  el.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+/* ── Tab System ── */
+var currentTab='foot';
+var tabColors={foot:'act-foot',cric:'act-cric',high:'act-high'};
+function switchTab(key){
+  if(key===currentTab)return;
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('act-foot','act-cric','act-high');b.setAttribute('aria-selected','false');});
+  eid('tab-'+key).classList.add(tabColors[key]);
+  eid('tab-'+key).setAttribute('aria-selected','true');
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  eid('panel-'+key).classList.add('active');
+  currentTab=key;
+  if(key==='high'&&!highLoaded)loadHighlights();
+}
+
+/* ── Highlights iframe ── */
+var highLoaded=false;
+function loadHighlights(){
+  highLoaded=true;
+  var wrap=eid('wrap-high');
+  var bar=eid('bar-high');
+  var loader=eid('loader-high');
+  var iframe=document.createElement('iframe');
+  iframe.className='tab-iframe';
+  iframe.src='https://sportssnap.github.io/highlights/hmatch';
+  iframe.setAttribute('frameborder','0');
+  iframe.setAttribute('scrolling','yes');
+  iframe.setAttribute('loading','lazy');
+  var w=window.innerWidth;
+  iframe.style.cssText='display:block;width:100%;height:'+(w<=420?380:w<=640?420:w<=900?480:560)+'px;border:none;';
+  animateBar(bar,70,3000);
+  iframe.addEventListener('load',function(){
+    animateBar(bar,100,300);
+    setTimeout(function(){loader.classList.add('hiding');setTimeout(function(){loader.classList.add('gone');},650);},400);
   });
-});
-
-/* ── Tab + Iframe System ── */
-var tabs = {
-  foot: { loaded:false, url:'https://sportssnap.github.io/footmatch/fmatch', wrapId:'wrap-foot', loadId:'loader-foot', barId:'bar-foot', txtId:'loader-foot-txt', label:'Loading football matches\u2026', delay:1800 },
-  cric: { loaded:false, url:'https://sportssnap.github.io/cricmatch/cmatch',  wrapId:'wrap-cric', loadId:'loader-cric', barId:'bar-cric', txtId:'loader-cric-txt', label:'Loading cricket matches\u2026',  delay:2500 },
-  high: { loaded:false, url:'https://sportssnap.github.io/highlights/hmatch', wrapId:'wrap-high', loadId:'loader-high', barId:'bar-high', txtId:'loader-high-txt', label:'Loading highlights\u2026',         delay:2500 }
-};
-var tabColors  = { foot:'act-foot', cric:'act-cric', high:'act-high' };
-var currentTab = 'foot';
-
-function animateBar(barId, targetPct, durationMs) {
-  var bar = eid(barId);
-  if (!bar) return;
-  var start = null, from = parseFloat(bar.style.width) || 0;
-  (function step(ts) {
-    if (!start) start = ts;
-    var p = Math.min((ts - start) / durationMs, 1);
-    bar.style.width = (from + (targetPct - from) * p) + '%';
-    if (p < 1) requestAnimationFrame(step);
-  })(performance.now());
+  wrap.insertBefore(iframe,wrap.firstChild);
+}
+function animateBar(bar,target,dur){
+  var start=null,from=parseFloat(bar.style.width)||0;
+  (function step(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);bar.style.width=(from+(target-from)*p)+'%';if(p<1)requestAnimationFrame(step);})(performance.now());
 }
 
-function hideLoader(loadId) {
-  var loader = eid(loadId);
-  if (!loader || loader.classList.contains('gone')) return;
-  loader.classList.add('hiding');
-  setTimeout(function() { loader.classList.add('gone'); }, 650);
+/* ── Build a match card ── */
+function logoHtml(logo,flag,name){
+  if(logo)return '<div class="pm-logo"><img src="'+logo+'" alt="'+name+'" onerror="this.parentNode.innerHTML=\'<span class=pm-flag>'+flag+'</span>\'"/></div>';
+  return '<div class="pm-logo"><span class="pm-flag">'+flag+'</span></div>';
+}
+function buildCard(m){
+  var status=getStatus(m.start,m.end);
+  var now=new Date(),start=new Date(m.start);
+  var label='',cls='';
+  if(status==='live'){label='● LIVE NOW';cls='s-live';}
+  else if(status==='ended'){label='Ended';cls='s-ended';}
+  else{var diff=start-now;label='⏱ '+formatCountdown(diff);cls=diff<3600000?'s-soon':'s-upcoming';}
+  var badgeCls='badge-'+(m.badge||'default');
+  return '<div class="pm-card" data-start="'+m.start+'" data-end="'+m.end+'" onclick="location.href=\''+m.stream_url+'\'">'
+    +'<div class="pm-card-inner">'
+      +'<div class="pm-team">'+logoHtml(m.home_logo,m.home_flag,m.home_team)+'<div class="pm-name">'+m.home_team+'</div></div>'
+      +'<div class="pm-center"><div class="pm-vs">VS</div><div class="pm-status '+cls+'">'+label+'</div></div>'
+      +'<div class="pm-team">'+logoHtml(m.away_logo,m.away_flag,m.away_team)+'<div class="pm-name">'+m.away_team+'</div></div>'
+    +'</div>'
+    +'<div class="pm-info">'
+      +'<div class="pm-info-item"><span class="pm-badge '+badgeCls+'">'+m.competition_short+'</span></div>'
+      +'<div class="pm-info-item" style="font-size:10px">📍 '+(m.venue||'TBC')+'</div>'
+      +(m.format?'<div class="pm-info-item">'+m.format+'</div>':'')
+    +'</div>'
+    +'<div class="watch-over"><div class="watch-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>'
+  +'</div>';
 }
 
-function loadTab(tabKey) {
-  var cfg = tabs[tabKey];
-  if (cfg.loaded) return;
-  cfg.loaded = true;
-
-  var wrap = eid(cfg.wrapId);
-  if (eid(cfg.txtId)) eid(cfg.txtId).textContent = cfg.label;
-  animateBar(cfg.barId, 70, 4000);
-
-  var iframe = document.createElement('iframe');
-  iframe.className = 'tab-iframe';
-  iframe.setAttribute('src', cfg.url);
-  iframe.setAttribute('frameborder', '0');
-  iframe.setAttribute('scrolling', 'yes');
-  iframe.setAttribute('allowtransparency', 'true');
-  iframe.setAttribute('loading', 'lazy');
-
-  /* Set iframe height via JS so it matches CSS at current breakpoint */
-  var w = window.innerWidth;
-  var h = w <= 420 ? 380 : w <= 640 ? 420 : w <= 900 ? 480 : 560;
-  iframe.style.cssText = 'display:block;width:100%;height:' + h + 'px;border:none;background:transparent;';
-
-  iframe.addEventListener('load', function() {
-    animateBar(cfg.barId, 95, cfg.delay * 0.6);
-    if (eid(cfg.txtId)) eid(cfg.txtId).textContent = 'Rendering content\u2026';
-    setTimeout(function() {
-      animateBar(cfg.barId, 100, 300);
-      setTimeout(function() { hideLoader(cfg.loadId); }, 350);
-    }, cfg.delay);
+/* ── Sort: live → upcoming soonest → ended ── */
+function sortMatches(arr){
+  return arr.slice().sort(function(a,b){
+    var ord={live:0,upcoming:1,ended:2};
+    var sa=getStatus(a.start,a.end),sb=getStatus(b.start,b.end);
+    if(ord[sa]!==ord[sb])return ord[sa]-ord[sb];
+    return new Date(a.start)-new Date(b.start);
   });
-
-  wrap.insertBefore(iframe, wrap.firstChild);
 }
 
-function switchTab(tabKey) {
-  if (tabKey === currentTab) return;
-  document.querySelectorAll('.tab-btn').forEach(function(b) {
-    b.classList.remove('act-foot','act-cric','act-high');
-    b.setAttribute('aria-selected','false');
+/* ── Render panels ── */
+function renderPanels(matches){
+  var football=matches.filter(function(m){return m.sport==='football';});
+  var cricket=matches.filter(function(m){return m.sport==='cricket';});
+
+  // Count live
+  var liveFoot=football.filter(function(m){return getStatus(m.start,m.end)==='live';}).length;
+  var liveCric=cricket.filter(function(m){return getStatus(m.start,m.end)==='live';}).length;
+  var fb=eid('foot-live-badge'),cb=eid('cric-live-badge');
+  if(liveFoot>0){fb.style.display='inline-block';}
+  if(liveCric>0){cb.style.display='inline-block';}
+
+  // Render football
+  var fg=eid('foot-matches-grid');
+  if(football.length){fg.innerHTML=sortMatches(football).map(buildCard).join('');}
+  else{fg.innerHTML='<div class="pm-empty">No football matches scheduled.</div>';}
+
+  // Render cricket
+  var cg=eid('cric-matches-grid');
+  if(cricket.length){cg.innerHTML=sortMatches(cricket).map(buildCard).join('');}
+  else{cg.innerHTML='<div class="pm-empty">No cricket matches scheduled.</div>';}
+
+  // Build featured bar
+  buildFeatured(matches);
+
+  // Start timers
+  startTimers();
+}
+
+/* ── Featured bar ── */
+function buildFeatured(matches){
+  var track=eid('featuredTrack');
+  // Show live + upcoming only in featured
+  var featured=matches.filter(function(m){var s=getStatus(m.start,m.end);return s==='live'||s==='upcoming';});
+  if(!featured.length)featured=matches.slice(0,7);
+  var html=featured.map(function(m){
+    return '<div class="f-card" data-start="'+m.start+'" data-end="'+m.end+'" onclick="location.href=\''+m.stream_url+'\'">'
+      +'<span class="f-badge '+(m.badge||'default')+'">'+m.competition_short+'</span>'
+      +'<div class="f-teams"><span class="f-flag">'+m.home_flag+'</span> '+m.home_team+' <span class="f-vs">VS</span> <span class="f-flag">'+m.away_flag+'</span> '+m.away_team+'</div>'
+      +'<div class="f-meta"><span class="f-timer"></span><span class="f-venue">'+( m.venue||'')+'</span></div>'
+    +'</div>';
+  }).join('');
+  // Duplicate for seamless scroll
+  track.innerHTML=html+html;
+  updateFeaturedTimers();
+}
+
+/* ── Timers ── */
+var timerInterval=null;
+function startTimers(){
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(function(){updateTimerLabels();updateFeaturedTimers();},1000);
+}
+function updateTimerLabels(){
+  var now=new Date();
+  document.querySelectorAll('.pm-card[data-start]').forEach(function(card){
+    var box=card.querySelector('.pm-status');if(!box)return;
+    var start=new Date(card.getAttribute('data-start')),end=new Date(card.getAttribute('data-end'));
+    var status=now<start?'upcoming':(now<=end?'live':'ended');
+    box.className='pm-status ';
+    if(status==='live'){box.className+='s-live';box.textContent='● LIVE NOW';}
+    else if(status==='ended'){box.className+='s-ended';box.textContent='Ended';}
+    else{var diff=start-now;box.textContent='⏱ '+formatCountdown(diff);box.className+=diff<3600000?'s-soon':'s-upcoming';}
   });
-  eid('tab-' + tabKey).classList.add(tabColors[tabKey]);
-  eid('tab-' + tabKey).setAttribute('aria-selected','true');
-  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-  eid('panel-' + tabKey).classList.add('active');
-  currentTab = tabKey;
-  loadTab(tabKey);
+}
+function updateFeaturedTimers(){
+  var now=new Date();
+  document.querySelectorAll('.f-card[data-start]').forEach(function(card){
+    var t=card.querySelector('.f-timer');if(!t)return;
+    var start=new Date(card.getAttribute('data-start')),end=new Date(card.getAttribute('data-end'));
+    t.className='f-timer';
+    if(now>=start&&now<=end){t.textContent='● LIVE NOW';t.classList.add('is-live');}
+    else if(now>end){t.textContent='Match Ended';t.classList.add('is-ended');}
+    else{var diff=start-now;t.textContent=formatCountdown(diff);t.classList.add(diff<3600000?'is-soon':'is-countdown');}
+  });
 }
 
-document.addEventListener('DOMContentLoaded', function() { loadTab('foot'); });
+/* ── Fetch matches.json ── */
+fetch('https://sportssnap.github.io/fmatch/matches.json')
+  .then(function(r){return r.json();})
+  .then(function(data){renderPanels(data.matches);})
+  .catch(function(){
+    eid('foot-matches-grid').innerHTML='<div class="pm-empty">⚠️ Could not load matches. Please refresh.</div>';
+    eid('cric-matches-grid').innerHTML='<div class="pm-empty">⚠️ Could not load matches. Please refresh.</div>';
+  });
 </script>
 
 </body>
