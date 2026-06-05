@@ -656,9 +656,9 @@ function renderPanels(matches){
 /* ── Featured bar ── */
 function buildFeatured(matches){
   var track=eid('featuredTrack');
-  // Show live + upcoming only in featured
-  var featured=matches.filter(function(m){var s=getStatus(m.start,m.end);return s==='live'||s==='upcoming';});
-  if(!featured.length)featured=matches.slice(0,7);
+  // Show only hot_match: "yes" matches
+  var featured=matches.filter(function(m){return m.hot_match==='yes';});
+  if(!featured.length)featured=matches.slice(0,7); // fallback: show all if none marked hot
   var html=featured.map(function(m){
     return '<div class="f-card" data-start="'+m.start+'" data-end="'+m.end+'" onclick="location.href=\''+m.stream_url+'\'">'
       +'<span class="f-badge '+(m.badge||'default')+'">'+m.competition_short+'</span>'
